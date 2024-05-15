@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/MenuFragment">
+
+    <fragment
+        android:id="@+id/MenuFragment"
+        android:name="com.dezeta.guessit.ui.MenuFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_menu">
+
+        <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_dailyFragment"
+            app:destination="@id/dailyFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_duelFragment"
+            app:destination="@id/duelFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_localGameFragment"
+            app:destination="@id/localGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SecondFragment"
+        android:name="com.dezeta.guessit.ui.NivelesFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_niveles"/>
+    <fragment
+        android:id="@+id/dailyFragment"
+        android:name="com.dezeta.guessit.ui.DailyFragment"
+        android:label="¡Adivinalo!"
+        tools:layout="@layout/fragment_daily" />
+    <fragment
+        android:id="@+id/duelFragment"
+        android:name="com.dezeta.guessit.ui.DuelFragment"
+        android:label="Duelo"
+        tools:layout="@layout/fragment_duel" />
+    <fragment
+        android:id="@+id/localGameFragment"
+        android:name="com.dezeta.guessit.ui.LocalGameFragment"
+        android:label="Juego Local"
+        tools:layout="@layout/fragment_local_game" >
+        <action
+            android:id="@+id/action_localGameFragment_to_createFragment"
+            app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_localGameFragment_to_dailyFragment"
+            app:destination="@id/dailyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createFragment"
+        android:name="com.dezeta.guessit.ui.CreateFragment"
+        android:label="Crear Nivel"
+        tools:layout="@layout/fragment_create" />
+</navigation>

@@ -1,0 +1,35 @@
+package com.dezeta.guessit.domain.Dao
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.ForeignKey
+import androidx.room.Insert
+import androidx.room.Query
+import com.dezeta.guessit.domain.entity.Guess
+
+@Dao
+interface GuessDao {
+    @Insert(onConflict = ForeignKey.RESTRICT)
+    fun insert(serie: Guess): Long
+
+    @Query("DELETE FROM guess WHERE id = :id")
+    fun deleteFromId(id: String)
+
+    @Query("SELECT * FROM guess WHERE category == 'Local'")
+    fun selectAllLocal(): List<Guess>
+
+    @Query("SELECT * FROM guess WHERE category != 'Local'")
+    fun selectAllOnline(): List<Guess>
+
+    @Query("SELECT g.name FROM guess g WHERE category != 'Local'")
+    fun selectOnlineName(): List<String>
+
+    @Query("SELECT * FROM guess WHERE id == :id")
+    fun selectSerieFromId(id: String): Guess
+
+    @Query("SELECT * FROM guess WHERE name == :name")
+    fun selectSerieFromName(name: String): Guess
+
+    @Delete
+    fun delete(serie: Guess)
+}

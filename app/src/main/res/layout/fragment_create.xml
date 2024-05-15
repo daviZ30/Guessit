@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.dezeta.guessit.usecase.ViewModelCreate" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.CreateFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/CreateId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewmodel.id}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:hint="@string/CreateName"
+            app:layout_constraintBottom_toTopOf="@+id/spDifficulty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilId">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewmodel.name}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvDifficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/CreateDifficult"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/spDifficulty"
+            app:layout_constraintEnd_toStartOf="@+id/spDifficulty"
+            app:layout_constraintTop_toTopOf="@+id/spDifficulty" />
+
+        <Spinner
+            android:id="@+id/spDifficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/tilName" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="216dp" />
+
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/BlueRange6"
+            app:fb_cornerRadius="12dp"
+            app:fb_shape="rectangle"
+            app:fb_text="Crear nivel"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnAddImg1"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/BlueRange1_2"
+            app:fb_cornerRadius="20dp"
+            app:fb_shape="rectangle"
+            app:fb_text="@string/img_select"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="@dimen/img_size"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView4"
+            app:layout_constraintTop_toTopOf="@+id/cardView4" />
+
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnAddImg2"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/BlueRange1_2"
+            app:fb_cornerRadius="20dp"
+            app:fb_shape="rectangle"
+            app:fb_text="@string/img_select"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="@dimen/img_size"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView5"
+            app:layout_constraintTop_toTopOf="@+id/cardView5" />
+
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnAddImg3"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/BlueRange1_2"
+            app:fb_cornerRadius="20dp"
+            app:fb_shape="rectangle"
+            app:fb_text="@string/img_select"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="@dimen/img_size"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView3"
+            app:layout_constraintTop_toTopOf="@+id/cardView3" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/img_margin_star"
+            android:layout_marginTop="16dp"
+            android:padding="7dp"
+            app:cardBackgroundColor="@color/gris_claro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDifficulty">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgCreate1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:contentDescription="@string/contentImg1" />
+
+                <TextView
+                    android:id="@+id/tvImgCreate1"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tvImg1" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/img_margin_star"
+            android:layout_marginTop="16dp"
+            android:padding="7dp"
+            app:cardBackgroundColor="@color/gris_claro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgCreate2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:contentDescription="" />
+
+                <TextView
+                    android:id="@+id/tvImgCreate2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Imagen 2" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/img_margin_star"
+            android:layout_marginTop="16dp"
+            android:padding="7dp"
+            app:cardBackgroundColor="@color/gris_claro"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgCreate3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tvImgCreate3"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Imagen 3" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "190629402896",
+    "project_id": "guessit-dezeta",
+    "storage_bucket": "guessit-dezeta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190629402896:android:99366a1c4cf1d305baad95",
+        "android_client_info": {
+          "package_name": "com.dezeta.guessit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO2U_WuzuUtRPOWKFTTr7LxeJ-oHv85s4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

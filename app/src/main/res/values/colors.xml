@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="my_light_primary">#4455B5</color>
+    <color name="BlueRange1">#1792A4</color>
+    <color name="BlueRange1_1">#44B4C4</color>
+    <color name="BlueRange1_2">#80C9C6</color>
+    <color name="BlueRange1_3">#A3D5D1</color>
+    <color name="BlueRange1_4">#C8E5E3</color>
+    <color name="BlueRange2">#5EBDB2</color>
+    <color name="BlueRange3">#F0DDAA</color>
+    <color name="BlueRange4">#E47C5D</color>
+    <color name="BlueRange5">#E42D40</color>
+    <color name="BlueRange6">#142B3B</color>
+    <color name="gris_claro">#BDBDBD</color>
+    <color name="gris_transparente">#5B8E8E8E</color>
+    <color name="RedCategory">#FF0000</color>
+    <color name="GreenCategory">#2C9C12</color>
+
+
+</resources>

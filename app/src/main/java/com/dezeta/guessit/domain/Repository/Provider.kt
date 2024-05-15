@@ -1,0 +1,60 @@
+package com.dezeta.guessit.domain.Repository
+
+class Provider {
+    companion object{
+        fun getExample():MutableList<String>{
+            return mutableListOf(
+                "Breaking Bad",
+                "Game of Thrones",
+                "Stranger Things",
+                "Friends",
+                "The Office",
+                "The Simpsons",
+                "Black Mirror",
+                "The Crown",
+                "Narcos",
+                "Sherlock",
+                "The Mandalorian",
+                "Westworld",
+                "The Big Bang Theory",
+                "House of Cards",
+                "Peaky Blinders",
+                "The Witcher",
+                "Better Call Saul",
+                "Chernobyl",
+                "Fargo",
+                "True Detective",
+                "Mindhunter",
+                "Ozark",
+                "The Haunting of Hill House",
+                "Dexter",
+                "The Handmaid's Tale",
+                "Breaking Bad",
+                "Game of Thrones",
+                "Stranger Things",
+                "Friends",
+                "The Office",
+                "The Simpsons",
+                "Black Mirror",
+                "The Crown",
+                "Narcos",
+                "Sherlock",
+                "The Mandalorian",
+                "Westworld",
+                "The Big Bang Theory",
+                "House of Cards",
+                "Peaky Blinders",
+                "The Witcher",
+                "Better Call Saul",
+                "Chernobyl",
+                "Fargo",
+                "True Detective",
+                "Mindhunter",
+                "Ozark",
+                "The Haunting of Hill House",
+                "Dexter",
+                "The Handmaid's Tale"
+            )
+        }
+    }
+}

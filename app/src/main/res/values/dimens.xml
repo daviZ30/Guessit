@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="img_margin_star">50dp</dimen>
+    <dimen name="img_size">13sp</dimen>
+</resources>

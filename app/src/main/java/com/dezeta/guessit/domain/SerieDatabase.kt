@@ -1,0 +1,224 @@
+package com.dezeta.guessit.domain
+
+
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.dezeta.guessit.domain.Dao.ImgDao
+import com.dezeta.guessit.domain.Dao.InfoDao
+import com.dezeta.guessit.domain.Dao.GuessDao
+import com.dezeta.guessit.domain.converter.CategoryConverter
+import com.dezeta.guessit.domain.converter.DifficultyConverter
+import com.dezeta.guessit.domain.converter.InstantConverter
+import com.dezeta.guessit.domain.entity.Category
+import com.dezeta.guessit.domain.entity.Difficulty
+import com.dezeta.guessit.domain.entity.Img
+import com.dezeta.guessit.domain.entity.Info
+import com.dezeta.guessit.domain.entity.Guess
+import com.dezeta.guessit.utils.Locator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import java.time.Instant
+
+@Database(
+    entities = [Img::class, Info::class, Guess::class],
+    version = 1,
+    exportSchema = false
+)
+@TypeConverters(
+    InstantConverter::class,
+    CategoryConverter::class,
+    DifficultyConverter::class,
+)
+abstract class SerieDataBase : RoomDatabase() {
+
+    abstract fun imgDao(): ImgDao
+    abstract fun infoDao(): InfoDao
+    abstract fun GuessDao(): GuessDao
+
+
+    companion object {
+        @Volatile
+        private var INSTANCE: SerieDataBase? = null
+        fun getInstance(): SerieDataBase {
+            return INSTANCE ?: synchronized(SerieDataBase::class) {
+                val instance = buildDatabase()
+                INSTANCE = instance
+                instance
+            }
+        }
+
+        private fun buildDatabase(): SerieDataBase {
+            return Room.databaseBuilder(
+                Locator.requiredApplication, SerieDataBase::class.java, "Serie"
+            ).fallbackToDestructiveMigration().allowMainThreadQueries()
+                .addTypeConverter(InstantConverter())
+                .addTypeConverter(CategoryConverter())
+                .addTypeConverter(DifficultyConverter())
+                .addCallback(
+                    RoomDbInitializer(INSTANCE)
+                ).build()
+        }
+    }
+
+    class RoomDbInitializer(val instance: SerieDataBase?) : RoomDatabase.Callback() {
+        private val applicationScope = CoroutineScope(SupervisorJob())
+
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            applicationScope.launch(Dispatchers.IO) {
+                populateDatabase()
+            }
+        }
+
+        private fun SetFecha(fecha: String): Instant {
+            val dateString = fecha + "T00:00:00Z"
+            val instant = Instant.parse(dateString)
+            return instant
+        }
+
+        private fun populateDatabase() {
+            getInstance().let { database ->
+                with(database) {
+                    GuessDao().insert(Guess("online1","Stranger Things", Difficulty.Easy, Category.Fantasy))
+                    imgDao().insert(Img("online1", "https://imagizer.imageshack.com/img924/2464/8Zkg17.jpg", 0))
+                    imgDao().insert(Img("online1", "https://imagizer.imageshack.com/img924/5023/whUIRe.png", 1))
+                    imgDao().insert(Img("online1", "https://imagizer.imageshack.com/img923/8774/fGe9Jb.png", 2))
+                    imgDao().insert(Img("online1", "https://imagizer.imageshack.com/img923/9273/jbgdMF.jpg", 3))
+                    infoDao().insert(Info("online1", 8.7, SetFecha("2016-07-15"),
+                            "En Hawkins, Indiana, en noviembre de 1983, un grupo de niños se enfrenta a lo desconocido cuando su amigo Will Byers desaparece misteriosamente. Mientras su madre, Joyce, busca desesperadamente a Will, los amigos de este, Mike, Dustin y Lucas, descubren a una niña con habilidades psicocinéticas llamada Once. Juntos, se aventuran en un mundo oscuro y peligroso conocido como el Mundo del Revés, donde criaturas aterradoras acechan. A medida que desentrañan los secretos del laboratorio local y luchan contra el Demogorgon, se enfrentan a desafíos sobrenaturales y amistades inquebrantables."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online2","Breaking Bad", Difficulty.Easy, Category.Criminal_Drama))
+                    imgDao().insert(Img("online2", "https://imagizer.imageshack.com/img922/4972/6Eh6N6.jpg", 0))
+                    imgDao().insert(Img("online2", "https://imagizer.imageshack.com/img923/8326/F2j5Ma.png", 1))
+                    imgDao().insert(Img("online2", "https://imagizer.imageshack.com/img922/7817/1j9pWB.png", 2))
+                    imgDao().insert(Img("online2", "https://imagizer.imageshack.com/img924/504/SHOZoS.png", 3))
+                    infoDao().insert(Info("online2", 9.5, SetFecha("2008-01-20"),
+                            "Breaking Bad es una serie de drama y crimen que sigue la transformación de Walter White, un profesor de química de secundaria en Albuquerque, Nuevo México. Después de ser diagnosticado con cáncer de pulmón en etapa 3 y con solo dos años de vida, Walter se asocia con un exalumno para cocinar metanfetamina cristalina como medio de apoyo para su familia. A medida que se adentra en el mundo del crimen, su alter ego, Heisenberg, emerge, y la serie explora temas de poder, moralidad y consecuencias. La actuación magistral de Bryan Cranston como Walter White y la narrativa intensa hacen de Breaking Bad una de las series más icónicas de la televisión."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online3","Game of Thrones", Difficulty.Easy, Category.Fantasy))
+                    imgDao().insert(Img("online3", "https://imagizer.imageshack.com/img924/4201/kkqLc0.jpg", 0))
+                    imgDao().insert(Img("online3", "https://imagizer.imageshack.com/img924/8326/RR5ypL.jpg", 1))
+                    imgDao().insert(Img("online3", "https://imagizer.imageshack.com/img923/803/05asR0.jpg", 2))
+                    imgDao().insert(Img("online3", "https://imagizer.imageshack.com/img922/7720/Sp9Mn5.png", 3))
+                    infoDao().insert(Info("online3", 9.2, SetFecha("2011-04-17"),
+                        "En el continente de Poniente, varias casas nobles luchan por el Trono de Hierro, el símbolo del poder absoluto. La historia sigue a personajes como Eddard Stark, Daenerys Targaryen, Jon Snow, Tyrion Lannister y muchos otros mientras se enfrentan a traiciones, alianzas cambiantes y oscuros secretos. La serie está repleta de giros inesperados, personajes complejos y una ambientación medieval fascinante"
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online4","Peaky Blinders", Difficulty.Easy, Category.Historial_Fiction))
+                    imgDao().insert(Img("online4", "https://imagizer.imageshack.com/img924/3245/M71d2A.jpg", 0))
+                    imgDao().insert(Img("online4", "https://imagizer.imageshack.com/img924/8008/ZUeDQW.png", 1))
+                    imgDao().insert(Img("online4", "https://imagizer.imageshack.com/img924/2899/pCNvLj.png", 3))
+                    imgDao().insert(Img("online4", "https://imagizer.imageshack.com/img924/251/nJEzVz.png", 2))
+                    infoDao().insert(Info("online4", 8.8, SetFecha("2013-09-12"),
+                        "La trama se desarrolla en la ciudad de Birmingham, justo después de la Primera Guerra Mundial. La pandilla de los Peaky Blinders, liderada por Tommy Shelby (interpretado por Cillian Murphy), busca el poder y la dominación en un mundo lleno de intrigas y peligros. Los Shelby son conocidos por sus gorras con cuchillas ocultas y su estilo de vida audaz."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online5","Vikings", Difficulty.Easy, Category.Historial_Fiction))
+                    imgDao().insert(Img("online5", "https://imagizer.imageshack.com/img922/1295/NFqQQ5.jpg", 0))
+                    imgDao().insert(Img("online5", "https://imagizer.imageshack.com/img924/1049/bfWGDY.png", 1))
+                    imgDao().insert(Img("online5", "https://imagizer.imageshack.com/img922/7848/9Ap2cd.png", 2))
+                    imgDao().insert(Img("online5", "https://imagizer.imageshack.com/img924/3536/wHX20o.png", 3))
+                    infoDao().insert(Info("online5", 8.5, SetFecha("2013-06-03"),
+                            "La trama se centra en Ragnar Lothbrok, un legendario guerrero vikingo que busca expandir su influencia y riqueza. A medida que lidera incursiones en Inglaterra y otros territorios, enfrenta desafíos tanto en el campo de batalla como en su vida personal. La serie explora temas como la lealtad, la traición, la religión y la ambición."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online6","Chernobyl", Difficulty.Easy, Category.Historical_Drama))
+                    imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img924/6117/0oPcqT.jpg", 0))
+                    imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img923/9194/AuigFD.jpg", 1))
+                    imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img924/8702/kvwX3Y.jpg", 2))
+                    imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img922/3899/9NedXl.jpg", 3))
+                    infoDao().insert(Info("online6", 9.3, SetFecha("2019-08-06"),
+                            "Chernóbil es una miniserie de televisión que dramatiza los eventos en torno al desastre nuclear ocurrido en Chernóbil en abril de 1986. La serie se centra en los esfuerzos de limpieza sin precedentes que siguieron al colapso del reactor 4 de la planta nuclear. A través de cinco capítulos, la historia muestra las historias de los bomberos, voluntarios y equipos de mineros que arriesgaron sus vidas para contener la catástrofe. Basada en los recuerdos locales de Prípiat, la serie ofrece una experiencia intensa y conmovedora sobre uno de los eventos más impactantes de la historia moderna."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online7","The Crown", Difficulty.Medium, Category.Historial_Fiction))
+                    imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img924/6451/N2WM0C.jpg", 0))
+                    imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img924/538/wtnVld.png", 1))
+                    imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img923/7650/INzIVP.png", 2))
+                    imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img924/8360/UZSxou.png", 3))
+                    infoDao().insert(Info("online7", 8.6, SetFecha("2016-11-01"),
+                            "The Crown es una serie dramática creada por Peter Morgan que narra la vida de la Reina Isabel II y su reinado desde sus inicios hasta la actualidad. A lo largo de las temporadas, exploramos los desafíos, intrigas y cambios significativos que enfrenta la monarquía británica. La serie ofrece una visión fascinante de la historia y la política detrás del trono, con un reparto excepcional y una cuidada ambientación. Si te interesan las historias de la realeza y la política, The Crown es una elección imperdible."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online8","Sons of Anarchy", Difficulty.Medium, Category.Criminal_Drama))
+                    imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/4563/Acn4DP.jpg", 0))
+                    imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/3627/vkfpvy.jpg", 1))
+                    imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/6123/YUomcT.png", 2))
+                    imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img924/9828/qbqXw6.png", 3))
+                    infoDao().insert(Info("online8", 8.6, SetFecha("2008-09-03"),
+                            "Sons of Anarchy es una serie de televisión estadounidense creada por Kurt Sutter. La trama sigue a la pandilla de motociclistas Sons of Anarchy Motorcycle Club, Redwood Original (SAMCRO) en la ficticia ciudad de Charming, California. Liderados por Jax Teller (interpretado por Charlie Hunnam), los miembros de SAMCRO se enfrentan a rivalidades, lealtades divididas y conflictos internos mientras luchan por mantener el control de su territorio y su estilo de vida. La serie combina acción, drama y elementos de tragedia griega, y se desarrolla en un mundo lleno de motos, violencia y secretos oscuros. Si te gustan las historias sobre lealtad, crimen organizado y personajes complejos, Sons of Anarchy es una opción emocionante. "
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online9","Dexter", Difficulty.Medium, Category.Criminal_Drama))
+                    imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img923/8923/b0hhBY.jpg", 0))
+                    imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img923/4692/6TFwZ6.jpg", 1))
+                    imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img922/6652/bErunV.jpg", 3))
+                    imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img922/6535/OfON2x.png", 2))
+                    infoDao().insert(Info("online9", 8.6, SetFecha("2006-10-01"),
+                            "Dexter es una serie de televisión estadounidense que combina elementos de drama, suspenso y crimen. La trama sigue a Dexter Morgan, un forense especializado en análisis de salpicaduras de sangre en el Departamento de Policía de Miami, pero también es un asesino en serie. Dexter tiene un código moral muy particular: solo mata a otros asesinos que han escapado de la justicia. La serie explora su doble vida, sus relaciones personales y su lucha interna entre su lado oscuro y su deseo de ser parte de la sociedad. A lo largo de las temporadas, vemos cómo Dexter enfrenta desafíos, investiga crímenes y mantiene su secreto mientras intenta llevar una vida normal. Si te gustan los personajes complejos y las tramas intrigantes, Dexter es una excelente opción. "
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online10","The Walking Dead", Difficulty.Easy, Category.Fantasy))
+                    imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img923/5372/vHR7a9.jpg", 0))
+                    imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img924/9441/t6e2dg.jpg", 1))
+                    imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img923/9839/JKzblO.jpg", 2))
+                    imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img922/2880/BpDrjn.png", 3))
+                    infoDao().insert(Info("online10", 8.1, SetFecha("2010-10-31"),
+                            "The Walking Dead es una serie de televisión estadounidense que combina elementos de drama, suspenso y crimen. La trama sigue a Dexter Morgan, un forense especializado en análisis de salpicaduras de sangre en el Departamento de Policía de Miami, pero también es un asesino en serie. Dexter tiene un código moral muy particular: solo mata a otros asesinos que han escapado de la justicia. La serie explora su doble vida, sus relaciones personales y su lucha interna entre su lado oscuro y su deseo de ser parte de la sociedad. A lo largo de las temporadas, vemos cómo Dexter enfrenta desafíos, investiga crímenes y mantiene su secreto mientras intenta llevar una vida normal. Si te gustan los personajes complejos y las tramas intrigantes, Dexter es una excelente opción."
+                        )
+                    )
+
+
+                    GuessDao().insert(Guess("online11","Lost", Difficulty.Easy, Category.Fantasy))
+                    imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/9593/DWksne.png", 0))
+                    imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/3241/rQ9dYq.jpg", 1))
+                    imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/6756/Blvx3t.png", 2))
+                    imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img924/3180/myQ2Xw.png", 3))
+                    infoDao().insert(Info("online11", 8.3, SetFecha("2004-09-22"),
+                            "Lost es una serie de televisión estadounidense que combina elementos de drama, misterio, ciencia ficción y aventura. La trama sigue a un grupo de sobrevivientes de un accidente de avión que quedan varados en una misteriosa isla tropical. A medida que luchan por sobrevivir, descubren secretos oscuros, criaturas extrañas y una serie de eventos inexplicables. La serie se centra en los personajes, sus relaciones y sus pasados entrelazados, mientras exploran la isla y enfrentan desafíos tanto físicos como emocionales. Lost es conocida por su narrativa no lineal, giros sorprendentes y un final que generó debates entre los fanáticos. Si te gustan las historias intrigantes y llenas de enigmas, esta serie es una excelente opción."
+                        )
+                    )
+
+
+                    GuessDao().insert(Guess("online12","Better Call Saul", Difficulty.Medium, Category.Criminal_Drama))
+                    imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img923/2698/GMLpfu.jpg", 0))
+                    imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img924/6807/Lw5nze.png", 1))
+                    imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img924/4223/ycbUXe.jpg", 2))
+                    imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img923/6126/u7vTpc.jpg", 3))
+                    infoDao().insert(Info("online12", 9.0, SetFecha("2015-02-08"),
+                            "Better Call Saul es una serie de televisión que sirve como precuela de la exitosa serie “Breaking Bad”. La trama se centra en el personaje del abogado Saul Goodman (interpretado por Bob Odenkirk) seis años antes de su encuentro con Walter White. La historia sigue la transformación de Jimmy McGill, un picapleitos de poca monta con problemas económicos, mientras se convierte en el abogado criminalista Saul Goodman. A medida que Jimmy lucha por sobrevivir en un mundo implacable, descubrimos los motivos y la evolución que lo llevan a adoptar la personalidad extravagante y astuta de Saul Goodman"
+                        )
+                    )
+
+
+                    GuessDao().insert(Guess("online13","Dark", Difficulty.Medium, Category.Criminal_Drama))
+                    imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img923/8017/5DIe6i.jpg", 0))
+                    imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img923/7185/yzxfVj.png", 1))
+                    imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img922/9651/kKHOBP.png", 2))
+                    imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img924/5725/m9OCGC.jpg", 3))
+                    infoDao().insert(Info("online13", 8.7, SetFecha("2017-11-20"),
+                        "Dark es una serie alemana de ciencia ficción creada por Baran bo Odar y Jantje Friese. La trama se desarrolla en la pequeña ciudad ficticia de Winden, donde cuatro familias están conectadas por secretos oscuros y viajes en el tiempo. A medida que los personajes exploran misterios, paradojas temporales y relaciones complejas, descubrimos que la línea entre pasado, presente y futuro es más delgada de lo que imaginamos. Dark es conocida por su narrativa intrincada, atmósfera sombría y giros sorprendentes. Si te gustan las historias complejas y enigmáticas, esta serie es una excelente elección."
+                        )
+                    )
+
+                }
+            }
+        }
+    }
+}
