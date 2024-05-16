@@ -17,6 +17,7 @@ class ViewModelLogin : ViewModel() {
     fun getState(): LiveData<LoginState> {
         return state
     }
+
     fun getResult(): LiveData<Resource> {
         return result
     }
@@ -34,37 +35,48 @@ class ViewModelLogin : ViewModel() {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
             mail.value!!,
             password.value!!
-        ).addOnCompleteListener {
-            if (it.isSuccessful) {
-                println("IR A CASA VIEWMODEL")
-                result.value = Resource.Success(it.result?.user?.email ?: "")
+        ).addOnCompleteListener { r ->
+            if (r.isSuccessful) {
+                FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
+                result.value = Resource.Success(r.result?.user?.email ?: "")
             } else {
-                println("ERROR ---------------")
-                result.value = Resource.Error(Exception("Se ha producido un error registrando al usuario"))
+                result.value =
+                    Resource.Error(Exception("Se ha producido un error registrando al usuario"))
             }
         }
 
     }
-    fun signin(){
+
+    fun signin() {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(
             mail.value!!,
             password.value!!
-        ).addOnCompleteListener {
-            if (it.isSuccessful) {
-                result.value = Resource.Success(it.result?.user?.email ?: "")
+        ).addOnCompleteListener { r ->
+            if (r.isSuccessful) {
+                if (!r.result.user!!.isEmailVerified)
+                    state.value = LoginState.EmailNotVerifiedError
+                else
+                    result.value = Resource.Success(r.result?.user?.email ?: "")
             } else {
-                result.value = Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
+                result.value =
+                    Resource.Error(Exception("Se ha producido un error autenticando al usuario, registrelo antes de iniciar sesión"))
             }
         }
     }
-    fun validateSignUp(){
+
+    fun validateSignUp() {
         when {
             TextUtils.isEmpty(mail.value) -> state.value = LoginState.emailEmtyError
             TextUtils.isEmpty(password.value) -> state.value = LoginState.passwordEmtyError
             !validarEmail(mail.value!!) -> state.value = LoginState.emailFormatError
             !validarPassword(password.value!!) -> state.value = LoginState.passwordFormatError
-            !(confPassword.value == password.value) -> state.value = LoginState.NotEqualsPasswordError
-            else -> state.value = LoginState.Success
+            confPassword.value != password.value -> state.value =
+                LoginState.NotEqualsPasswordError
+
+            else -> {
+                state.value = LoginState.Success
+
+            }
         }
     }
 

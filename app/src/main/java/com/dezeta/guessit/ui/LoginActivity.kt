@@ -19,6 +19,7 @@ import com.dezeta.guessit.showSnackbar
 import com.dezeta.guessit.usecase.LoginState
 import com.dezeta.guessit.usecase.ViewModelLogin
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var fadeInAnimation: Animation
     private lateinit var fadeOutAnimation: Animation
+    private lateinit var fadeOutAnimationLottie: Animation
     private val viewModel: ViewModelLogin by viewModels()
     private var register = false
     private var endload = false
@@ -53,9 +55,12 @@ class LoginActivity : AppCompatActivity() {
 
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
         fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out)
+        fadeOutAnimationLottie = AnimationUtils.loadAnimation(this, R.anim.fade_out)
         fadeOutAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
-            override fun onAnimationRepeat(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {
+                binding.tilConfirmPassword.visibility = View.GONE
+            }
 
             override fun onAnimationEnd(animation: Animation?) {
                 binding.tilConfirmPassword.visibility = View.GONE
@@ -65,19 +70,40 @@ class LoginActivity : AppCompatActivity() {
             when (it) {
                 is Resource.Error -> {
                     endload = true
-                    showAlert(it.exception.message.toString())
+                    showAlert("Error", it.exception.message.toString())
                     println("NO IR A CASA")
                 }
 
                 is Resource.Success<*> -> {
                     endload = true
-                    showHome(it.data.toString(), ProviderType.BASIC)
+                    if (register) {
+                        showAlert(
+                            "Atención",
+                            "Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado."
+                        )
+                        with(binding) {
+                            tieLoginMail.setText("")
+                            tieLoginPassword.setText("")
+                            tieConfirmPassword.setText("")
+                            btnChanged.callOnClick()
+                            //register = false
+                          //  tilConfirmPassword.visibility = View.GONE
+                            //btnChanged.text = "Registrar"
+                        }
+
+                    } else {
+                        showHome(it.data.toString(), ProviderType.BASIC)
+                    }
+
                 }
             }
 
         }
-        viewModel.getState().observe(this) {
-            when (it) {
+        viewModel.getState().observe(this) { state ->
+            when (state) {
+                is LoginState.EmailNotVerifiedError -> {
+                    showAlert("Error","Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado.")
+                }
                 is LoginState.passwordEmtyError -> {
                     with(binding.tilLoginPassword) {
                         error = "Introduce la contraseña"
@@ -123,8 +149,8 @@ class LoginActivity : AppCompatActivity() {
                         addAnimatorUpdateListener {
                             val progress = (it.animatedValue as Float * 100).toInt()
                             if (progress == 100) {
-                                this.startAnimation(fadeOutAnimation)
-                                fadeOutAnimation.setAnimationListener(object :
+                                this.startAnimation(fadeOutAnimationLottie)
+                                fadeOutAnimationLottie.setAnimationListener(object :
                                     Animation.AnimationListener {
                                     override fun onAnimationStart(animation: Animation?) {}
                                     override fun onAnimationRepeat(animation: Animation?) {}
@@ -145,8 +171,6 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         viewModel.signin()
                     }
-
-                    showSnackbar(binding.root, "bien")
                 }
             }
         }
@@ -154,9 +178,9 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun showAlert(str: String) {
+    private fun showAlert(title: String, str: String) {
         val builder = AlertDialog.Builder(this).apply {
-            setTitle("Error")
+            setTitle(title)
             setMessage(str)
             setPositiveButton("Aceptar", null)
         }
@@ -190,28 +214,28 @@ class LoginActivity : AppCompatActivity() {
                 binding.tilConfirmPassword
             )
         )
-        binding.btnLogin.setOnClickListener {
+        binding.btnContinue.setOnClickListener {
             //startActivity(MenuIntent)
-            if(register){
+            if (register) {
                 viewModel.validateSignUp()
-            }else{
+            } else {
                 viewModel.validateSignIn()
             }
 
         }
-        binding.btnRegister.setOnClickListener {
+
+        binding.btnChanged.setOnClickListener {
             if (!register) {
                 register = true
                 binding.tilConfirmPassword.visibility = View.VISIBLE
                 binding.tilConfirmPassword.startAnimation(fadeInAnimation)
-                binding.btnRegister.text = "Login"
+                binding.btnChanged.text = "Login"
             } else {
                 register = false
                 binding.tilConfirmPassword.startAnimation(fadeOutAnimation)
-                binding.btnRegister.text = "Registrar"
+                binding.btnChanged.text = "Registrar"
             }
         }
     }
-
 
 }
