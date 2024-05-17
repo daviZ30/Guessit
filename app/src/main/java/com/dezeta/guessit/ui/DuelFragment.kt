@@ -1,5 +1,6 @@
 package com.dezeta.guessit.ui
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,9 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentDuelBinding
 import com.dezeta.guessit.domain.entity.Info
@@ -40,7 +47,7 @@ class DuelFragment : Fragment() {
         binding.viewmodel = this.viewModel
         binding.lifecycleOwner = this
         fadeOutAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
-        slideUpAnimation  = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_up)
+        slideUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_up)
         return binding.root
     }
 
@@ -68,18 +75,58 @@ class DuelFragment : Fragment() {
         }
     }
 
+    private fun loadImage(imageUrl: String, imageView: ImageView, animation: LottieAnimationView) {
+        with(animation) {
+            visibility = View.VISIBLE
+            setAnimation(R.raw.load_image)
+            playAnimation()
+        }
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return true
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    animation.cancelAnimation()
+                    animation.visibility = View.GONE
+                    imageView.setImageDrawable(resource)
+                    return true
+                }
+            })
+            .into(imageView)
+    }
+
     private fun setup() {
         serieTop = viewModel.getSerie()
         serieButton = viewModel.getSerie()
         infoTop = viewModel.getInfoFromId(serieTop)
         infoButton = viewModel.getInfoFromId(serieButton)
 
-        Glide.with(requireContext())
-            .load(viewModel.getImage0(serieTop)!!.img_url)
-            .into(binding.imgTop)
-        Glide.with(requireContext())
-            .load(viewModel.getImage0(serieButton)!!.img_url)
-            .into(binding.imgButton)
+        loadImage(
+            viewModel.getImage0(serieTop)!!.img_url,
+            binding.imgTop,
+            binding.lottieLoadAnimationTop
+        )
+
+        loadImage(
+            viewModel.getImage0(serieButton)!!.img_url,
+            binding.imgButton,
+            binding.lottieLoadAnimationButton
+        )
+
         binding.tvDuelImdbTop.text = infoTop.IMDB.toString()
         binding.tvDuelImdb.text = infoButton.IMDB.toString()
         binding.tvDuelSerieButton.text = serieButton.name

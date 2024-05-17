@@ -1,11 +1,15 @@
 package com.dezeta.guessit.ui
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +19,14 @@ import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityLoginBinding
 import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.ProviderType
-import com.dezeta.guessit.showSnackbar
+import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.usecase.LoginState
 import com.dezeta.guessit.usecase.ViewModelLogin
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginActivity : AppCompatActivity() {
 
@@ -33,6 +40,27 @@ class LoginActivity : AppCompatActivity() {
     private val viewModel: ViewModelLogin by viewModels()
     private var register = false
     private var endload = false
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account  = task.getResult(ApiException::class.java)
+                if(account != null){
+                    starLoadAnimation()
+                    val credential = GoogleAuthProvider.getCredential(account.idToken,null)
+
+                    viewModel.signInGoogle(credential,account.email)
+
+                }
+            }catch (e:ApiException){
+                showAlert("Error","No se ha podido iniciar sesión con google")
+            }
+
+            // Maneja el Intent aquí (por ejemplo, extrae datos o realiza acciones)
+        }
+    }
 
     inner class TextWatcher(private var t: TextInputLayout) : android.text.TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -50,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setup()
+        session()
         binding.viewmodel = this.viewModel
         binding.lifecycleOwner = this
 
@@ -87,12 +116,12 @@ class LoginActivity : AppCompatActivity() {
                             tieConfirmPassword.setText("")
                             btnChanged.callOnClick()
                             //register = false
-                          //  tilConfirmPassword.visibility = View.GONE
+                            //  tilConfirmPassword.visibility = View.GONE
                             //btnChanged.text = "Registrar"
                         }
 
                     } else {
-                        showHome(it.data.toString(), ProviderType.BASIC)
+                        showHome(it.data as User)
                     }
 
                 }
@@ -102,8 +131,12 @@ class LoginActivity : AppCompatActivity() {
         viewModel.getState().observe(this) { state ->
             when (state) {
                 is LoginState.EmailNotVerifiedError -> {
-                    showAlert("Error","Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado.")
+                    showAlert(
+                        "Error",
+                        "Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado."
+                    )
                 }
+
                 is LoginState.passwordEmtyError -> {
                     with(binding.tilLoginPassword) {
                         error = "Introduce la contraseña"
@@ -142,30 +175,8 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 is LoginState.Success -> {
-                    with(binding.lottieLoadAnimation) {
-                        visibility = View.VISIBLE
-                        setAnimation(R.raw.load)
-                        playAnimation()
-                        addAnimatorUpdateListener {
-                            val progress = (it.animatedValue as Float * 100).toInt()
-                            if (progress == 100) {
-                                this.startAnimation(fadeOutAnimationLottie)
-                                fadeOutAnimationLottie.setAnimationListener(object :
-                                    Animation.AnimationListener {
-                                    override fun onAnimationStart(animation: Animation?) {}
-                                    override fun onAnimationRepeat(animation: Animation?) {}
+                    starLoadAnimation()
 
-                                    override fun onAnimationEnd(animation: Animation?) {
-                                        // findNavController().popBackStack()
-                                        if (!endload) {
-                                            playAnimation()
-                                        }
-                                        visibility = View.INVISIBLE
-                                    }
-                                })
-                            }
-                        }
-                    }
                     if (register) {
                         viewModel.signup()
                     } else {
@@ -175,6 +186,50 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+
+    }
+
+    private fun starLoadAnimation() {
+        with(binding.lottieLoadAnimation) {
+            visibility = View.VISIBLE
+            setAnimation(R.raw.load)
+            playAnimation()
+            addAnimatorUpdateListener {
+                val progress = (it.animatedValue as Float * 100).toInt()
+                if (progress == 100) {
+                    this.startAnimation(fadeOutAnimationLottie)
+                    fadeOutAnimationLottie.setAnimationListener(object :
+                        Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {}
+                        override fun onAnimationRepeat(animation: Animation?) {}
+
+                        override fun onAnimationEnd(animation: Animation?) {
+                            // findNavController().popBackStack()
+                            if (!endload) {
+                                playAnimation()
+                            }
+                            visibility = View.INVISIBLE
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    private fun session() {
+        val preferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email = preferences.getString("email", null)
+        val provider = preferences.getString("provider", null)
+
+        if (email != null && provider != null) {
+            binding.clLogin.visibility = View.INVISIBLE
+            showHome(User(email, ProviderType.valueOf(provider)))
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.clLogin.visibility = View.VISIBLE
 
     }
 
@@ -188,10 +243,10 @@ class LoginActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showHome(email: String, privider: ProviderType) {
+    private fun showHome(user: User) {
+
         val MenuIntent = Intent(this, MainActivity::class.java).apply {
-            putExtra("email", email)
-            putExtra("provider", privider.name)
+            putExtra("user", user)
         }
         startActivity(MenuIntent)
 
@@ -235,6 +290,16 @@ class LoginActivity : AppCompatActivity() {
                 binding.tilConfirmPassword.startAnimation(fadeOutAnimation)
                 binding.btnChanged.text = "Registrar"
             }
+        }
+        binding.btnLoginGoogle.setOnClickListener {
+            val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            val googleClient = GoogleSignIn.getClient(this,googleConf)
+            googleClient.signOut()
+
+            startForResult.launch(googleClient.signInIntent)
         }
     }
 

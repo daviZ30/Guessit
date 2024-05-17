@@ -10,6 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.LoginActivity">
@@ -111,9 +112,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/mailLogin"
+                android:inputType="textEmailAddress"
                 android:text="@={viewmodel.mail}"
                 android:textSize="14sp"
-                android:inputType="textEmailAddress"
                 app:errorEnabled="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,8 +141,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/Password"
-                android:text="@={viewmodel.password}"
                 android:inputType="textPassword"
+                android:text="@={viewmodel.password}"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
 

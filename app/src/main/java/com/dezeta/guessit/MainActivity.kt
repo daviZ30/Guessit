@@ -1,6 +1,8 @@
 package com.dezeta.guessit
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,23 +14,25 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.dezeta.guessit.databinding.ActivityMainBinding
+import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.ui.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var navController:NavController
+    private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-    private var email:String? = null
-    private var provider:String? = null
+    private lateinit var preferences: SharedPreferences.Editor
+    private var user: User? = null
+
 
     override fun onBackPressed() {
         val currentFragment = navController.currentDestination?.id
-        if(currentFragment == R.id.MenuFragment){
+        if (currentFragment == R.id.MenuFragment) {
             finishAffinity()
-        }else{
+        } else {
             super.onBackPressed()
         }
     }
@@ -38,6 +42,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        preferences =
+            getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+
         setup()
         setSupportActionBar(binding.toolbar)
 
@@ -46,15 +53,18 @@ class MainActivity : AppCompatActivity() {
 
 
         setupActionBarWithNavController(navController, appBarConfiguration)
-
+        //Guardado de datos
+        preferences.putString("email", user?.email)
+        preferences.putString("provider", user?.provider.toString())
+        preferences.apply()
 
 
     }
 
     private fun setup() {
         val bundle = intent.extras
-        email = bundle?.getString("email")
-        provider = bundle?.getString("provider")
+        user = bundle?.getSerializable("user") as User?
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -70,11 +80,14 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             R.id.action_signOut -> {
+                preferences.clear()
+                preferences.apply()
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

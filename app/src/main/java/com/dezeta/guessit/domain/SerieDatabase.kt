@@ -216,6 +216,15 @@ abstract class SerieDataBase : RoomDatabase() {
                         "Dark es una serie alemana de ciencia ficción creada por Baran bo Odar y Jantje Friese. La trama se desarrolla en la pequeña ciudad ficticia de Winden, donde cuatro familias están conectadas por secretos oscuros y viajes en el tiempo. A medida que los personajes exploran misterios, paradojas temporales y relaciones complejas, descubrimos que la línea entre pasado, presente y futuro es más delgada de lo que imaginamos. Dark es conocida por su narrativa intrincada, atmósfera sombría y giros sorprendentes. Si te gustan las historias complejas y enigmáticas, esta serie es una excelente elección."
                         )
                     )
+                    GuessDao().insert(Guess("online14","The Good Doctor", Difficulty.Medium, Category.Criminal_Drama))
+                    imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/5052/kyFfVg.png", 0))
+                    imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/6535/Bs3xLH.png", 1))
+                    imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/2766/G5vXnQ.jpg", 2))
+                    imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img922/74/X0gWyr.jpg", 3))
+                    infoDao().insert(Info("online14", 8.0, SetFecha("2017-09-25"),
+                        "La serie sigue a Shaun Murphy, un joven cirujano con autismo y síndrome del sabio, mientras trabaja en el ficticio hospital St. Bonaventure en San José, California. A pesar del escepticismo inicial de sus colegas, Shaun demuestra su valía con métodos milagrosos. La serie se estrenó en 2017 y ha sido un fenómeno televisivo en EE. UU."
+                        )
+                    )
 
                 }
             }

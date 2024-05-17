@@ -16,6 +16,28 @@
         android:layout_height="match_parent"
         tools:context=".ui.DuelFragment">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieLoadAnimationTop"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="5dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="@+id/imgTop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imgTop" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieLoadAnimationButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="5dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cvDuelImdbTop"
             android:layout_width="wrap_content"

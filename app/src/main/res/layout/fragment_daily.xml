@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.DailyFragment">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieLoadAnimation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="5dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cardView6" />
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
         android:layout_width="match_parent"

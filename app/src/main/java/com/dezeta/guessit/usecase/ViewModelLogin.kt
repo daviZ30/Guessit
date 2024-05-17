@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dezeta.guessit.domain.Repository.Resource
+import com.dezeta.guessit.domain.entity.ProviderType
+import com.dezeta.guessit.domain.entity.User
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import java.lang.Exception
 
@@ -38,7 +41,7 @@ class ViewModelLogin : ViewModel() {
         ).addOnCompleteListener { r ->
             if (r.isSuccessful) {
                 FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
-                result.value = Resource.Success(r.result?.user?.email ?: "")
+                result.value =  Resource.Success(User(r.result?.user?.email ?: "",ProviderType.BASIC))
             } else {
                 result.value =
                     Resource.Error(Exception("Se ha producido un error registrando al usuario"))
@@ -56,7 +59,7 @@ class ViewModelLogin : ViewModel() {
                 if (!r.result.user!!.isEmailVerified)
                     state.value = LoginState.EmailNotVerifiedError
                 else
-                    result.value = Resource.Success(r.result?.user?.email ?: "")
+                    result.value = Resource.Success(User(r.result?.user?.email ?: "",ProviderType.BASIC))
             } else {
                 result.value =
                     Resource.Error(Exception("Se ha producido un error autenticando al usuario, registrelo antes de iniciar sesión"))
@@ -88,6 +91,18 @@ class ViewModelLogin : ViewModel() {
             !validarPassword(password.value!!) -> state.value = LoginState.passwordFormatError
             else -> state.value = LoginState.Success
         }
+    }
+
+    fun signInGoogle(credential: AuthCredential, email: String?,) {
+        FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+            if (it.isSuccessful) {
+                    result.value = Resource.Success(User(email ?: "",ProviderType.GOOGLE))
+            } else {
+                result.value =
+                    Resource.Error(Exception("Se ha producido un error autenticando al usuario, registrelo antes de iniciar sesión"))
+            }
+        }
+
     }
 
 }
