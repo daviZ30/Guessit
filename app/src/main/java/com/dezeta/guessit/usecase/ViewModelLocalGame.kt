@@ -9,13 +9,13 @@ import com.dezeta.guessit.domain.entity.Guess
 
 class ViewModelLocalGame : ViewModel() {
     private var state = MutableLiveData<LocalGameState>()
-    var createdGames = MutableLiveData(Repository.getLocalSeriesList().size.toString())
+    var createdGames = MutableLiveData(Repository.getLocalList().size.toString())
     fun updateStatistics(){
-        createdGames.value = Repository.getLocalSeriesList().size.toString()
+        createdGames.value = Repository.getLocalList().size.toString()
     }
 
     fun getLevelList(): List<Guess> {
-        return Repository.getLocalSeriesList()
+        return Repository.getLocalList()
     }
 
     fun deletefromId(id: String) {

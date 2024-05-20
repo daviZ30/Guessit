@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
@@ -204,7 +203,7 @@ class DailyFragment : Fragment() {
             viewModel.help = false
             showError()
             showError()
-            adapterList.update(viewModel.getOnlineList().map { it.name }.toMutableList())
+            adapterList.update(viewModel.getSerieList().map { it.name }.toMutableList())
         }
 
         builder.setNegativeButton("No") { _, _ ->

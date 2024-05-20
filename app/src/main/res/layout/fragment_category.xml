@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.dezeta.guessit.usecase.ViewModelMenu"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.CategoryFragment">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvProfile1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/BlueRange1_4"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/imgProfile1"
+            app:layout_constraintStart_toStartOf="@+id/imgProfile1"
+            app:layout_constraintTop_toBottomOf="@+id/imgProfile1">
+
+            <TextView
+                android:id="@+id/tvProfile1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:text="Hola" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvProfile2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/BlueRange1_4"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="@+id/imageView5"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5">
+
+
+            <TextView
+                android:id="@+id/tvProfile2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:text="Hola" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvProfile3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/BlueRange1_4"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4">
+
+            <TextView
+                android:id="@+id/tvProfile3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:text="Hola" />
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/imgDolar1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/dolar_foreground"
+            app:layout_constraintEnd_toEndOf="@+id/imgProfile1"
+            app:layout_constraintStart_toStartOf="@+id/imgProfile1"
+            app:layout_constraintTop_toBottomOf="@+id/cvProfile1" />
+
+        <TextView
+            android:id="@+id/tvProfile1Points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:paddingEnd="3dp"
+            android:text="69"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgDolar1"
+            app:layout_constraintEnd_toStartOf="@+id/imgDolar1"
+            app:layout_constraintTop_toTopOf="@+id/imgDolar1" />
+
+        <ImageView
+            android:id="@+id/imgDolar2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/dolar_foreground"
+            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="@+id/imageView5"
+            app:layout_constraintTop_toBottomOf="@+id/cvProfile2" />
+
+        <TextView
+            android:id="@+id/tvProfile2Points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:paddingEnd="3dp"
+            android:text="69"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgDolar2"
+            app:layout_constraintEnd_toStartOf="@+id/imgDolar2"
+            app:layout_constraintTop_toTopOf="@+id/imgDolar2" />
+
+        <ImageView
+            android:id="@+id/imgDolar3"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/dolar_foreground"
+            app:layout_constraintEnd_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/cvProfile3" />
+
+        <TextView
+            android:id="@+id/tvProfile3Points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:paddingEnd="3dp"
+            android:text="69"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgDolar3"
+            app:layout_constraintEnd_toStartOf="@+id/imgDolar3"
+            app:layout_constraintTop_toTopOf="@+id/imgDolar3" />
+
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnDailyCountry"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/BlueRange1_1"
+            app:fb_cornerRadius="30dp"
+            app:fb_icon="@drawable/country"
+            app:fb_iconColor="#FFF"
+            app:fb_iconMarginEnd="50dp"
+            app:fb_iconPosition="left"
+            app:fb_shape="rectangle"
+            app:fb_text="@string/category_pais_diario"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="23sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnDailyFootball"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/BlueRange4"
+            app:fb_cornerRadius="30dp"
+            app:fb_icon="@drawable/football"
+            app:fb_iconColor="#FFF"
+            app:fb_iconMarginEnd="40dp"
+            app:fb_iconPosition="left"
+            app:fb_shape="rectangle"
+            app:fb_text="Jugador Diario"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="23sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnDailyCountry" />
+
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnDailyGame"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            app:fb_backgroundColor="@color/BlueRange1"
+            app:fb_cornerRadius="30dp"
+            app:fb_icon="@drawable/console"
+            app:fb_iconColor="#FFF"
+            app:fb_iconMarginEnd="40dp"
+            app:fb_iconPosition="left"
+            app:fb_shape="rectangle"
+            app:fb_text="Juego Diario"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="23sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnDailyFootball" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            app:cardBackgroundColor="#BDBDBD"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/tvTitleStatistics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/estad"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/lblGuessSerie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingEnd="4dp"
+                        android:gravity="end"
+                        android:text="@string/guess_series" />
+
+                    <TextView
+                        android:id="@+id/tvGuessSerie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@={viewmodel.guessSerie}"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/lblGuessCountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingEnd="4dp"
+                        android:gravity="end"
+                        android:text="@string/paises_adivinados" />
+
+                    <TextView
+                        android:id="@+id/tvGuessCountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@={viewmodel.guessCountry}"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/lblGuessPlayer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingEnd="4dp"
+                        android:gravity="end"
+                        android:text="@string/guess_player" />
+
+                    <TextView
+                        android:id="@+id/tvGuessPlayer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@={viewmodel.guessPlayer}"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/lblGuessGame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingEnd="4dp"
+                        android:gravity="end"
+                        android:text="@string/guess_game" />
+
+                    <TextView
+                        android:id="@+id/tvGuessGame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@={viewmodel.guessGame}"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/imgProfile1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnDailyGame"
+            android:src="@drawable/profile" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnDailyGame"
+            android:src="@drawable/profile" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardView2"
+            app:layout_constraintEnd_toStartOf="@+id/imageView4"
+            app:layout_constraintStart_toEndOf="@+id/imgProfile1"
+            app:layout_constraintTop_toBottomOf="@+id/btnDailyGame"
+            android:src="@drawable/profile" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

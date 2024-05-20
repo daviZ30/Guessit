@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dezeta.guessit.domain.Repository.Repository
-import com.dezeta.guessit.domain.entity.Category
 import com.dezeta.guessit.domain.entity.Difficulty
 import com.dezeta.guessit.domain.entity.DifficultySpinner
 import com.dezeta.guessit.domain.entity.Difficulty_es
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Guess
+import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.utils.Locator
 import java.io.File
 import java.io.FileOutputStream
@@ -77,7 +77,7 @@ class ViewModelCreate : ViewModel() {
             img1Uri == img2Uri || img1Uri == img3Uri || img2Uri == img3Uri -> state.value =
                 CreateState.imageEqualsError
 
-            else -> insertSerie()
+            else -> insertGuess()
         }
     }
     fun saveToInternalStorage(bitmap: Bitmap, imageName: String) {
@@ -95,11 +95,11 @@ class ViewModelCreate : ViewModel() {
         }
     }
 
-    private fun insertSerie() {
+    private fun insertGuess() {
         if (img1Uri != null && img2Uri != null && img3Uri != null) {
-            Repository.insertSerie(
+            Repository.insertGuess(
                 Guess(
-                   id.value!!, name.value!!, Difficulty.valueOf(difficulty.value!!.key), Category.Local,
+                   id.value!!, name.value!!, Difficulty.valueOf(difficulty.value!!.key), null,GuessType.LOCAL
                 )
             )
             Repository.insertImages(

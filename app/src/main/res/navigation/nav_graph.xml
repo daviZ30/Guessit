@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/MenuFragment"
         android:name="com.dezeta.guessit.ui.MenuFragment"
-        android:label="@string/first_fragment_label"
+        android:label=""
         tools:layout="@layout/fragment_menu">
 
         <action
@@ -23,26 +23,29 @@
         <action
             android:id="@+id/action_FirstFragment_to_localGameFragment"
             app:destination="@id/localGameFragment" />
+        <action
+            android:id="@+id/action_MenuFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.dezeta.guessit.ui.NivelesFragment"
-        android:label="@string/second_fragment_label"
+        android:label=""
         tools:layout="@layout/fragment_niveles"/>
     <fragment
         android:id="@+id/dailyFragment"
         android:name="com.dezeta.guessit.ui.DailyFragment"
-        android:label="¡Adivinalo!"
+        android:label=""
         tools:layout="@layout/fragment_daily" />
     <fragment
         android:id="@+id/duelFragment"
         android:name="com.dezeta.guessit.ui.DuelFragment"
-        android:label="Duelo"
+        android:label=""
         tools:layout="@layout/fragment_duel" />
     <fragment
         android:id="@+id/localGameFragment"
         android:name="com.dezeta.guessit.ui.LocalGameFragment"
-        android:label="Juego Local"
+        android:label=""
         tools:layout="@layout/fragment_local_game" >
         <action
             android:id="@+id/action_localGameFragment_to_createFragment"
@@ -54,10 +57,14 @@
     <fragment
         android:id="@+id/createFragment"
         android:name="com.dezeta.guessit.ui.CreateFragment"
-        android:label="Crear Nivel"
+        android:label=""
         tools:layout="@layout/fragment_create" />
     <activity
         android:id="@+id/loginActivity"
         android:name="com.dezeta.guessit.ui.LoginActivity"
-        android:label="LoginActivity" />
+        android:label="" />
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.dezeta.guessit.ui.CategoryFragment"
+        android:label="" />
 </navigation>

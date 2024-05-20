@@ -12,8 +12,8 @@ class ViewModelDaily : ViewModel() {
     var help = true
     var error = 0
 
-    fun getOnlineList(): List<Guess> {
-        return Repository.getOnlineSeriesList()
+    fun getSerieList(): List<Guess> {
+        return Repository.getSeriesList()
     }
 
     fun getSerieFromName(name:String):Guess{
@@ -28,13 +28,13 @@ class ViewModelDaily : ViewModel() {
         val lista = mutableListOf<String>()
 
         if (local) {
-            Repository.getLocalSeriesList().forEach {
+            Repository.getLocalList().forEach {
                 if (it.name.uppercase().contains(str.uppercase())) {
                     lista.add(it.name)
                 }
             }
         } else {
-            Repository.getOnlineSerieName()?.forEach {
+            Repository.getSerieName()?.forEach {
                 if (it.uppercase().contains(str.uppercase())) {
                     lista.add(it)
                 }

@@ -3,18 +3,22 @@ package com.dezeta.guessit
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.dezeta.guessit.databinding.ActivityMainBinding
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.ui.LoginActivity
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -44,13 +48,18 @@ class MainActivity : AppCompatActivity() {
             getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
 
         setup()
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.appBarMain.toolbar)
 
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+
+
 
 
         setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
         //Guardado de datos
         preferences.putString("email", user?.email)
         preferences.putString("provider", user?.provider.toString())

@@ -12,7 +12,7 @@ class ViewModelDuel : ViewModel() {
     var score = MutableLiveData<String>()
     var previousNum: Int? = null
     fun getSerie(): Guess {
-        val lista = Repository.getOnlineSeriesList()
+        val lista = Repository.getSeriesList()
         var r: Int
         do {
             r = Random.nextInt(lista.size)

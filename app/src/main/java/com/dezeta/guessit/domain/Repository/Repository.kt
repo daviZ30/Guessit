@@ -21,7 +21,7 @@ class Repository {
             return resultado == null
         }
 
-        fun insertSerie(serie: Guess): Resource {
+        fun insertGuess(serie: Guess): Resource {
             return try {
                 SerieDataBase.getInstance().GuessDao().insert(serie)
                 Resource.Success<Guess>(serie)
@@ -43,16 +43,12 @@ class Repository {
             }
         }
 
-        fun getLocalSeriesList(): List<Guess> {
+        fun getLocalList(): List<Guess> {
             return SerieDataBase.getInstance().GuessDao().selectAllLocal()
         }
 
-        fun getOnlineSeriesList(): List<Guess> {
-            return SerieDataBase.getInstance().GuessDao().selectAllOnline()
-        }
-
-        fun getSerieFromId(id: String): Guess {
-            return SerieDataBase.getInstance().GuessDao().selectSerieFromId(id)
+        fun getSeriesList(): List<Guess> {
+            return SerieDataBase.getInstance().GuessDao().selectAllSerie()
         }
         fun getSerieFromName(name: String): Guess {
             return SerieDataBase.getInstance().GuessDao().selectSerieFromName(name)
@@ -79,9 +75,9 @@ class Repository {
             }
         }
 
-        fun getOnlineSerieName(): List<String>? {
+        fun getSerieName(): List<String>? {
             return try {
-                SerieDataBase.getInstance().GuessDao().selectOnlineName()
+                SerieDataBase.getInstance().GuessDao().selectSerieName()
             } catch (e: SQLiteException) {
                 println(e.message)
                 null

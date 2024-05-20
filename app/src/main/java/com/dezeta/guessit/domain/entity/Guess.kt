@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.dezeta.guessit.domain.converter.CategoryConverter
 import com.dezeta.guessit.domain.converter.DifficultyConverter
+import com.dezeta.guessit.domain.converter.GuessTypeConverter
 import java.io.Serializable
 
 @Entity(
@@ -18,7 +19,10 @@ data class Guess(
     @TypeConverters(DifficultyConverter::class)
     val difficulty: Difficulty,
     @TypeConverters(CategoryConverter::class)
-    var category: Category
+    var category: Category?,
+    @TypeConverters(GuessTypeConverter::class)
+    var guessType: GuessType
+
 ) : Serializable {
     override fun toString(): String {
         return id

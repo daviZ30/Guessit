@@ -38,6 +38,9 @@ class MenuFragment : Fragment() {
         binding.cvLevels.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+        binding.cvCategory.setOnClickListener {
+            findNavController().navigate(R.id.action_MenuFragment_to_categoryFragment)
+        }
         binding.cvDaily.setOnClickListener {
             val bundle = Bundle().apply {
                 putSerializable("serie", viewModel.getSerie())

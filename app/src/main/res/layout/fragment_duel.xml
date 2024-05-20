@@ -22,7 +22,7 @@
             android:layout_height="0dp"
             android:elevation="5dp"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/cardView"
+            app:layout_constraintBottom_toTopOf="@+id/cvTitle"
             app:layout_constraintEnd_toEndOf="@+id/imgTop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imgTop" />
@@ -84,7 +84,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView">
+            app:layout_constraintTop_toBottomOf="@+id/cvTitle">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvDuelSerieButton"
@@ -144,6 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="80dp"
                     android:layout_marginEnd="15dp"
+                    android:backgroundTint="@color/BlueRange1"
                     android:layout_weight="1"
                     android:text="Más"
                     android:visibility="visible" />
@@ -154,6 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="80dp"
+                    android:backgroundTint="@color/BlueRange1"
                     android:layout_weight="1"
                     android:paddingHorizontal="3dp"
                     android:text="Menos"
@@ -163,10 +165,11 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/cvTitle"
             android:layout_width="0dp"
             android:layout_height="65dp"
-            app:cardBackgroundColor="@color/BlueRange1_4"
+            android:layout_marginBottom="80dp"
+            app:cardBackgroundColor="@color/BlueRange1_2"
             app:layout_constraintBottom_toBottomOf="@+id/imgButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -177,11 +180,52 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginVertical="5dp"
+                android:gravity="center"
                 android:text="¿Que serie tiene más puntuación\n en IMDB?"
                 android:textSize="24sp" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvStreak"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/BlueRange1_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cvTitle">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lblStreak"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginVertical="5dp"
+                    android:gravity="center"
+                    android:paddingEnd="4dp"
+                    android:text="Racha: "
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvDuelScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewmodel.score}"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <ImageView
@@ -190,7 +234,7 @@
             android:layout_height="0dp"
             android:elevation="0dp"
             android:src="@drawable/ic_launcher_background"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineTop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -201,8 +245,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
             android:backgroundTint="@color/gris_transparente"
-            app:cardCornerRadius="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/cardView"
+            app:layout_constraintBottom_toTopOf="@+id/cvTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imgTop">
@@ -230,44 +273,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" />
+            app:layout_constraintTop_toTopOf="@+id/guidelineButton" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
+            android:id="@+id/guidelineButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="352dp" />
+            app:layout_constraintGuide_end="338dp" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
+            android:id="@+id/guidelineTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="344dp" />
-
-        <TextView
-            android:id="@+id/tvDuelScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@={viewmodel.score}"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Racha:"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvDuelScore"
-            app:layout_constraintEnd_toStartOf="@+id/tvDuelScore"
-            app:layout_constraintTop_toTopOf="@+id/tvDuelScore" />
+            app:layout_constraintGuide_begin="292dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

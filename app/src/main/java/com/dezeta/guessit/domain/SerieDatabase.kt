@@ -11,12 +11,14 @@ import com.dezeta.guessit.domain.Dao.InfoDao
 import com.dezeta.guessit.domain.Dao.GuessDao
 import com.dezeta.guessit.domain.converter.CategoryConverter
 import com.dezeta.guessit.domain.converter.DifficultyConverter
+import com.dezeta.guessit.domain.converter.GuessTypeConverter
 import com.dezeta.guessit.domain.converter.InstantConverter
 import com.dezeta.guessit.domain.entity.Category
 import com.dezeta.guessit.domain.entity.Difficulty
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Info
 import com.dezeta.guessit.domain.entity.Guess
+import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.utils.Locator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +32,7 @@ import java.time.Instant
     exportSchema = false
 )
 @TypeConverters(
+    GuessTypeConverter::class,
     InstantConverter::class,
     CategoryConverter::class,
     DifficultyConverter::class,
@@ -59,6 +62,7 @@ abstract class SerieDataBase : RoomDatabase() {
                 .addTypeConverter(InstantConverter())
                 .addTypeConverter(CategoryConverter())
                 .addTypeConverter(DifficultyConverter())
+                .addTypeConverter(GuessTypeConverter())
                 .addCallback(
                     RoomDbInitializer(INSTANCE)
                 ).build()
@@ -84,7 +88,7 @@ abstract class SerieDataBase : RoomDatabase() {
         private fun populateDatabase() {
             getInstance().let { database ->
                 with(database) {
-                    GuessDao().insert(Guess("online1","Stranger Things", Difficulty.Easy, Category.Fantasy))
+                    GuessDao().insert(Guess("online1","Stranger Things", Difficulty.Easy, Category.Fantasy ,GuessType.SERIE))
                     imgDao().insert(Img("online1", "https://i.postimg.cc/DfGqDkrz/stranger0.jpg", 0))
                     imgDao().insert(Img("online1", "https://i.postimg.cc/4xfVmYrK/Stranger1.png", 1))
                     imgDao().insert(Img("online1", "https://i.postimg.cc/k5DSvkMq/Stranger2.webp", 2))
@@ -94,7 +98,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online2","Breaking Bad", Difficulty.Easy, Category.Criminal_Drama))
+                    GuessDao().insert(Guess("online2","Breaking Bad", Difficulty.Easy, Category.Criminal_Drama ,GuessType.SERIE))
                     imgDao().insert(Img("online2", "https://i.postimg.cc/4yW2qDcw/breaking0.jpg", 0))
                     imgDao().insert(Img("online2", "https://i.postimg.cc/vZg22SZL/breaking1.png", 1))
                     imgDao().insert(Img("online2", "https://i.postimg.cc/52h7hqHc/breaking2.png", 2))
@@ -104,7 +108,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online3","Game of Thrones", Difficulty.Easy, Category.Fantasy))
+                    GuessDao().insert(Guess("online3","Game of Thrones", Difficulty.Easy, Category.Fantasy ,GuessType.SERIE))
                     imgDao().insert(Img("online3", "https://i.postimg.cc/Fs2VzFh3/game0.jpg", 0))
                     imgDao().insert(Img("online3", "https://i.postimg.cc/GmGJy0pN/gameof1.jpg", 1))
                     imgDao().insert(Img("online3", "https://i.postimg.cc/WbD7sqcs/gameof2.jpg", 2))
@@ -114,7 +118,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online4","Peaky Blinders", Difficulty.Easy, Category.Historial_Fiction))
+                    GuessDao().insert(Guess("online4","Peaky Blinders", Difficulty.Easy, Category.Historial_Fiction ,GuessType.SERIE))
                     imgDao().insert(Img("online4", "https://i.postimg.cc/wjN8RBLp/peaky0.jpg", 0))
                     imgDao().insert(Img("online4", "https://i.postimg.cc/9Mnqk1MZ/peaky1.webp", 1))
                     imgDao().insert(Img("online4", "https://i.postimg.cc/CM9cBsNR/peaky2.webp", 2))
@@ -124,7 +128,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online5","Vikings", Difficulty.Easy, Category.Historial_Fiction))
+                    GuessDao().insert(Guess("online5","Vikings", Difficulty.Easy, Category.Historial_Fiction ,GuessType.SERIE))
                     imgDao().insert(Img("online5", "https://i.postimg.cc/J03Hh8xc/vikingos0.jpg", 0))
                     imgDao().insert(Img("online5", "https://i.postimg.cc/t4vZJ23f/vikings1.png", 1))
                     imgDao().insert(Img("online5", "https://i.postimg.cc/tC5VQXY9/Vikingos2.png", 2))
@@ -134,7 +138,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online6","Chernobyl", Difficulty.Easy, Category.Historical_Drama))
+                    GuessDao().insert(Guess("online6","Chernobyl", Difficulty.Easy, Category.Historical_Drama ,GuessType.SERIE))
                     imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img924/6117/0oPcqT.jpg", 0))
                     imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img923/9194/AuigFD.jpg", 1))
                     imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img924/8702/kvwX3Y.jpg", 2))
@@ -144,7 +148,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online7","The Crown", Difficulty.Medium, Category.Historial_Fiction))
+                    GuessDao().insert(Guess("online7","The Crown", Difficulty.Medium, Category.Historial_Fiction ,GuessType.SERIE))
                     imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img924/6451/N2WM0C.jpg", 0))
                     imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img924/538/wtnVld.png", 1))
                     imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img923/7650/INzIVP.png", 2))
@@ -154,7 +158,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online8","Sons of Anarchy", Difficulty.Medium, Category.Criminal_Drama))
+                    GuessDao().insert(Guess("online8","Sons of Anarchy", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
                     imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/4563/Acn4DP.jpg", 0))
                     imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/3627/vkfpvy.jpg", 1))
                     imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/6123/YUomcT.png", 2))
@@ -164,7 +168,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online9","Dexter", Difficulty.Medium, Category.Criminal_Drama))
+                    GuessDao().insert(Guess("online9","Dexter", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
                     imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img923/8923/b0hhBY.jpg", 0))
                     imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img923/4692/6TFwZ6.jpg", 1))
                     imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img922/6652/bErunV.jpg", 3))
@@ -174,7 +178,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online10","The Walking Dead", Difficulty.Easy, Category.Fantasy))
+                    GuessDao().insert(Guess("online10","The Walking Dead", Difficulty.Easy, Category.Fantasy ,GuessType.SERIE))
                     imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img923/5372/vHR7a9.jpg", 0))
                     imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img924/9441/t6e2dg.jpg", 1))
                     imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img923/9839/JKzblO.jpg", 2))
@@ -185,7 +189,7 @@ abstract class SerieDataBase : RoomDatabase() {
                     )
 
 
-                    GuessDao().insert(Guess("online11","Lost", Difficulty.Easy, Category.Fantasy))
+                    GuessDao().insert(Guess("online11","Lost", Difficulty.Easy, Category.Fantasy ,GuessType.SERIE))
                     imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/9593/DWksne.png", 0))
                     imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/3241/rQ9dYq.jpg", 1))
                     imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/6756/Blvx3t.png", 2))
@@ -196,7 +200,7 @@ abstract class SerieDataBase : RoomDatabase() {
                     )
 
 
-                    GuessDao().insert(Guess("online12","Better Call Saul", Difficulty.Medium, Category.Criminal_Drama))
+                    GuessDao().insert(Guess("online12","Better Call Saul", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
                     imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img923/2698/GMLpfu.jpg", 0))
                     imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img924/6807/Lw5nze.png", 1))
                     imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img924/4223/ycbUXe.jpg", 2))
@@ -207,7 +211,7 @@ abstract class SerieDataBase : RoomDatabase() {
                     )
 
 
-                    GuessDao().insert(Guess("online13","Dark", Difficulty.Medium, Category.Criminal_Drama))
+                    GuessDao().insert(Guess("online13","Dark", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
                     imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img923/8017/5DIe6i.jpg", 0))
                     imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img923/7185/yzxfVj.png", 1))
                     imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img922/9651/kKHOBP.png", 2))
@@ -216,7 +220,7 @@ abstract class SerieDataBase : RoomDatabase() {
                         "Dark es una serie alemana de ciencia ficción creada por Baran bo Odar y Jantje Friese. La trama se desarrolla en la pequeña ciudad ficticia de Winden, donde cuatro familias están conectadas por secretos oscuros y viajes en el tiempo. A medida que los personajes exploran misterios, paradojas temporales y relaciones complejas, descubrimos que la línea entre pasado, presente y futuro es más delgada de lo que imaginamos. Dark es conocida por su narrativa intrincada, atmósfera sombría y giros sorprendentes. Si te gustan las historias complejas y enigmáticas, esta serie es una excelente elección."
                         )
                     )
-                    GuessDao().insert(Guess("online14","The Good Doctor", Difficulty.Medium, Category.Criminal_Drama))
+                    GuessDao().insert(Guess("online14","The Good Doctor", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
                     imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/5052/kyFfVg.png", 0))
                     imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/6535/Bs3xLH.png", 1))
                     imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/2766/G5vXnQ.jpg", 2))
@@ -225,15 +229,15 @@ abstract class SerieDataBase : RoomDatabase() {
                         "La serie sigue a Shaun Murphy, un joven cirujano con autismo y síndrome del sabio, mientras trabaja en el ficticio hospital St. Bonaventure en San José, California. A pesar del escepticismo inicial de sus colegas, Shaun demuestra su valía con métodos milagrosos. La serie se estrenó en 2017 y ha sido un fenómeno televisivo en EE. UU."
                         )
                     )
-                    GuessDao().insert(Guess("online15","La que se avecina", Difficulty.Medium, Category.Spanish))
+                   /* GuessDao().insert(Guess("online15","La que se avecina", Difficulty.Medium, Category.Spanish ,GuessType.SERIE))
                     imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/5052/kyFfVg.png", 0))
                     imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/6535/Bs3xLH.png", 1))
                     imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/2766/G5vXnQ.jpg", 2))
                     imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img922/74/X0gWyr.jpg", 3))
-                    infoDao().insert(Info("online14", 8.0, SetFecha("2017-09-25"),
+                    infoDao().insert(Info("online15", 8.0, SetFecha("2017-09-25"),
                         "La serie sigue a Shaun Murphy, un joven cirujano con autismo y síndrome del sabio, mientras trabaja en el ficticio hospital St. Bonaventure en San José, California. A pesar del escepticismo inicial de sus colegas, Shaun demuestra su valía con métodos milagrosos. La serie se estrenó en 2017 y ha sido un fenómeno televisivo en EE. UU."
-                    )
-                    )
+                          )
+                    )*/
 
                 }
             }

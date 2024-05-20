@@ -3,6 +3,7 @@ package com.dezeta.guessit.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
@@ -250,6 +251,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setup() {
+        window.statusBarColor = resources.getColor(R.color.BlueRange1);
         binding.tieLoginMail.addTextChangedListener(
             TextWatcher(
                 binding.tilLoginMail

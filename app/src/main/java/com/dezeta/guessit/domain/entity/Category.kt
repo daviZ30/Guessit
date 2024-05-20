@@ -8,6 +8,5 @@ enum class Category {
     Fantasy,
     Police,
     Historial_Fiction,
-    Historical_Drama,
-    Local
+    Historical_Drama
 }

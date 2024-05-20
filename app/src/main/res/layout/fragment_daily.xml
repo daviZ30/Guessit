@@ -18,16 +18,18 @@
         app:layout_constraintTop_toTopOf="@+id/cardView6" />
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
+        app:cardElevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:layout_margin="10dp"
             android:src="@drawable/ic_launcher_background" />
 
@@ -184,7 +186,6 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
