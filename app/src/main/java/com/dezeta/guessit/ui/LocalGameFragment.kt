@@ -125,7 +125,6 @@ class LocalGameFragment : Fragment() {
             val lista = viewModel.getLevelList()
             if (lista.isNotEmpty()) {
                 val serie = lista[random.nextInt(lista.size)]
-                println("LA SERIE ES............\n$serie")
                 val bundle = Bundle().apply {
                     putSerializable("serie", serie)
                     putBoolean("local", true)

@@ -85,50 +85,50 @@ abstract class SerieDataBase : RoomDatabase() {
             getInstance().let { database ->
                 with(database) {
                     GuessDao().insert(Guess("online1","Stranger Things", Difficulty.Easy, Category.Fantasy))
-                    imgDao().insert(Img("online1", "https://imagizer.imageshack.com/img924/2464/8Zkg17.jpg", 0))
-                    imgDao().insert(Img("online1", "https://imagizer.imageshack.com/img924/5023/whUIRe.png", 1))
-                    imgDao().insert(Img("online1", "https://imagizer.imageshack.com/img923/8774/fGe9Jb.png", 2))
-                    imgDao().insert(Img("online1", "https://imagizer.imageshack.com/img923/9273/jbgdMF.jpg", 3))
+                    imgDao().insert(Img("online1", "https://i.postimg.cc/DfGqDkrz/stranger0.jpg", 0))
+                    imgDao().insert(Img("online1", "https://i.postimg.cc/4xfVmYrK/Stranger1.png", 1))
+                    imgDao().insert(Img("online1", "https://i.postimg.cc/k5DSvkMq/Stranger2.webp", 2))
+                    imgDao().insert(Img("online1", "https://i.postimg.cc/ZKF6b8Dt/Stranger3.jpg", 3))
                     infoDao().insert(Info("online1", 8.7, SetFecha("2016-07-15"),
                             "En Hawkins, Indiana, en noviembre de 1983, un grupo de niños se enfrenta a lo desconocido cuando su amigo Will Byers desaparece misteriosamente. Mientras su madre, Joyce, busca desesperadamente a Will, los amigos de este, Mike, Dustin y Lucas, descubren a una niña con habilidades psicocinéticas llamada Once. Juntos, se aventuran en un mundo oscuro y peligroso conocido como el Mundo del Revés, donde criaturas aterradoras acechan. A medida que desentrañan los secretos del laboratorio local y luchan contra el Demogorgon, se enfrentan a desafíos sobrenaturales y amistades inquebrantables."
                         )
                     )
 
                     GuessDao().insert(Guess("online2","Breaking Bad", Difficulty.Easy, Category.Criminal_Drama))
-                    imgDao().insert(Img("online2", "https://imagizer.imageshack.com/img922/4972/6Eh6N6.jpg", 0))
-                    imgDao().insert(Img("online2", "https://imagizer.imageshack.com/img923/8326/F2j5Ma.png", 1))
-                    imgDao().insert(Img("online2", "https://imagizer.imageshack.com/img922/7817/1j9pWB.png", 2))
-                    imgDao().insert(Img("online2", "https://imagizer.imageshack.com/img924/504/SHOZoS.png", 3))
+                    imgDao().insert(Img("online2", "https://i.postimg.cc/4yW2qDcw/breaking0.jpg", 0))
+                    imgDao().insert(Img("online2", "https://i.postimg.cc/vZg22SZL/breaking1.png", 1))
+                    imgDao().insert(Img("online2", "https://i.postimg.cc/52h7hqHc/breaking2.png", 2))
+                    imgDao().insert(Img("online2", "https://i.postimg.cc/ncwwktph/breaking3.png", 3))
                     infoDao().insert(Info("online2", 9.5, SetFecha("2008-01-20"),
                             "Breaking Bad es una serie de drama y crimen que sigue la transformación de Walter White, un profesor de química de secundaria en Albuquerque, Nuevo México. Después de ser diagnosticado con cáncer de pulmón en etapa 3 y con solo dos años de vida, Walter se asocia con un exalumno para cocinar metanfetamina cristalina como medio de apoyo para su familia. A medida que se adentra en el mundo del crimen, su alter ego, Heisenberg, emerge, y la serie explora temas de poder, moralidad y consecuencias. La actuación magistral de Bryan Cranston como Walter White y la narrativa intensa hacen de Breaking Bad una de las series más icónicas de la televisión."
                         )
                     )
 
                     GuessDao().insert(Guess("online3","Game of Thrones", Difficulty.Easy, Category.Fantasy))
-                    imgDao().insert(Img("online3", "https://imagizer.imageshack.com/img924/4201/kkqLc0.jpg", 0))
-                    imgDao().insert(Img("online3", "https://imagizer.imageshack.com/img924/8326/RR5ypL.jpg", 1))
-                    imgDao().insert(Img("online3", "https://imagizer.imageshack.com/img923/803/05asR0.jpg", 2))
-                    imgDao().insert(Img("online3", "https://imagizer.imageshack.com/img922/7720/Sp9Mn5.png", 3))
+                    imgDao().insert(Img("online3", "https://i.postimg.cc/Fs2VzFh3/game0.jpg", 0))
+                    imgDao().insert(Img("online3", "https://i.postimg.cc/GmGJy0pN/gameof1.jpg", 1))
+                    imgDao().insert(Img("online3", "https://i.postimg.cc/WbD7sqcs/gameof2.jpg", 2))
+                    imgDao().insert(Img("online3", "https://i.postimg.cc/Wzd0pCK5/gameof3.png", 3))
                     infoDao().insert(Info("online3", 9.2, SetFecha("2011-04-17"),
                         "En el continente de Poniente, varias casas nobles luchan por el Trono de Hierro, el símbolo del poder absoluto. La historia sigue a personajes como Eddard Stark, Daenerys Targaryen, Jon Snow, Tyrion Lannister y muchos otros mientras se enfrentan a traiciones, alianzas cambiantes y oscuros secretos. La serie está repleta de giros inesperados, personajes complejos y una ambientación medieval fascinante"
                         )
                     )
 
                     GuessDao().insert(Guess("online4","Peaky Blinders", Difficulty.Easy, Category.Historial_Fiction))
-                    imgDao().insert(Img("online4", "https://imagizer.imageshack.com/img924/3245/M71d2A.jpg", 0))
-                    imgDao().insert(Img("online4", "https://imagizer.imageshack.com/img924/8008/ZUeDQW.png", 1))
-                    imgDao().insert(Img("online4", "https://imagizer.imageshack.com/img924/2899/pCNvLj.png", 3))
-                    imgDao().insert(Img("online4", "https://imagizer.imageshack.com/img924/251/nJEzVz.png", 2))
+                    imgDao().insert(Img("online4", "https://i.postimg.cc/wjN8RBLp/peaky0.jpg", 0))
+                    imgDao().insert(Img("online4", "https://i.postimg.cc/9Mnqk1MZ/peaky1.webp", 1))
+                    imgDao().insert(Img("online4", "https://i.postimg.cc/CM9cBsNR/peaky2.webp", 2))
+                    imgDao().insert(Img("online4", "https://i.postimg.cc/sg4mLdRW/peaky3.png", 3))
                     infoDao().insert(Info("online4", 8.8, SetFecha("2013-09-12"),
                         "La trama se desarrolla en la ciudad de Birmingham, justo después de la Primera Guerra Mundial. La pandilla de los Peaky Blinders, liderada por Tommy Shelby (interpretado por Cillian Murphy), busca el poder y la dominación en un mundo lleno de intrigas y peligros. Los Shelby son conocidos por sus gorras con cuchillas ocultas y su estilo de vida audaz."
                         )
                     )
 
                     GuessDao().insert(Guess("online5","Vikings", Difficulty.Easy, Category.Historial_Fiction))
-                    imgDao().insert(Img("online5", "https://imagizer.imageshack.com/img922/1295/NFqQQ5.jpg", 0))
-                    imgDao().insert(Img("online5", "https://imagizer.imageshack.com/img924/1049/bfWGDY.png", 1))
-                    imgDao().insert(Img("online5", "https://imagizer.imageshack.com/img922/7848/9Ap2cd.png", 2))
-                    imgDao().insert(Img("online5", "https://imagizer.imageshack.com/img924/3536/wHX20o.png", 3))
+                    imgDao().insert(Img("online5", "https://i.postimg.cc/J03Hh8xc/vikingos0.jpg", 0))
+                    imgDao().insert(Img("online5", "https://i.postimg.cc/t4vZJ23f/vikings1.png", 1))
+                    imgDao().insert(Img("online5", "https://i.postimg.cc/tC5VQXY9/Vikingos2.png", 2))
+                    imgDao().insert(Img("online5", "https://i.postimg.cc/x11N9WzM/vikingos3.png", 3))
                     infoDao().insert(Info("online5", 8.5, SetFecha("2013-06-03"),
                             "La trama se centra en Ragnar Lothbrok, un legendario guerrero vikingo que busca expandir su influencia y riqueza. A medida que lidera incursiones en Inglaterra y otros territorios, enfrenta desafíos tanto en el campo de batalla como en su vida personal. La serie explora temas como la lealtad, la traición, la religión y la ambición."
                         )
@@ -224,6 +224,15 @@ abstract class SerieDataBase : RoomDatabase() {
                     infoDao().insert(Info("online14", 8.0, SetFecha("2017-09-25"),
                         "La serie sigue a Shaun Murphy, un joven cirujano con autismo y síndrome del sabio, mientras trabaja en el ficticio hospital St. Bonaventure en San José, California. A pesar del escepticismo inicial de sus colegas, Shaun demuestra su valía con métodos milagrosos. La serie se estrenó en 2017 y ha sido un fenómeno televisivo en EE. UU."
                         )
+                    )
+                    GuessDao().insert(Guess("online15","La que se avecina", Difficulty.Medium, Category.Spanish))
+                    imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/5052/kyFfVg.png", 0))
+                    imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/6535/Bs3xLH.png", 1))
+                    imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/2766/G5vXnQ.jpg", 2))
+                    imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img922/74/X0gWyr.jpg", 3))
+                    infoDao().insert(Info("online14", 8.0, SetFecha("2017-09-25"),
+                        "La serie sigue a Shaun Murphy, un joven cirujano con autismo y síndrome del sabio, mientras trabaja en el ficticio hospital St. Bonaventure en San José, California. A pesar del escepticismo inicial de sus colegas, Shaun demuestra su valía con métodos milagrosos. La serie se estrenó en 2017 y ha sido un fenómeno televisivo en EE. UU."
+                    )
                     )
 
                 }

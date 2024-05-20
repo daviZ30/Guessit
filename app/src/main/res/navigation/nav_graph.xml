@@ -56,4 +56,8 @@
         android:name="com.dezeta.guessit.ui.CreateFragment"
         android:label="Crear Nivel"
         tools:layout="@layout/fragment_create" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.dezeta.guessit.ui.LoginActivity"
+        android:label="LoginActivity" />
 </navigation>

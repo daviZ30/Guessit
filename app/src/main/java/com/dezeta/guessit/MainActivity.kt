@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.result.ActivityResultLauncher
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
-    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var preferences: SharedPreferences.Editor
     private var user: User? = null
 

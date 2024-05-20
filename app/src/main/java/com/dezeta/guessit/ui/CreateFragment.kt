@@ -177,21 +177,7 @@ class CreateFragment : Fragment() {
         }
     }
 
-    private fun saveToInternalStorage(bitmap: Bitmap, imageName: String) {
-        val folder = File(Locator.ImagePath)
-        if (!folder.exists()) {
-            folder.mkdirs()
-        }
 
-        val myPath = File("${Locator.ImagePath}$imageName.jpg")
-        try {
-            val fos = FileOutputStream(myPath)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-            fos.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
     private val startGallery = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -203,8 +189,7 @@ class CreateFragment : Fragment() {
                 ImgSelected.IMG1 -> {
                     imageName = viewModel.name.value!! + "_img1"
                     deleteImage(imageName)
-                    saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
-
+                    viewModel.saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
                     viewModel.img1Uri = imageName
                     binding.imgCreate1.setImageBitmap(loadImageFromInternalStorage(imageName))
                 }
@@ -212,7 +197,7 @@ class CreateFragment : Fragment() {
                 ImgSelected.IMG2 -> {
                     imageName = viewModel.name.value!! + "_img2"
                     deleteImage(imageName)
-                    saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
+                    viewModel.saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
                     viewModel.img2Uri = imageName
                     binding.imgCreate2.setImageBitmap(loadImageFromInternalStorage(imageName))
                 }
@@ -220,7 +205,7 @@ class CreateFragment : Fragment() {
                 ImgSelected.IMG3 -> {
                     imageName = viewModel.name.value!! + "_img3"
                     deleteImage(imageName)
-                    saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
+                    viewModel.saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
                     viewModel.img3Uri = imageName
                     binding.imgCreate3.setImageBitmap(loadImageFromInternalStorage(imageName))
                 }

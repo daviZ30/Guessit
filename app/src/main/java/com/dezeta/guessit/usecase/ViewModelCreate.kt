@@ -1,5 +1,6 @@
 package com.dezeta.guessit.usecase
 
+import android.graphics.Bitmap
 import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +12,9 @@ import com.dezeta.guessit.domain.entity.DifficultySpinner
 import com.dezeta.guessit.domain.entity.Difficulty_es
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Guess
+import com.dezeta.guessit.utils.Locator
+import java.io.File
+import java.io.FileOutputStream
 
 class ViewModelCreate : ViewModel() {
     var img3Uri: String? = null
@@ -74,6 +78,20 @@ class ViewModelCreate : ViewModel() {
                 CreateState.imageEqualsError
 
             else -> insertSerie()
+        }
+    }
+    fun saveToInternalStorage(bitmap: Bitmap, imageName: String) {
+        val folder = File(Locator.ImagePath)
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+        val myPath = File("${Locator.ImagePath}$imageName.jpg")
+        try {
+            val fos = FileOutputStream(myPath)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+            fos.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

@@ -35,6 +35,7 @@ class ViewModelLogin : ViewModel() {
     }
 
     fun signup() {
+
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
             mail.value!!,
             password.value!!
@@ -44,7 +45,7 @@ class ViewModelLogin : ViewModel() {
                 result.value =  Resource.Success(User(r.result?.user?.email ?: "",ProviderType.BASIC))
             } else {
                 result.value =
-                    Resource.Error(Exception("Se ha producido un error registrando al usuario"))
+                    Resource.Error(Exception("Su cuenta de correo ya esta registrada"))
             }
         }
 
@@ -55,7 +56,7 @@ class ViewModelLogin : ViewModel() {
             mail.value!!,
             password.value!!
         ).addOnCompleteListener { r ->
-            if (r.isSuccessful) {
+            if (r.isSuccessful ) {
                 if (!r.result.user!!.isEmailVerified)
                     state.value = LoginState.EmailNotVerifiedError
                 else
@@ -88,7 +89,6 @@ class ViewModelLogin : ViewModel() {
             TextUtils.isEmpty(mail.value) -> state.value = LoginState.emailEmtyError
             TextUtils.isEmpty(password.value) -> state.value = LoginState.passwordEmtyError
             !validarEmail(mail.value!!) -> state.value = LoginState.emailFormatError
-            !validarPassword(password.value!!) -> state.value = LoginState.passwordFormatError
             else -> state.value = LoginState.Success
         }
     }
@@ -99,10 +99,9 @@ class ViewModelLogin : ViewModel() {
                     result.value = Resource.Success(User(email ?: "",ProviderType.GOOGLE))
             } else {
                 result.value =
-                    Resource.Error(Exception("Se ha producido un error autenticando al usuario, registrelo antes de iniciar sesión"))
+                    Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
             }
         }
-
     }
 
 }

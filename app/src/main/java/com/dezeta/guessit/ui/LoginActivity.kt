@@ -41,26 +41,22 @@ class LoginActivity : AppCompatActivity() {
     private var register = false
     private var endload = false
 
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                val account  = task.getResult(ApiException::class.java)
-                if(account != null){
-                    starLoadAnimation()
-                    val credential = GoogleAuthProvider.getCredential(account.idToken,null)
-
-                    viewModel.signInGoogle(credential,account.email)
-
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                try {
+                    val account = task.getResult(ApiException::class.java)
+                    if (account != null) {
+                        starLoadAnimation()
+                        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                        viewModel.signInGoogle(credential, account.email)
+                    }
+                } catch (e: ApiException) {
+                    showAlert("Error", "No se ha podido iniciar sesión con google")
                 }
-            }catch (e:ApiException){
-                showAlert("Error","No se ha podido iniciar sesión con google")
             }
-
-            // Maneja el Intent aquí (por ejemplo, extrae datos o realiza acciones)
         }
-    }
 
     inner class TextWatcher(private var t: TextInputLayout) : android.text.TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -296,7 +292,7 @@ class LoginActivity : AppCompatActivity() {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-            val googleClient = GoogleSignIn.getClient(this,googleConf)
+            val googleClient = GoogleSignIn.getClient(this, googleConf)
             googleClient.signOut()
 
             startForResult.launch(googleClient.signInIntent)

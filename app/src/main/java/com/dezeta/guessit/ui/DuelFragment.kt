@@ -143,20 +143,14 @@ class DuelFragment : Fragment() {
             override fun onAnimationEnd(animation: Animation?) {
                 binding.btnDualMore.visibility = View.GONE
                 binding.btnDualLess.visibility = View.GONE
-                starAnimationTextView(json, win)
+                if (binding.cvDuelImdb.visibility == View.GONE) {
+                    binding.cvDuelImdb.visibility = View.VISIBLE
+                    binding.cvDuelImdb.startAnimation(slideUpAnimation)
+                }
+
+                starAnimationLottie(json, win)
             }
         })
-    }
-
-    private fun starAnimationTextView(json: Int, win: Boolean) {
-        if (binding.cvDuelImdb.visibility == View.GONE) {
-            binding.cvDuelImdb.visibility = View.VISIBLE
-            binding.cvDuelImdb.startAnimation(slideUpAnimation)
-        }
-
-        starAnimationLottie(json, win)
-        // binding.lottieFullAnimation.visibility = View.INVISIBLE
-
     }
 
     private fun starAnimationLottie(json: Int, win: Boolean) {
@@ -182,9 +176,7 @@ class DuelFragment : Fragment() {
                                     btnDualMore.visibility = View.VISIBLE
                                     btnDualLess.visibility = View.VISIBLE
                                 }
-                                setup()
-
-
+                                next()
                             } else {
                                 findNavController().popBackStack()
                             }
@@ -194,6 +186,29 @@ class DuelFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun next() {
+        serieTop = serieButton
+        serieButton = viewModel.getSerie()
+        infoTop = infoButton
+        infoButton = viewModel.getInfoFromId(serieButton)
+        loadImage(
+            viewModel.getImage0(serieTop)!!.img_url,
+            binding.imgTop,
+            binding.lottieLoadAnimationTop
+        )
+
+        loadImage(
+            viewModel.getImage0(serieButton)!!.img_url,
+            binding.imgButton,
+            binding.lottieLoadAnimationButton
+        )
+
+        binding.tvDuelImdbTop.text = infoTop.IMDB.toString()
+        binding.tvDuelImdb.text = infoButton.IMDB.toString()
+        binding.tvDuelSerieButton.text = serieButton.name
+        binding.tvDuelSerieTop.text = serieTop.name
     }
 
 
