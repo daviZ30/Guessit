@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.dezeta.guessit.usecase.ViewModelDuel" />
+            type="com.dezeta.guessit.ui.duel.ViewModelDuel" />
 
     </data>
 
@@ -14,7 +14,7 @@
         android:id="@+id/containerDuel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.DuelFragment">
+        tools:context=".ui.duel.DuelFragment">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieLoadAnimationTop"
@@ -43,7 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/gris_transparente"
+            app:cardBackgroundColor="@color/gris_transparente"
+            app:cardElevation="0dp"
             android:visibility="visible"
             app:cardCornerRadius="15dp"
             app:layout_constraintEnd_toEndOf="@+id/cvDuelSerieTop"
@@ -91,7 +92,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:backgroundTint="@color/gris_transparente"
+                app:cardBackgroundColor="@color/gris_transparente"
+                app:cardElevation="0dp"
                 android:layout_marginTop="130dp"
                 android:layout_marginBottom="5dp"
                 app:cardCornerRadius="15dp">
@@ -101,6 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
+                    android:backgroundTint="@color/gris_transparente"
                     android:padding="5dp"
                     android:text="TextView"
                     android:textColor="#FFFFFF"
@@ -122,7 +125,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/gris_transparente"
+                    app:cardBackgroundColor="@color/gris_transparente"
+                    app:cardElevation="0dp"
                     android:visibility="gone"
                     app:cardCornerRadius="15dp">
 
@@ -243,8 +247,10 @@
             android:id="@+id/cvDuelSerieTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/gris_transparente"
+            app:cardElevation="0dp"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:backgroundTint="@color/gris_transparente"
+            app:cardCornerRadius="15dp"
             app:layout_constraintBottom_toTopOf="@+id/cvTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

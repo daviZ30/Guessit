@@ -1,4 +1,4 @@
-package com.dezeta.guessit.ui
+package com.dezeta.guessit.ui.create
 
 
 import android.R
@@ -23,12 +23,7 @@ import com.dezeta.guessit.deleteImage
 import com.dezeta.guessit.domain.entity.DifficultySpinner
 import com.dezeta.guessit.loadImageFromInternalStorage
 import com.dezeta.guessit.showSnackbar
-import com.dezeta.guessit.usecase.CreateState
-import com.dezeta.guessit.usecase.ViewModelCreate
-import com.dezeta.guessit.utils.Locator
 import com.google.android.material.textfield.TextInputLayout
-import java.io.File
-import java.io.FileOutputStream
 import java.util.Locale
 
 
@@ -50,6 +45,7 @@ class CreateFragment : Fragment() {
         binding.lifecycleOwner = this
         return binding.root
     }
+
 
 
     inner class TextWatcher(private var t: TextInputLayout) : android.text.TextWatcher {

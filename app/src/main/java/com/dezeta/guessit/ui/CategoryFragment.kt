@@ -6,22 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentCategoryBinding
-import com.dezeta.guessit.databinding.FragmentCreateBinding
-import com.dezeta.guessit.usecase.ViewModelCreate
-import com.dezeta.guessit.usecase.ViewModelMenu
+import com.dezeta.guessit.ui.menu.ViewModelMenu
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CategoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CategoryFragment : Fragment() {
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
@@ -41,5 +31,16 @@ class CategoryFragment : Fragment() {
         binding.viewmodel = this.viewModel
         binding.lifecycleOwner = this
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnDailyCountry.setOnClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("serie", viewModel.getCountry())
+                putBoolean("local", false)
+            }
+            findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
+        }
     }
 }

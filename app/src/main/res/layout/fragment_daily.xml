@@ -1,262 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.DailyFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieLoadAnimation"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:elevation="5dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView6" />
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView6"
-        app:cardElevation="0dp"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.daily.DailyFragment">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_launcher_background" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieLoadAnimation"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:elevation="5dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cardView6" />
 
-    </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <com.github.nikartm.button.FitButton
-        android:id="@+id/btnNext"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="45dp"
-        android:gravity="center"
-        android:paddingHorizontal="40dp"
-        app:fb_backgroundColor="@color/BlueRange1"
-        app:fb_cornerRadius="12dp"
-        app:fb_icon="@drawable/arrow"
-        app:fb_iconColor="#FFF"
-        app:fb_iconMarginEnd="30dp"
-        app:fb_iconPosition="left"
-        app:fb_shape="rectangle"
-        app:fb_text="Siguiente"
-        app:fb_textColor="#FFF"
-        app:fb_textSize="25sp"
-        app:layout_constraintEnd_toStartOf="@+id/btnCategoty"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView6" />
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_launcher_background" />
 
-    <com.github.nikartm.button.FitButton
-        android:id="@+id/btnCategoty"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginEnd="35dp"
-        android:gravity="center"
-        android:paddingHorizontal="40dp"
-        app:fb_backgroundColor="@color/BlueRange4"
-        app:fb_cornerRadius="12dp"
-        app:fb_icon="@drawable/category"
-        app:fb_iconColor="#FFF"
-        app:fb_iconPosition="left"
-        app:fb_shape="circle"
-        app:layout_constraintBottom_toBottomOf="@+id/btnNext"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnNext" />
+            </androidx.cardview.widget.CardView>
+
+            <com.github.nikartm.button.FitButton
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="14dp"
+                android:gravity="center"
+                android:paddingHorizontal="20dp"
+                app:fb_backgroundColor="@color/BlueRange1"
+                app:fb_cornerRadius="12dp"
+                app:fb_shape="rectangle"
+                app:fb_text="Siguiente"
+                app:fb_textColor="#FFF"
+                app:fb_textSize="25sp"
+                app:layout_constraintEnd_toStartOf="@+id/btnCategoty"
+                app:layout_constraintTop_toBottomOf="@+id/cardView6" />
+
+            <com.github.nikartm.button.FitButton
+                android:id="@+id/btnPrevious"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="45dp"
+                android:gravity="center"
+                android:paddingHorizontal="20dp"
+                app:fb_backgroundColor="@color/BlueRange4"
+                app:fb_cornerRadius="12dp"
+                app:fb_shape="rectangle"
+                app:fb_text="Anterior"
+                app:fb_textColor="#FFF"
+                app:fb_textSize="25sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView6" />
+
+            <com.github.nikartm.button.FitButton
+                android:id="@+id/btnCategoty"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:paddingHorizontal="40dp"
+                app:fb_backgroundColor="@color/BlueRange5"
+                app:fb_cornerRadius="12dp"
+                app:fb_icon="@drawable/category"
+                app:fb_iconColor="#FFF"
+                app:fb_iconPosition="left"
+                app:fb_shape="circle"
+                app:layout_constraintBottom_toBottomOf="@+id/btnNext"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btnNext" />
 
 
-    <com.github.nikartm.button.FitButton
-        android:id="@+id/btnHelp"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:paddingHorizontal="40dp"
-        app:fb_backgroundColor="@color/BlueRange3"
-        app:fb_cornerRadius="12dp"
-        app:fb_icon="@drawable/help"
+            <com.github.nikartm.button.FitButton
+                android:id="@+id/btnHelp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:paddingHorizontal="40dp"
+                android:visibility="gone"
+                app:fb_backgroundColor="@color/BlueRange3"
+                app:fb_cornerRadius="12dp"
+                app:fb_icon="@drawable/help"
 
-        app:fb_shape="circle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                app:fb_shape="circle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="95dp"
-        app:boxCornerRadiusBottomEnd="20dp"
-        app:boxCornerRadiusBottomStart="20dp"
-        app:boxCornerRadiusTopEnd="20dp"
-        app:boxCornerRadiusTopStart="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnGuessDaily"
-        app:layout_constraintStart_toStartOf="parent"
-        app:startIconDrawable="@drawable/search">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="120dp"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnGuessDaily"
+                app:layout_constraintStart_toStartOf="parent"
+                app:startIconDrawable="@drawable/search">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tieSearch"
-            android:layout_width="match_parent"
-            android:inputType="textPersonName"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tieSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearch"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="1dp"
-        android:maxHeight="220dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/tilSearch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnNext"
-        app:reverseLayout="true"
-        app:stackFromEnd="true" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearch"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="1dp"
+                android:maxHeight="220dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/tilSearch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnNext"
+                app:reverseLayout="true"
+                app:stackFromEnd="true" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvDailyHelp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="@color/gris_transparente"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilSearch">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvDailyHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="@color/gris_transparente"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilSearch">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imgDaily"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:src="@drawable/help" />
+                    <ImageView
+                        android:id="@+id/imgDaily"
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/help" />
 
-            <TextView
-                android:id="@+id/tvDailyHelp"
+                    <TextView
+                        android:id="@+id/tvDailyHelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btnGuessDaily"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="2"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/BlueRange1_1"
+                android:text="@string/btnDailyGuess"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/tilSearch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tilSearch" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView6">
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/imgError1"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/circle" />
 
-    <Button
-        android:id="@+id/btnGuessDaily"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/BlueRange6"
-        android:text="@string/btnDailyGuess"
-        app:layout_constraintBottom_toBottomOf="@+id/tilSearch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tilSearch" />
+                <ImageView
+                    android:id="@+id/imgError2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/circle" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView6">
+                <ImageView
+                    android:id="@+id/imgError3"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/circle" />
 
-        <ImageView
-            android:id="@+id/imgError1"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:layout_weight="1"
-            android:src="@drawable/circle" />
+                <ImageView
+                    android:id="@+id/imgError4"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/circle" />
 
-        <ImageView
-            android:id="@+id/imgError2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/circle" />
+                <ImageView
+                    android:id="@+id/imgError5"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/circle" />
 
-        <ImageView
-            android:id="@+id/imgError3"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/circle" />
-
-        <ImageView
-            android:id="@+id/imgError4"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/circle" />
-
-        <ImageView
-            android:id="@+id/imgError5"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:src="@drawable/circle" />
-
-    </LinearLayout>
+            </LinearLayout>
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvShowList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/gris_transparente"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvShowList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/gris_transparente"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <Switch
-            android:id="@+id/swShowList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:elevation="2dp"
-            android:text="Mostrar Lista " />
-    </androidx.cardview.widget.CardView>
+                <Switch
+                    android:id="@+id/swShowList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="3dp"
+                    android:backgroundTint="@color/gris_transparente"
+                    android:elevation="2dp"
+                    android:shadowColor="@color/BlueRange1_4"
+                    android:text="Mostrar Lista "
+                    android:textSize="14sp" />
+            </androidx.cardview.widget.CardView>
 
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

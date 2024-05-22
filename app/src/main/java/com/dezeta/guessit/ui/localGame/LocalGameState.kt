@@ -1,4 +1,4 @@
-package com.dezeta.guessit.usecase
+package com.dezeta.guessit.ui.localGame
 
 sealed class LocalGameState {
     data class DeleteError(var exception: Exception) : LocalGameState()

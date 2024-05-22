@@ -1,4 +1,4 @@
-package com.dezeta.guessit.ui
+package com.dezeta.guessit.ui.localGame
 
 import android.app.Dialog
 import android.os.Bundle
@@ -16,8 +16,6 @@ import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentLocalGameBinding
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.showSnackbar
-import com.dezeta.guessit.usecase.LocalGameState
-import com.dezeta.guessit.usecase.ViewModelLocalGame
 import kotlin.random.Random
 
 

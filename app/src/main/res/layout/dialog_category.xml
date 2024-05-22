@@ -74,8 +74,8 @@
 
     <ImageView
         android:id="@+id/imgDialogCategoryRed"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/lblCategoryRed"
         app:layout_constraintStart_toEndOf="@+id/lblCategoryRed"
@@ -83,8 +83,8 @@
 
     <ImageView
         android:id="@+id/imgDialogCategoryGreen"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/lblCategoryGreen"
         app:layout_constraintStart_toEndOf="@+id/lblCategoryGreen"

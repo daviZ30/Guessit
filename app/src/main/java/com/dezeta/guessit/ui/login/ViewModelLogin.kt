@@ -1,4 +1,4 @@
-package com.dezeta.guessit.usecase
+package com.dezeta.guessit.ui.login
 
 import android.text.TextUtils
 import androidx.lifecycle.LiveData
@@ -9,14 +9,18 @@ import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
 
 class ViewModelLogin : ViewModel() {
+    var dataBase = FirebaseFirestore.getInstance()
     var mail = MutableLiveData<String>()
+    var username = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     var confPassword = MutableLiveData<String>()
     private var state = MutableLiveData<LoginState>()
     private var result = MutableLiveData<Resource>()
+    var user: User? = null
     fun getState(): LiveData<LoginState> {
         return state
     }
@@ -34,15 +38,34 @@ class ViewModelLogin : ViewModel() {
         return p.any { it.isDigit() } && p.any { it.isLetter() } && p.length >= 8
     }
 
-    fun signup() {
+    fun saveUser(u: User) {
+        dataBase.collection("users").document(u.email).set(
+            hashMapOf(
+                "provider" to u.provider,
+                "email" to u.email,
+                "name" to u.name,
+                "point" to u.point
+            )
+        )
+    }
 
+    fun signup() {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
             mail.value!!,
             password.value!!
         ).addOnCompleteListener { r ->
             if (r.isSuccessful) {
                 FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
-                result.value =  Resource.Success(User(r.result?.user?.email ?: "",ProviderType.BASIC))
+                user = User(
+                    r.result?.user?.email ?: "",
+                    username.value!!,
+                    0,
+                    ProviderType.BASIC
+                )
+                saveUser(user!!)
+                result.value = Resource.Success(
+                    user
+                )
             } else {
                 result.value =
                     Resource.Error(Exception("Su cuenta de correo ya esta registrada"))
@@ -56,11 +79,22 @@ class ViewModelLogin : ViewModel() {
             mail.value!!,
             password.value!!
         ).addOnCompleteListener { r ->
-            if (r.isSuccessful ) {
+            if (r.isSuccessful) {
                 if (!r.result.user!!.isEmailVerified)
                     state.value = LoginState.EmailNotVerifiedError
-                else
-                    result.value = Resource.Success(User(r.result?.user?.email ?: "",ProviderType.BASIC))
+                else {
+                    user =
+                        User(
+                            r.result?.user?.email ?: "",
+                            "Username",
+                            0,
+                            ProviderType.BASIC
+                        )
+                    result.value = Resource.Success(
+                        user
+                    )
+                }
+
             } else {
                 result.value =
                     Resource.Error(Exception("Se ha producido un error autenticando al usuario, registrelo antes de iniciar sesión"))
@@ -70,6 +104,7 @@ class ViewModelLogin : ViewModel() {
 
     fun validateSignUp() {
         when {
+            TextUtils.isEmpty(username.value) -> state.value = LoginState.emailEmtyError
             TextUtils.isEmpty(mail.value) -> state.value = LoginState.emailEmtyError
             TextUtils.isEmpty(password.value) -> state.value = LoginState.passwordEmtyError
             !validarEmail(mail.value!!) -> state.value = LoginState.emailFormatError
@@ -93,10 +128,11 @@ class ViewModelLogin : ViewModel() {
         }
     }
 
-    fun signInGoogle(credential: AuthCredential, email: String?,) {
+    fun signInGoogle(credential: AuthCredential, email: String?) {
         FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                    result.value = Resource.Success(User(email ?: "",ProviderType.GOOGLE))
+                result.value =
+                    Resource.Success(User(email ?: "", "Username", 0, ProviderType.GOOGLE))
             } else {
                 result.value =
                     Resource.Error(Exception("Se ha producido un error autenticando al usuario"))

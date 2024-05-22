@@ -1,4 +1,4 @@
-package com.dezeta.guessit.ui
+package com.dezeta.guessit.ui.menu
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentMenuBinding
-import com.dezeta.guessit.usecase.ViewModelMenu
 import kotlin.random.Random
 
 class MenuFragment : Fragment() {

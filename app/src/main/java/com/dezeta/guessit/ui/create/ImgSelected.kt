@@ -1,4 +1,4 @@
-package com.dezeta.guessit.ui
+package com.dezeta.guessit.ui.create
 
 enum class ImgSelected {
     IMG1,

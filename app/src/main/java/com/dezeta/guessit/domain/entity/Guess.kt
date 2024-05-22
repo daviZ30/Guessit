@@ -19,7 +19,7 @@ data class Guess(
     @TypeConverters(DifficultyConverter::class)
     val difficulty: Difficulty,
     @TypeConverters(CategoryConverter::class)
-    var category: Category?,
+    var category: Category,
     @TypeConverters(GuessTypeConverter::class)
     var guessType: GuessType
 

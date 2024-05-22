@@ -1,4 +1,4 @@
-package com.dezeta.guessit.usecase
+package com.dezeta.guessit.ui.create
 
 import android.graphics.Bitmap
 import android.text.TextUtils
@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dezeta.guessit.domain.Repository.Repository
+import com.dezeta.guessit.domain.entity.Category
 import com.dezeta.guessit.domain.entity.Difficulty
 import com.dezeta.guessit.domain.entity.DifficultySpinner
 import com.dezeta.guessit.domain.entity.Difficulty_es
@@ -99,7 +100,7 @@ class ViewModelCreate : ViewModel() {
         if (img1Uri != null && img2Uri != null && img3Uri != null) {
             Repository.insertGuess(
                 Guess(
-                   id.value!!, name.value!!, Difficulty.valueOf(difficulty.value!!.key), null,GuessType.LOCAL
+                   id.value!!, name.value!!, Difficulty.valueOf(difficulty.value!!.key), Category.NULL,GuessType.LOCAL
                 )
             )
             Repository.insertImages(

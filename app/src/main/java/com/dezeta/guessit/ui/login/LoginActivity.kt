@@ -1,9 +1,8 @@
-package com.dezeta.guessit.ui
+package com.dezeta.guessit.ui.login
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
@@ -21,8 +20,6 @@ import com.dezeta.guessit.databinding.ActivityLoginBinding
 import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
-import com.dezeta.guessit.usecase.LoginState
-import com.dezeta.guessit.usecase.ViewModelLogin
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -72,6 +69,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setup()
@@ -86,10 +84,12 @@ class LoginActivity : AppCompatActivity() {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {
                 binding.tilConfirmPassword.visibility = View.GONE
+                binding.tilUserName.visibility = View.GONE
             }
 
             override fun onAnimationEnd(animation: Animation?) {
                 binding.tilConfirmPassword.visibility = View.GONE
+                binding.tilUserName.visibility = View.GONE
             }
         })
         viewModel.getResult().observe(this) {
@@ -111,6 +111,7 @@ class LoginActivity : AppCompatActivity() {
                             tieLoginMail.setText("")
                             tieLoginPassword.setText("")
                             tieConfirmPassword.setText("")
+                            tieUserName.setText("")
                             btnChanged.callOnClick()
                             //register = false
                             //  tilConfirmPassword.visibility = View.GONE
@@ -127,6 +128,13 @@ class LoginActivity : AppCompatActivity() {
         }
         viewModel.getState().observe(this) { state ->
             when (state) {
+                is LoginState.nameEmtyError -> {
+                    with(binding.tilUserName) {
+                        error = "Introduce el usuario"
+                        requestFocus()
+                    }
+                }
+
                 is LoginState.EmailNotVerifiedError -> {
                     showAlert(
                         "Error",
@@ -216,11 +224,13 @@ class LoginActivity : AppCompatActivity() {
     private fun session() {
         val preferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = preferences.getString("email", null)
+        val point = preferences.getInt("point", -1)
+        val name = preferences.getString("name", null)
         val provider = preferences.getString("provider", null)
 
-        if (email != null && provider != null) {
+        if (email != null && provider != null && name != null && point != -1) {
             binding.clLogin.visibility = View.INVISIBLE
-            showHome(User(email, ProviderType.valueOf(provider)))
+            showHome(User(email, name, point, ProviderType.valueOf(provider)))
         }
     }
 
@@ -280,13 +290,24 @@ class LoginActivity : AppCompatActivity() {
         binding.btnChanged.setOnClickListener {
             if (!register) {
                 register = true
-                binding.tilConfirmPassword.visibility = View.VISIBLE
-                binding.tilConfirmPassword.startAnimation(fadeInAnimation)
-                binding.btnChanged.text = "Login"
+                with(binding) {
+                    tilConfirmPassword.visibility = View.VISIBLE
+                    tilConfirmPassword.startAnimation(fadeInAnimation)
+
+                    tilUserName.visibility = View.VISIBLE
+                    tilUserName.startAnimation(fadeInAnimation)
+
+                    btnChanged.text = "Login"
+                }
+
             } else {
                 register = false
-                binding.tilConfirmPassword.startAnimation(fadeOutAnimation)
-                binding.btnChanged.text = "Registrar"
+                with(binding) {
+                    tilConfirmPassword.startAnimation(fadeOutAnimation)
+                    tilUserName.startAnimation(fadeOutAnimation)
+                    btnChanged.text = "Registrar"
+                }
+
             }
         }
         binding.btnLoginGoogle.setOnClickListener {

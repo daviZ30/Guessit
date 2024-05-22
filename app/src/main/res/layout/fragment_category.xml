@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.dezeta.guessit.usecase.ViewModelMenu"/>
+            type="com.dezeta.guessit.ui.menu.ViewModelMenu"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.CategoryFragment">
+        tools:context=".ui.Category.CategoryFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvProfile1"
@@ -201,12 +201,12 @@
             android:gravity="center"
             app:fb_backgroundColor="@color/BlueRange1"
             app:fb_cornerRadius="30dp"
-            app:fb_icon="@drawable/console"
+            app:fb_icon="@drawable/camera"
             app:fb_iconColor="#FFF"
             app:fb_iconMarginEnd="40dp"
             app:fb_iconPosition="left"
             app:fb_shape="rectangle"
-            app:fb_text="Juego Diario"
+            app:fb_text="Película Diario"
             app:fb_textColor="#FFF"
             app:fb_textSize="23sp"
             app:layout_constraintEnd_toEndOf="parent"

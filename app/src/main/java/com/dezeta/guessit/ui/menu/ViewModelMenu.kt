@@ -1,4 +1,4 @@
-package com.dezeta.guessit.usecase
+package com.dezeta.guessit.ui.menu
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +15,16 @@ class ViewModelMenu : ViewModel() {
     var previousNum: Int? = null
     fun getSerie(): Guess {
         val lista = Repository.getSeriesList()
+        var r:Int
+        do {
+            r = Random.nextInt(lista.size)
+        }while (r == previousNum)
+        previousNum = r
+        return lista[r]
+    }
+
+    fun getCountry(): Guess {
+        val lista = Repository.getCountryList()
         var r:Int
         do {
             r = Random.nextInt(lista.size)

@@ -1,4 +1,4 @@
-package com.dezeta.guessit.usecase
+package com.dezeta.guessit.ui.duel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

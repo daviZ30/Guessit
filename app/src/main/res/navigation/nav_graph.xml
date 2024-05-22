@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/MenuFragment"
-        android:name="com.dezeta.guessit.ui.MenuFragment"
+        android:name="com.dezeta.guessit.ui.menu.MenuFragment"
         android:label=""
         tools:layout="@layout/fragment_menu">
 
@@ -34,17 +34,17 @@
         tools:layout="@layout/fragment_niveles"/>
     <fragment
         android:id="@+id/dailyFragment"
-        android:name="com.dezeta.guessit.ui.DailyFragment"
+        android:name="com.dezeta.guessit.ui.daily.DailyFragment"
         android:label=""
         tools:layout="@layout/fragment_daily" />
     <fragment
         android:id="@+id/duelFragment"
-        android:name="com.dezeta.guessit.ui.DuelFragment"
+        android:name="com.dezeta.guessit.ui.duel.DuelFragment"
         android:label=""
         tools:layout="@layout/fragment_duel" />
     <fragment
         android:id="@+id/localGameFragment"
-        android:name="com.dezeta.guessit.ui.LocalGameFragment"
+        android:name="com.dezeta.guessit.ui.localGame.LocalGameFragment"
         android:label=""
         tools:layout="@layout/fragment_local_game" >
         <action
@@ -56,15 +56,19 @@
     </fragment>
     <fragment
         android:id="@+id/createFragment"
-        android:name="com.dezeta.guessit.ui.CreateFragment"
+        android:name="com.dezeta.guessit.ui.create.CreateFragment"
         android:label=""
         tools:layout="@layout/fragment_create" />
     <activity
         android:id="@+id/loginActivity"
-        android:name="com.dezeta.guessit.ui.LoginActivity"
+        android:name="com.dezeta.guessit.ui.login.LoginActivity"
         android:label="" />
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.dezeta.guessit.ui.CategoryFragment"
-        android:label="" />
+        android:label="" >
+        <action
+            android:id="@+id/action_categoryFragment_to_dailyFragment"
+            app:destination="@id/dailyFragment" />
+    </fragment>
 </navigation>

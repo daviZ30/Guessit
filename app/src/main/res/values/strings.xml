@@ -7,7 +7,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="serie_diaria">Serie Diaria</string>
-    <string name="categor_a">Categoría</string>
+    <string name="categor_a">Extra</string>
     <string name="niveles">Niveles</string>
     <string name="duelo">Duelo</string>
     <string name="ajusts">Ajusts</string>
@@ -43,4 +43,7 @@
     <string name="guess_player">Jugadores Adivinados:</string>
     <string name="guess_game">Juegos Adivinados:</string>
     <string name="contentImgProfile">Profile</string>
+    <string name="login_user_name">Nombre de Usuario</string>
+    <string name="drawer_pre_point">Tienes</string>
+    <string name="drawer_post_point">puntos</string>
 </resources>

@@ -3,11 +3,16 @@ package com.dezeta.guessit
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.GestureDetector
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -17,17 +22,30 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dezeta.guessit.databinding.ActivityMainBinding
 import com.dezeta.guessit.domain.entity.User
-import com.dezeta.guessit.ui.LoginActivity
+import com.dezeta.guessit.ui.ViewModelMain
+import com.dezeta.guessit.ui.login.LoginActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navView: NavigationView
     private lateinit var preferences: SharedPreferences.Editor
-    private var user: User? = null
+    private val viewModel: ViewModelMain by viewModels()
+    private var x1 = 0.0f
+    private var x2 = 0.0f
+    private var y1 = 0.0f
+    private var y2 = 0.0f
+    private lateinit var gestureDetector: GestureDetector
+
+    companion object {
+        private var MIN_DISTANCE = 150
+        private var TAG = "Swipe Position"
+    }
 
 
     override fun onBackPressed() {
@@ -41,28 +59,36 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val isDarkThemeOn =
+            (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+        if (isDarkThemeOn)
+            window.statusBarColor = Color.BLACK
+        else
+            window.statusBarColor = Color.WHITE
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
         preferences =
             getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
 
-        setup()
+
         setSupportActionBar(binding.appBarMain.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
+        navView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
-
-
-
+        setup()
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         //Guardado de datos
-        preferences.putString("email", user?.email)
-        preferences.putString("provider", user?.provider.toString())
+        preferences.putString("email", viewModel.user.value!!.email)
+        preferences.putString("provider", viewModel.user.value!!.provider.toString())
+        preferences.putInt("point", viewModel.user.value!!.point)
+        preferences.putString("name", viewModel.user.value!!.name)
         preferences.apply()
 
 
@@ -70,7 +96,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun setup() {
         val bundle = intent.extras
-        user = bundle?.getSerializable("user") as User?
+        viewModel.user.value = bundle?.getSerializable("user") as User?
+
+        val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
+        val headerView: View = navigationView.getHeaderView(0)
+        //headerView.findViewById(R.id.tvDrawerName).text = "Your Text Here"
+
+        val tvDrawerName = headerView.findViewById<TextView>(R.id.navTvName)
+        val tvEmail = headerView.findViewById<TextView>(R.id.navTvEmail)
+        val tvDrawerPoint = headerView.findViewById<TextView>(R.id.navTvPoint)
+
+        tvDrawerName.text = viewModel.user.value!!.name
+        tvEmail.text = viewModel.user.value!!.email
+        tvDrawerPoint.text = viewModel.user.value!!.point.toString()
 
     }
 

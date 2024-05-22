@@ -1,4 +1,4 @@
-package com.dezeta.guessit.usecase
+package com.dezeta.guessit.ui.localGame
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

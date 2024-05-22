@@ -1,4 +1,4 @@
-package com.dezeta.guessit.ui
+package com.dezeta.guessit.ui.duel
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -21,7 +21,6 @@ import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentDuelBinding
 import com.dezeta.guessit.domain.entity.Info
 import com.dezeta.guessit.domain.entity.Guess
-import com.dezeta.guessit.usecase.ViewModelDuel
 
 class DuelFragment : Fragment() {
     private var _binding: FragmentDuelBinding? = null

@@ -229,15 +229,121 @@ abstract class SerieDataBase : RoomDatabase() {
                         "La serie sigue a Shaun Murphy, un joven cirujano con autismo y síndrome del sabio, mientras trabaja en el ficticio hospital St. Bonaventure en San José, California. A pesar del escepticismo inicial de sus colegas, Shaun demuestra su valía con métodos milagrosos. La serie se estrenó en 2017 y ha sido un fenómeno televisivo en EE. UU."
                         )
                     )
-                   /* GuessDao().insert(Guess("online15","La que se avecina", Difficulty.Medium, Category.Spanish ,GuessType.SERIE))
-                    imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/5052/kyFfVg.png", 0))
-                    imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/6535/Bs3xLH.png", 1))
-                    imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img924/2766/G5vXnQ.jpg", 2))
-                    imgDao().insert(Img("online15", "https://imagizer.imageshack.com/img922/74/X0gWyr.jpg", 3))
-                    infoDao().insert(Info("online15", 8.0, SetFecha("2017-09-25"),
-                        "La serie sigue a Shaun Murphy, un joven cirujano con autismo y síndrome del sabio, mientras trabaja en el ficticio hospital St. Bonaventure en San José, California. A pesar del escepticismo inicial de sus colegas, Shaun demuestra su valía con métodos milagrosos. La serie se estrenó en 2017 y ha sido un fenómeno televisivo en EE. UU."
-                          )
-                    )*/
+
+                    GuessDao().insert(Guess("country1","Spain", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country1", "https://i.postimg.cc/3J5HH3Rw/espanha1.png", 1))
+                    imgDao().insert(Img("country1", "https://i.postimg.cc/44hTMYXM/espanha2.png", 2))
+                    imgDao().insert(Img("country1", "https://i.postimg.cc/VLqPf2rW/espanha3.png", 3))
+
+                    GuessDao().insert(Guess("country2","Argelia", Difficulty.Difficult, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country2", "https://i.postimg.cc/RFVjX0XP/argelia1.png", 1))
+                    imgDao().insert(Img("country2", "https://i.postimg.cc/5yXDWRcL/argelia2.png", 2))
+                    imgDao().insert(Img("country2", "https://i.postimg.cc/nrNgFGZ5/argelia3.png", 3))
+
+                    GuessDao().insert(Guess("country3","Angola", Difficulty.Difficult, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country3", "https://i.postimg.cc/Gh8nWHrV/angola1.png", 1))
+                    imgDao().insert(Img("country3", "https://i.postimg.cc/fTGQDDRL/angola2.png", 2))
+                    imgDao().insert(Img("country3", "https://i.postimg.cc/R09rJdfx/angola3.png", 3))
+
+                    GuessDao().insert(Guess("country4","Egipto", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country4", "https://i.postimg.cc/tT8GJjN2/egipto1.png", 1))
+                    imgDao().insert(Img("country4", "https://i.postimg.cc/T1mMW4kG/egipto2.png", 2))
+                    imgDao().insert(Img("country4", "https://i.postimg.cc/8zTQjwLQ/egiptp3.png", 3))
+
+                    GuessDao().insert(Guess("country5","Sudáfrica", Difficulty.Difficult, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country5", "https://i.postimg.cc/W1z8Wkvq/sudaf1.png", 1))
+                    imgDao().insert(Img("country5", "https://i.postimg.cc/yYVvRGpP/suda2.png", 2))
+                    imgDao().insert(Img("country5", "https://i.postimg.cc/GhqzxjZ1/suda3.png", 3))
+
+                    GuessDao().insert(Guess("country6","Canadá", Difficulty.Easy, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country6", "https://i.postimg.cc/hvQZ5Qx0/canada1.jpg", 1))
+                    imgDao().insert(Img("country6", "https://i.postimg.cc/ncBpsC57/canada2.png", 2))
+                    imgDao().insert(Img("country6", "https://i.postimg.cc/Y2Jtq1XM/canada3.png", 3))
+
+                    GuessDao().insert(Guess("country7","Estados Unidos", Difficulty.Easy, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country7", "https://i.postimg.cc/ZqKSDjqF/eeuu1.png", 1))
+                    imgDao().insert(Img("country7", "https://i.postimg.cc/TP768mL8/eeuu2.png", 2))
+                    imgDao().insert(Img("country7", "https://i.postimg.cc/j5DrR5PD/eeuu3.png", 3))
+
+                    GuessDao().insert(Guess("country8","Brasil", Difficulty.Easy, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country8", "https://i.postimg.cc/XJzDLkZJ/brasil1.png", 1))
+                    imgDao().insert(Img("country8", "https://i.postimg.cc/hjj5V5t6/brasil2.png", 2))
+                    imgDao().insert(Img("country8", "https://i.postimg.cc/pyNcbVJM/brasil3.png", 3))
+
+                    GuessDao().insert(Guess("country9","México", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country9", "https://i.postimg.cc/SxxTBPWs/mexico1.jpg", 1))
+                    imgDao().insert(Img("country9", "https://i.postimg.cc/1X07ShCg/mexico2.png", 2))
+                    imgDao().insert(Img("country9", "https://i.postimg.cc/66CmnnW9/mexico3.png", 3))
+
+                    GuessDao().insert(Guess("country10","Argentina", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country10", "https://i.postimg.cc/DybRCHPK/argen1.png", 1))
+                    imgDao().insert(Img("country10", "https://i.postimg.cc/htW6Ns2Q/argen2.png", 2))
+                    imgDao().insert(Img("country10", "https://i.postimg.cc/dV2pFCfH/argen3.png", 3))
+
+                    GuessDao().insert(Guess("country11","China", Difficulty.Easy, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country11", "https://i.postimg.cc/VsSY87WK/china1.png", 1))
+                    imgDao().insert(Img("country11", "https://i.postimg.cc/zGN5TqZQ/china2.png", 2))
+                    imgDao().insert(Img("country11", "https://i.postimg.cc/qvGrLWpv/china3.png", 3))
+
+                    GuessDao().insert(Guess("country12","India", Difficulty.Easy, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country12", "https://i.postimg.cc/HxcFfN15/india1.png", 1))
+                    imgDao().insert(Img("country12", "https://i.postimg.cc/d1bgv9Jf/india2.png", 2))
+                    imgDao().insert(Img("country12", "https://i.postimg.cc/5NqDdvTP/india3.png", 3))
+
+                    GuessDao().insert(Guess("country13","Japón", Difficulty.Easy, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country13", "https://i.postimg.cc/zvY24XjZ/japon1.png", 1))
+                    imgDao().insert(Img("country13", "https://i.postimg.cc/k5DHbH4Z/japon2.png", 2))
+                    imgDao().insert(Img("country13", "https://i.postimg.cc/25JKFxL5/japon3.png", 3))
+
+                    GuessDao().insert(Guess("country14","Andorra", Difficulty.Difficult, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country14", "https://i.postimg.cc/rsz2Fp4d/ando1.png", 1))
+                    imgDao().insert(Img("country14", "https://i.postimg.cc/6qSJ7NVM/ando2.png", 2))
+                    imgDao().insert(Img("country14", "https://i.postimg.cc/QNnrYpLc/ando3.png", 3))
+
+                    GuessDao().insert(Guess("country15","Arabia Saudita", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country15", "https://i.postimg.cc/pdBwfjYh/arabia1.png", 1))
+                    imgDao().insert(Img("country15", "https://i.postimg.cc/y804NtDT/arabia2.png", 2))
+                    imgDao().insert(Img("country15", "https://i.postimg.cc/4dLjMT0X/arabia3.png", 3))
+
+                    GuessDao().insert(Guess("country16","Alemania", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country16", "https://i.postimg.cc/TwtX6bKM/alema1.jpg", 1))
+                    imgDao().insert(Img("country16", "https://i.postimg.cc/7LyCCFmP/alema2.png", 2))
+                    imgDao().insert(Img("country16", "https://i.postimg.cc/CKHRbcQG/alema3.png", 3))
+
+                    GuessDao().insert(Guess("country17","Italia", Difficulty.Easy, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country17", "https://i.postimg.cc/L89wH5Mm/italia1.png", 1))
+                    imgDao().insert(Img("country17", "https://i.postimg.cc/3xt6WhKm/italia2.png", 2))
+                    imgDao().insert(Img("country17", "https://i.postimg.cc/DZXYCb1P/italia3.png", 3))
+
+                    GuessDao().insert(Guess("country18","Reino Unido", Difficulty.Easy, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country18", "https://i.postimg.cc/gj3Q06J2/inglaterra1.jpg", 1))
+                    imgDao().insert(Img("country18", "https://i.postimg.cc/66ZDcF0x/inglaterra2.jpg", 2))
+                    imgDao().insert(Img("country18", "https://i.postimg.cc/wTdnGFfy/inglaterra3.jpg", 3))
+
+                    GuessDao().insert(Guess("country19","Australia", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country19", "https://i.postimg.cc/XNPTk4F8/australia1.jpg", 1))
+                    imgDao().insert(Img("country19", "https://i.postimg.cc/HLTKkxDp/australia2.jpg", 2))
+                    imgDao().insert(Img("country19", "https://i.postimg.cc/3w9q4TY2/australia3.jpg", 3))
+
+                    GuessDao().insert(Guess("country20","Nueva Zelanda", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country20", "https://i.postimg.cc/FsmnZzz0/nueva-Zelan1.jpg", 1))
+                    imgDao().insert(Img("country20", "https://i.postimg.cc/Nf4CPt2S/nueva-Zelanda2.jpg", 2))
+                    imgDao().insert(Img("country20", "https://i.postimg.cc/7LpKTYjG/nueva-Zelanda3.jpg", 3))
+
+                    GuessDao().insert(Guess("country21","Papúa Nueva Guinea", Difficulty.Difficult, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country21", "https://i.postimg.cc/sgH6sJcJ/papua1.jpg", 1))
+                    imgDao().insert(Img("country21", "https://i.postimg.cc/nLsdzQSf/papua2.jpg", 2))
+                    imgDao().insert(Img("country21", "https://i.postimg.cc/gjp4NtzG/papua3.jpg", 3))
+
+                    GuessDao().insert(Guess("country22","Fiyi", Difficulty.Difficult, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country22", "https://i.postimg.cc/VNNxF67K/fiyi1.jpg", 1))
+                    imgDao().insert(Img("country22", "https://i.postimg.cc/qvQfnnGt/fiyi2.jpg", 2))
+                    imgDao().insert(Img("country22", "https://i.postimg.cc/SKtw1h3k/fiyi3.jpg", 3))
+
+                    GuessDao().insert(Guess("country23","Islas Salomón", Difficulty.Difficult, Category.NULL ,GuessType.COUNTRY))
+                    imgDao().insert(Img("country23", "https://i.postimg.cc/3RmnjQHL/salomon1.jpg", 1))
+                    imgDao().insert(Img("country23", "https://i.postimg.cc/RhTd81hK/salomon2.jpg", 2))
+                    imgDao().insert(Img("country23", "https://i.postimg.cc/G3PXHRKt/salomon3.jpg", 3))
 
                 }
             }

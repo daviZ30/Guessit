@@ -50,6 +50,10 @@ class Repository {
         fun getSeriesList(): List<Guess> {
             return SerieDataBase.getInstance().GuessDao().selectAllSerie()
         }
+
+        fun getCountryList(): List<Guess> {
+            return SerieDataBase.getInstance().GuessDao().selectAllCountry()
+        }
         fun getSerieFromName(name: String): Guess {
             return SerieDataBase.getInstance().GuessDao().selectSerieFromName(name)
         }

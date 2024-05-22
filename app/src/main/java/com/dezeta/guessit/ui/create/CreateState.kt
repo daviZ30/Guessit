@@ -1,4 +1,4 @@
-package com.dezeta.guessit.usecase
+package com.dezeta.guessit.ui.create
 
 sealed class CreateState {
     data object nameEmtyError : CreateState()

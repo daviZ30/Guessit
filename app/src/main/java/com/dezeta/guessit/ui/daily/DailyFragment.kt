@@ -1,5 +1,6 @@
-package com.dezeta.guessit.ui
+package com.dezeta.guessit.ui.daily
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.drawable.Drawable
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
@@ -26,19 +28,20 @@ import com.dezeta.guessit.adapter.SearchAdapter
 import com.dezeta.guessit.databinding.FragmentDailyBinding
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Guess
+import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.loadImageFromInternalStorage
-import com.dezeta.guessit.usecase.ViewModelDaily
 import java.util.Locale
 
 class DailyFragment : Fragment() {
     //TODO Guardar variable help con preferencias
     //TODO Modificar la ayuda para que salga algo de la clase info o las tres ultimas letras si es online y la ultima letra si el local
-
+    //TODO CAmbiar la forma de dectetar local
     var listRed = mutableListOf<String>()
     var listGreen = mutableListOf<String>()
 
-    private lateinit var serie: Guess
-    var NumSerie = 1
+    var NumImage = 1
+    var LastImage = 1
+    var img: Img? = null
 
     private var images: List<Img>? = null
 
@@ -56,13 +59,11 @@ class DailyFragment : Fragment() {
     private val binding get() = _binding!!
 
     private fun getImage(): String? {
-        var img: Img? = null
         images?.forEach {
             println(it)
-            if (it.order == NumSerie)
+            if (it.order == NumImage)
                 img = it
         }
-        NumSerie++
         return img?.img_url
     }
 
@@ -73,9 +74,12 @@ class DailyFragment : Fragment() {
         _binding = FragmentDailyBinding.inflate(inflater, container, false)
         arguments.let {
             if (it != null) {
-                serie = it.getSerializable("serie") as Guess
+                viewModel.serie = it.getSerializable("serie") as Guess
+                if(viewModel.serie!!.guessType == GuessType.COUNTRY){
+                    binding.btnCategoty.visibility = View.GONE
+                }
                 with(viewModel) {
-                    images = getImages(serie)
+                    images = getImages(viewModel.serie!!)
                     local = it.getBoolean("local")
                     if (local) {
                         help = false
@@ -134,6 +138,7 @@ class DailyFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val inputMethodManager = requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
         adapterList = SearchAdapter() {
             binding.tieSearch.setText(it)
@@ -151,6 +156,7 @@ class DailyFragment : Fragment() {
             showHelpMessage()
             binding.btnHelp.visibility = View.GONE
         }
+
         binding.tieSearch.addTextChangedListener(
             TextWatcher(
                 binding.tieSearch.text.toString()
@@ -163,7 +169,7 @@ class DailyFragment : Fragment() {
         }
         binding.btnGuessDaily.setOnClickListener {
             if (binding.tieSearch.text.toString().trim().uppercase(Locale.ROOT)
-                == serie.name.uppercase(Locale.ROOT)
+                == viewModel.serie!!.name.uppercase(Locale.ROOT)
             ) {
                 showCongratulatoryMessage()
                 findNavController().popBackStack()
@@ -172,7 +178,7 @@ class DailyFragment : Fragment() {
                 val newSerie = viewModel.getSerieFromName(binding.tieSearch.text.toString().trim())
                 when {
                     newSerie == null -> {}
-                    newSerie.category == serie.category -> {
+                    newSerie.category == viewModel.serie!!.category -> {
                         listGreen.add(newSerie.category.toString())
                     }
                     else -> {
@@ -183,16 +189,39 @@ class DailyFragment : Fragment() {
 
         }
         binding.btnNext.setOnClickListener {
-            if (NumSerie <= 3 && !viewModel.local) {
-                showError()
-                Glide.with(requireContext())
-                    .load(getImage())
-                    .into(binding.image)
-            }else if(NumSerie <= 3 && viewModel.local){
+
+            if (NumImage < 3 && !viewModel.local) {
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                if(NumImage == LastImage){
+                    showError()
+                }
+                NumImage++
+                if(NumImage > LastImage){
+                    LastImage = NumImage
+                }
+                loadImage()
+            }else if(NumImage < 3 && viewModel.local){
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                if(NumImage == LastImage){
+                    showError()
+                }
+                NumImage++
+                LastImage = NumImage
+                binding.image.setImageBitmap(loadImageFromInternalStorage(getImage()!!))
+            }
+        }
+        binding.btnPrevious.setOnClickListener {
+
+            if (NumImage > 1 && !viewModel.local) {
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                NumImage--
+                loadImage()
+            }else if(NumImage > 1 && viewModel.local){
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                NumImage--
                 showError()
                 binding.image.setImageBitmap(loadImageFromInternalStorage(getImage()!!))
             }
-
         }
     }
 
@@ -203,7 +232,12 @@ class DailyFragment : Fragment() {
             viewModel.help = false
             showError()
             showError()
-            adapterList.update(viewModel.getSerieList().map { it.name }.toMutableList())
+            if(viewModel.serie?.guessType == GuessType.COUNTRY){
+                adapterList.update(viewModel.getCountryNameList())
+            }else{
+                adapterList.update(viewModel.getSerieList().map { it.name }.toMutableList())
+            }
+
         }
 
         builder.setNegativeButton("No") { _, _ ->
@@ -241,7 +275,7 @@ class DailyFragment : Fragment() {
     private fun showCongratulatoryMessage() {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("¡Felicidades!")
-        builder.setMessage("Has superado el nivel: ${serie.name}")
+        builder.setMessage("Has superado el nivel: ${viewModel.serie!!.name}")
         builder.setPositiveButton("Aceptar") { dialog, _ ->
 
             dialog.dismiss()
@@ -265,7 +299,6 @@ class DailyFragment : Fragment() {
         val builder = AlertDialog.Builder(context)
         builder.setMessage("Una categoría en verde significa que la categoría de la serie que has seleccionado es la misma que la de la serie a adivinar.")
         builder.setPositiveButton("Ok") { dialog, _ ->
-
             dialog.dismiss()
         }
         val dialog = builder.create()
@@ -275,11 +308,19 @@ class DailyFragment : Fragment() {
 
     private fun showHelpMessage() {
         val builder = AlertDialog.Builder(context)
+        var guessName = ""
+        when(viewModel.serie?.guessType){
+            GuessType.COUNTRY -> guessName = "El pais"
+            GuessType.SERIE -> guessName = "La serie"
+            GuessType.FOOTBALL -> guessName = "El jugador"
+            else -> guessName = "La entidad o concepto"
+
+        }
         builder.setMessage(
-            "La serie termina por: ${
-                serie.name.substring(
-                    serie.name.length - 3,
-                    serie.name.length 
+            "$guessName termina por: ${
+                viewModel.serie!!.name.substring(
+                    viewModel.serie!!.name.length - 3,
+                    viewModel.serie!!.name.length 
                 )
             }"
         )

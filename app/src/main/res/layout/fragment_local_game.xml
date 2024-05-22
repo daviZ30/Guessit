@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.dezeta.guessit.usecase.ViewModelLocalGame" />
+            type="com.dezeta.guessit.ui.localGame.ViewModelLocalGame" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.LocalGameFragment">
+        tools:context=".ui.localGame.LocalGameFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
