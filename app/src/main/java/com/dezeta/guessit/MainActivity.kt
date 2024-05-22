@@ -24,6 +24,7 @@ import com.dezeta.guessit.databinding.ActivityMainBinding
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.ui.ViewModelMain
 import com.dezeta.guessit.ui.login.LoginActivity
+import com.github.nikartm.button.FitButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -102,6 +103,7 @@ class MainActivity : AppCompatActivity() {
         val headerView: View = navigationView.getHeaderView(0)
         //headerView.findViewById(R.id.tvDrawerName).text = "Your Text Here"
 
+        val btnSignOut = headerView.findViewById<FitButton>(R.id.navBtnSignOut)
         val tvDrawerName = headerView.findViewById<TextView>(R.id.navTvName)
         val tvEmail = headerView.findViewById<TextView>(R.id.navTvEmail)
         val tvDrawerPoint = headerView.findViewById<TextView>(R.id.navTvPoint)
@@ -109,6 +111,14 @@ class MainActivity : AppCompatActivity() {
         tvDrawerName.text = viewModel.user.value!!.name
         tvEmail.text = viewModel.user.value!!.email
         tvDrawerPoint.text = viewModel.user.value!!.point.toString()
+
+        btnSignOut.setOnClickListener {
+            preferences.clear()
+            preferences.apply()
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

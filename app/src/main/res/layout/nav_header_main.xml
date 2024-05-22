@@ -78,6 +78,7 @@
 
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -89,9 +90,9 @@
                 android:id="@+id/tvPrePoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="4dp"
-                android:layout_weight="1"
                 android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:paddingEnd="4dp"
                 android:text="@string/drawer_pre_point"
                 android:textColor="@color/black"
                 android:textSize="17sp" />
@@ -100,24 +101,42 @@
                 android:id="@+id/navTvPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="16dp"
+                android:layout_weight="1"
                 android:text=""
-                android:textStyle="bold"
                 android:textColor="#FF9800"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPostPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="4dp"
-                android:layout_weight="1"
                 android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:paddingStart="4dp"
                 android:text="@string/drawer_post_point"
                 android:textColor="@color/black"
                 android:textSize="17sp" />
         </LinearLayout>
+
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/navBtnSignOut"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:paddingHorizontal="5dp"
+            app:fb_backgroundColor="@color/BlueRange4"
+            app:fb_cornerRadius="12dp"
+            app:fb_shape="rectangle"
+            app:fb_text="Cerrar Sesión"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

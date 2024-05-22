@@ -354,7 +354,11 @@ class DailyFragment : Fragment() {
             }
 
             4 -> binding.imgError4.setImageResource(R.drawable.cancelar)
-            5 -> binding.imgError5.setImageResource(R.drawable.cancelar)
+            5 -> {
+                binding.imgError5.setImageResource(R.drawable.cancelar)
+                showDegoratoryMessage()
+                findNavController().popBackStack()
+            }
             else -> {
                 showDegoratoryMessage()
                 findNavController().popBackStack()

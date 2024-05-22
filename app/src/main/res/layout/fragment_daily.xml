@@ -86,9 +86,9 @@
                 app:fb_iconColor="#FFF"
                 app:fb_iconPosition="left"
                 app:fb_shape="circle"
-                app:layout_constraintBottom_toBottomOf="@+id/btnNext"
+                app:layout_constraintBottom_toBottomOf="@+id/navBtnSignOut"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/btnNext" />
+                app:layout_constraintTop_toTopOf="@+id/navBtnSignOut" />
 
 
             <com.github.nikartm.button.FitButton
@@ -144,7 +144,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnNext"
+                app:layout_constraintTop_toBottomOf="@+id/navBtnSignOut"
                 app:reverseLayout="true"
                 app:stackFromEnd="true" />
 
