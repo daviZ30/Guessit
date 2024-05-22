@@ -132,7 +132,14 @@ class ViewModelLogin : ViewModel() {
         FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
                 result.value =
-                    Resource.Success(User(email ?: "", "Username", 0, ProviderType.GOOGLE))
+                    Resource.Success(
+                        User(
+                            email ?: "",
+                            it.result.user!!.displayName ?: "User",
+                            0,
+                            ProviderType.GOOGLE
+                        )
+                    )
             } else {
                 result.value =
                     Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
