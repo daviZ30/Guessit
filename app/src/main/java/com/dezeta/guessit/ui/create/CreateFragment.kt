@@ -21,7 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.dezeta.guessit.databinding.FragmentCreateBinding
 import com.dezeta.guessit.deleteImage
 import com.dezeta.guessit.domain.entity.DifficultySpinner
-import com.dezeta.guessit.loadImageFromInternalStorage
+import com.dezeta.guessit.loadImageBitmapFromInternalStorage
 import com.dezeta.guessit.showSnackbar
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
@@ -187,7 +187,7 @@ class CreateFragment : Fragment() {
                     deleteImage(imageName)
                     viewModel.saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
                     viewModel.img1Uri = imageName
-                    binding.imgCreate1.setImageBitmap(loadImageFromInternalStorage(imageName))
+                    binding.imgCreate1.setImageBitmap(loadImageBitmapFromInternalStorage(imageName))
                 }
 
                 ImgSelected.IMG2 -> {
@@ -195,7 +195,7 @@ class CreateFragment : Fragment() {
                     deleteImage(imageName)
                     viewModel.saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
                     viewModel.img2Uri = imageName
-                    binding.imgCreate2.setImageBitmap(loadImageFromInternalStorage(imageName))
+                    binding.imgCreate2.setImageBitmap(loadImageBitmapFromInternalStorage(imageName))
                 }
 
                 ImgSelected.IMG3 -> {
@@ -203,7 +203,7 @@ class CreateFragment : Fragment() {
                     deleteImage(imageName)
                     viewModel.saveToInternalStorage(uriToBitmap(data!!)!!, imageName)
                     viewModel.img3Uri = imageName
-                    binding.imgCreate3.setImageBitmap(loadImageFromInternalStorage(imageName))
+                    binding.imgCreate3.setImageBitmap(loadImageBitmapFromInternalStorage(imageName))
                 }
             }
         }

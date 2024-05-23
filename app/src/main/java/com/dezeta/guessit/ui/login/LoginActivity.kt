@@ -3,6 +3,7 @@ package com.dezeta.guessit.ui.login
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
@@ -14,17 +15,17 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
-import com.dezeta.guessit.MainActivity
+import com.dezeta.guessit.ui.main.MainActivity
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityLoginBinding
 import com.dezeta.guessit.domain.Repository.Resource
-import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.GoogleAuthProvider
+import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
 
@@ -66,6 +67,16 @@ class LoginActivity : AppCompatActivity() {
             t.isErrorEnabled = false
         }
     }
+    private fun getDrawableUri(drawableId: Int): Uri? {
+        return try {
+            val resourceId = resources.getResourceEntryName(drawableId)
+
+            Uri.parse("android.resource://${packageName}/drawable/$resourceId")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,12 +95,10 @@ class LoginActivity : AppCompatActivity() {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {
                 binding.tilConfirmPassword.visibility = View.GONE
-                binding.tilUserName.visibility = View.GONE
             }
 
             override fun onAnimationEnd(animation: Animation?) {
                 binding.tilConfirmPassword.visibility = View.GONE
-                binding.tilUserName.visibility = View.GONE
             }
         })
         viewModel.getResult().observe(this) {
@@ -97,7 +106,6 @@ class LoginActivity : AppCompatActivity() {
                 is Resource.Error -> {
                     endload = true
                     showAlert("Error", it.exception.message.toString())
-                    println("NO IR A CASA")
                 }
 
                 is Resource.Success<*> -> {
@@ -111,7 +119,6 @@ class LoginActivity : AppCompatActivity() {
                             tieLoginMail.setText("")
                             tieLoginPassword.setText("")
                             tieConfirmPassword.setText("")
-                            tieUserName.setText("")
                             btnChanged.callOnClick()
                             //register = false
                             //  tilConfirmPassword.visibility = View.GONE
@@ -119,7 +126,7 @@ class LoginActivity : AppCompatActivity() {
                         }
 
                     } else {
-                        showHome(it.data as User)
+                        showHome(it.data as String)
                     }
 
                 }
@@ -128,17 +135,16 @@ class LoginActivity : AppCompatActivity() {
         }
         viewModel.getState().observe(this) { state ->
             when (state) {
-                is LoginState.nameEmtyError -> {
-                    with(binding.tilUserName) {
-                        error = "Introduce el usuario"
-                        requestFocus()
-                    }
-                }
-
                 is LoginState.EmailNotVerifiedError -> {
                     showAlert(
                         "Error",
                         "Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado."
+                    )
+                }
+                is LoginState.GoogleSignInError ->{
+                    showAlert(
+                        "Atención",
+                        "Ya dispone de una cuenta de google asociada a este correo, seleccione continuar con google"
                     )
                 }
 
@@ -179,11 +185,12 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
 
+
                 is LoginState.Success -> {
                     starLoadAnimation()
 
                     if (register) {
-                        viewModel.signup()
+                        viewModel.signup(getDrawableUri(R.drawable.user_profile)!!)
                     } else {
                         viewModel.signin()
                     }
@@ -224,19 +231,17 @@ class LoginActivity : AppCompatActivity() {
     private fun session() {
         val preferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = preferences.getString("email", null)
-        val point = preferences.getInt("point", -1)
-        val name = preferences.getString("name", null)
-        val provider = preferences.getString("provider", null)
 
-        if (email != null && provider != null && name != null && point != -1) {
-            binding.clLogin.visibility = View.INVISIBLE
-            showHome(User(email, name, point, ProviderType.valueOf(provider)))
+        if (email != null) {
+            binding.LayoutLogin.visibility = View.INVISIBLE
+            starLoadAnimation()
+            showHome(email)
         }
     }
 
     override fun onStart() {
         super.onStart()
-        binding.clLogin.visibility = View.VISIBLE
+        binding.LayoutLogin.visibility = View.VISIBLE
 
     }
 
@@ -250,10 +255,10 @@ class LoginActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showHome(user: User) {
-
+    private fun showHome(email: String) {
+        endload = true
         val MenuIntent = Intent(this, MainActivity::class.java).apply {
-            putExtra("user", user)
+            putExtra("email", email)
         }
         startActivity(MenuIntent)
 
@@ -294,9 +299,6 @@ class LoginActivity : AppCompatActivity() {
                     tilConfirmPassword.visibility = View.VISIBLE
                     tilConfirmPassword.startAnimation(fadeInAnimation)
 
-                    tilUserName.visibility = View.VISIBLE
-                    tilUserName.startAnimation(fadeInAnimation)
-
                     btnChanged.text = "Login"
                 }
 
@@ -304,7 +306,6 @@ class LoginActivity : AppCompatActivity() {
                 register = false
                 with(binding) {
                     tilConfirmPassword.startAnimation(fadeOutAnimation)
-                    tilUserName.startAnimation(fadeOutAnimation)
                     btnChanged.text = "Registrar"
                 }
 

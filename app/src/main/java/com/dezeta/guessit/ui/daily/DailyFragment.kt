@@ -29,7 +29,7 @@ import com.dezeta.guessit.databinding.FragmentDailyBinding
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
-import com.dezeta.guessit.loadImageFromInternalStorage
+import com.dezeta.guessit.loadImageBitmapFromInternalStorage
 import java.util.Locale
 
 class DailyFragment : Fragment() {
@@ -85,7 +85,7 @@ class DailyFragment : Fragment() {
                         help = false
                         with(binding){
                             tvDailyHelp.text = "Puedes activar la ayuda en los ajustes"
-                            image.setImageBitmap(loadImageFromInternalStorage(getImage()!!))
+                            image.setImageBitmap(loadImageBitmapFromInternalStorage(getImage()!!))
                             btnCategoty.visibility = View.GONE
                             cvShowList.visibility = View.GONE
                         }
@@ -171,6 +171,7 @@ class DailyFragment : Fragment() {
             if (binding.tieSearch.text.toString().trim().uppercase(Locale.ROOT)
                 == viewModel.serie!!.name.uppercase(Locale.ROOT)
             ) {
+                //viewModel.updetePoint()
                 showCongratulatoryMessage()
                 findNavController().popBackStack()
             } else {
@@ -207,7 +208,7 @@ class DailyFragment : Fragment() {
                 }
                 NumImage++
                 LastImage = NumImage
-                binding.image.setImageBitmap(loadImageFromInternalStorage(getImage()!!))
+                binding.image.setImageBitmap(loadImageBitmapFromInternalStorage(getImage()!!))
             }
         }
         binding.btnPrevious.setOnClickListener {
@@ -220,7 +221,7 @@ class DailyFragment : Fragment() {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
                 NumImage--
                 showError()
-                binding.image.setImageBitmap(loadImageFromInternalStorage(getImage()!!))
+                binding.image.setImageBitmap(loadImageBitmapFromInternalStorage(getImage()!!))
             }
         }
     }

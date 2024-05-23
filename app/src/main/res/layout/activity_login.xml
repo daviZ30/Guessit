@@ -10,39 +10,12 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clLogin"
+        android:id="@+id/LayoutLogin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         tools:context=".ui.login.LoginActivity">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilUserName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="45dp"
-            android:visibility="gone"
-            app:boxCornerRadiusBottomEnd="20dp"
-            app:boxCornerRadiusBottomStart="20dp"
-            app:boxCornerRadiusTopEnd="20dp"
-            app:boxCornerRadiusTopStart="20dp"
-            app:endIconDrawable="@drawable/username"
-            app:endIconMode="custom"
-            app:endIconTint="@color/BlueRange1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilLoginMail">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tieUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/login_user_name"
-                android:inputType="textPersonName"
-                android:text="@={viewmodel.username}"
-                android:textSize="14sp" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieLoadAnimation"
@@ -164,7 +137,7 @@
             app:endIconTint="@color/BlueRange1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilUserName">
+            app:layout_constraintTop_toBottomOf="@+id/tilLoginMail">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tieLoginPassword"

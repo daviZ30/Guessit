@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.dezeta.guessit.ui.ViewModelMain" />
+            type="com.dezeta.guessit.ui.main.ViewModelMain" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +16,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imageView"
+            android:id="@+id/navImgProfile"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:layout_gravity="center"
@@ -45,29 +45,21 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/navTvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text=""
-            android:textSize="26sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-        <TextView
             android:id="@+id/navTvEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text=""
-            app:layout_constraintEnd_toEndOf="@+id/navTvName"
-            app:layout_constraintStart_toStartOf="@+id/navTvName"
-            app:layout_constraintTop_toBottomOf="@+id/navTvName" />
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="hgvjhgvj"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/navImgProfile"
+            app:layout_constraintStart_toStartOf="@+id/navImgProfile"
+            app:layout_constraintTop_toBottomOf="@+id/navImgProfile" />
+
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/navImgDolar"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="50dp"
@@ -82,9 +74,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView6"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6">
+            app:layout_constraintEnd_toEndOf="@+id/navImgDolar"
+            app:layout_constraintStart_toStartOf="@+id/navImgDolar"
+            app:layout_constraintTop_toBottomOf="@+id/navImgDolar">
 
             <TextView
                 android:id="@+id/tvPrePoint"
@@ -120,23 +112,36 @@
                 android:textSize="17sp" />
         </LinearLayout>
 
-        <com.github.nikartm.button.FitButton
-            android:id="@+id/navBtnSignOut"
+        <Button
+            android:id="@+id/navBtnEditProfile"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:gravity="center"
-            android:paddingHorizontal="5dp"
-            app:fb_backgroundColor="@color/BlueRange4"
-            app:fb_cornerRadius="12dp"
-            app:fb_shape="rectangle"
-            app:fb_text="Cerrar Sesión"
-            app:fb_textColor="#FFF"
-            app:fb_textSize="25sp"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="10dp"
+            android:text="Editar"
+            android:textColor="@color/white"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+        <ImageView
+            android:id="@+id/navImgEditProfile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="90dp"
+            android:elevation="2dp"
+            android:shadowColor="@color/white"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/navImgProfile"
+            app:layout_constraintEnd_toEndOf="@+id/navImgProfile"
+            app:layout_constraintStart_toStartOf="@+id/navImgProfile"
+            app:layout_constraintTop_toTopOf="@+id/navImgProfile"
+            app:srcCompat="@mipmap/edit_foreground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

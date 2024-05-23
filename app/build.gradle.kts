@@ -83,6 +83,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:25.0.0")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation ("com.google.firebase:firebase-storage-ktx:21.0.0")
+
 
     //Circle Image
     implementation ("de.hdodenhof:circleimageview:3.1.0")

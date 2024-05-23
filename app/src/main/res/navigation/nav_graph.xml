@@ -65,7 +65,7 @@
         android:label="" />
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.dezeta.guessit.ui.CategoryFragment"
+        android:name="com.dezeta.guessit.ui.menu.CategoryFragment"
         android:label="" >
         <action
             android:id="@+id/action_categoryFragment_to_dailyFragment"
