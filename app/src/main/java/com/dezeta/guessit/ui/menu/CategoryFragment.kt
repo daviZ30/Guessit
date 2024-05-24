@@ -21,15 +21,16 @@ class CategoryFragment : Fragment() {
     private val viewModel: ViewModelMenu by viewModels()
     private lateinit var manager: CloudStorageManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onStart() {
+        super.onStart()
+        viewModel.getAllUserAccounts()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         binding.viewmodel = this.viewModel
@@ -47,6 +48,13 @@ class CategoryFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
         }
+        binding.btnDailyFootball.setOnClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("serie", viewModel.getPlayer())
+                putBoolean("local", false)
+            }
+            findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
+        }
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ExtraState.refreshUserList -> {
@@ -58,14 +66,11 @@ class CategoryFragment : Fragment() {
                         .into(state.view)
                 }
 
+                else -> {}
             }
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.getAllUserAccounts()
-    }
 
     private fun refreshUserList() {
         viewModel.userList.sortByDescending { it.point }

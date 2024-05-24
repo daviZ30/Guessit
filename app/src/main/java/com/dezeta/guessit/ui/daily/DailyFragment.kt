@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,7 @@ import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.loadImageBitmapFromInternalStorage
+import com.google.android.material.navigation.NavigationView
 import java.util.Locale
 
 class DailyFragment : Fragment() {
@@ -67,6 +69,16 @@ class DailyFragment : Fragment() {
         return img?.img_url
     }
 
+    private fun refreshHeader() {
+        val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
+        val headerView: View = navigationView.getHeaderView(0)
+
+        val tvDrawerPoint = headerView.findViewById<TextView>(R.id.navTvPoint)
+        val p: Int = tvDrawerPoint.text.toString().toInt() + viewModel.point
+        tvDrawerPoint.text = p.toString()
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,7 +87,7 @@ class DailyFragment : Fragment() {
         arguments.let {
             if (it != null) {
                 viewModel.serie = it.getSerializable("serie") as Guess
-                if(viewModel.serie!!.guessType == GuessType.COUNTRY){
+                if (viewModel.serie!!.guessType == GuessType.COUNTRY || viewModel.serie!!.guessType == GuessType.FOOTBALL) {
                     binding.btnCategoty.visibility = View.GONE
                 }
                 with(viewModel) {
@@ -83,7 +95,7 @@ class DailyFragment : Fragment() {
                     local = it.getBoolean("local")
                     if (local) {
                         help = false
-                        with(binding){
+                        with(binding) {
                             tvDailyHelp.text = "Puedes activar la ayuda en los ajustes"
                             image.setImageBitmap(loadImageBitmapFromInternalStorage(getImage()!!))
                             btnCategoty.visibility = View.GONE
@@ -102,7 +114,8 @@ class DailyFragment : Fragment() {
         }
         return binding.root
     }
-    private fun loadImage(){
+
+    private fun loadImage() {
         with(binding.lottieLoadAnimation) {
             visibility = View.VISIBLE
             setAnimation(R.raw.load_image)
@@ -136,9 +149,11 @@ class DailyFragment : Fragment() {
             })
             .into(binding.image)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val inputMethodManager = requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
         adapterList = SearchAdapter() {
             binding.tieSearch.setText(it)
@@ -171,7 +186,10 @@ class DailyFragment : Fragment() {
             if (binding.tieSearch.text.toString().trim().uppercase(Locale.ROOT)
                 == viewModel.serie!!.name.uppercase(Locale.ROOT)
             ) {
-                //viewModel.updetePoint()
+                if(!viewModel.local){
+                    viewModel.updatePoint()
+                    refreshHeader()
+                }
                 showCongratulatoryMessage()
                 findNavController().popBackStack()
             } else {
@@ -182,6 +200,7 @@ class DailyFragment : Fragment() {
                     newSerie.category == viewModel.serie!!.category -> {
                         listGreen.add(newSerie.category.toString())
                     }
+
                     else -> {
                         listRed.add(newSerie.category.toString())
                     }
@@ -193,17 +212,17 @@ class DailyFragment : Fragment() {
 
             if (NumImage < 3 && !viewModel.local) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-                if(NumImage == LastImage){
+                if (NumImage == LastImage) {
                     showError()
                 }
                 NumImage++
-                if(NumImage > LastImage){
+                if (NumImage > LastImage) {
                     LastImage = NumImage
                 }
                 loadImage()
-            }else if(NumImage < 3 && viewModel.local){
+            } else if (NumImage < 3 && viewModel.local) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-                if(NumImage == LastImage){
+                if (NumImage == LastImage) {
                     showError()
                 }
                 NumImage++
@@ -217,7 +236,7 @@ class DailyFragment : Fragment() {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
                 NumImage--
                 loadImage()
-            }else if(NumImage > 1 && viewModel.local){
+            } else if (NumImage > 1 && viewModel.local) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
                 NumImage--
                 showError()
@@ -230,13 +249,21 @@ class DailyFragment : Fragment() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
         builder.setTitle("¿Desea sacrificar dos vidas para mostrar la lista completa?")
         builder.setPositiveButton("Si") { _, _ ->
-            viewModel.help = false
             showError()
             showError()
-            if(viewModel.serie?.guessType == GuessType.COUNTRY){
-                adapterList.update(viewModel.getCountryNameList())
-            }else{
-                adapterList.update(viewModel.getSerieList().map { it.name }.toMutableList())
+            when(viewModel.serie?.guessType){
+                GuessType.COUNTRY ->{
+                    adapterList.update(viewModel.getCountryNameList())
+                }
+                GuessType.FOOTBALL ->{
+                    adapterList.update(viewModel.getPlayerNameList().toMutableList())
+                }
+                GuessType.SERIE ->{
+
+                }
+                else -> {
+                    adapterList.update(viewModel.getSerieList().map { it.name }.toMutableList())
+                }
             }
 
         }
@@ -274,9 +301,14 @@ class DailyFragment : Fragment() {
     }
 
     private fun showCongratulatoryMessage() {
+        var mesage = ""
+        if(viewModel.local)
+            mesage = "Has superado el nivel: ${viewModel.serie!!.name}."
+        else
+            mesage = "Has superado el nivel: ${viewModel.serie!!.name}. Has obtenido ${viewModel.point} puntos"
         val builder = AlertDialog.Builder(context)
         builder.setTitle("¡Felicidades!")
-        builder.setMessage("Has superado el nivel: ${viewModel.serie!!.name}")
+        builder.setMessage(mesage)
         builder.setPositiveButton("Aceptar") { dialog, _ ->
 
             dialog.dismiss()
@@ -310,7 +342,7 @@ class DailyFragment : Fragment() {
     private fun showHelpMessage() {
         val builder = AlertDialog.Builder(context)
         var guessName = ""
-        when(viewModel.serie?.guessType){
+        when (viewModel.serie?.guessType) {
             GuessType.COUNTRY -> guessName = "El pais"
             GuessType.SERIE -> guessName = "La serie"
             GuessType.FOOTBALL -> guessName = "El jugador"
@@ -320,8 +352,8 @@ class DailyFragment : Fragment() {
         builder.setMessage(
             "$guessName termina por: ${
                 viewModel.serie!!.name.substring(
-                    viewModel.serie!!.name.length - 3,
-                    viewModel.serie!!.name.length 
+                    viewModel.serie!!.name.length - 2,
+                    viewModel.serie!!.name.length
                 )
             }"
         )
@@ -345,6 +377,7 @@ class DailyFragment : Fragment() {
 
     private fun showError() {
         viewModel.error++
+        viewModel.point -= 5
         when (viewModel.error) {
             1 -> binding.imgError1.setImageResource(R.drawable.cancelar)
             2 -> binding.imgError2.setImageResource(R.drawable.cancelar)
@@ -360,6 +393,7 @@ class DailyFragment : Fragment() {
                 showDegoratoryMessage()
                 findNavController().popBackStack()
             }
+
             else -> {
                 showDegoratoryMessage()
                 findNavController().popBackStack()

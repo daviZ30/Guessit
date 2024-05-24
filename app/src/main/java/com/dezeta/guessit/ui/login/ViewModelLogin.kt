@@ -153,12 +153,12 @@ class ViewModelLogin : ViewModel() {
     fun signInGoogle(credential: AuthCredential, email: String?) {
         FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                user = User(
+                /*user = User(
                     email ?: "",
                     0,
                     ProviderType.GOOGLE
                 )
-                saveUser(user!!)
+                saveUser(user!!)*/
                 result.value = Resource.Success(email)
             } else {
                 result.value =

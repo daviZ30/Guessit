@@ -15,7 +15,7 @@ interface GuessDao {
     @Query("DELETE FROM guess WHERE id = :id")
     fun deleteFromId(id: String)
 
-    @Query("SELECT * FROM guess WHERE category == 'Local'")
+    @Query("SELECT * FROM guess WHERE guessType == 'LOCAL'")
     fun selectAllLocal(): List<Guess>
 
     @Query("SELECT * FROM guess WHERE guessType == 'SERIE'")
@@ -23,6 +23,8 @@ interface GuessDao {
     @Query("SELECT * FROM guess WHERE guessType == 'COUNTRY'")
     fun selectAllCountry(): List<Guess>
 
+    @Query("SELECT * FROM guess WHERE guessType == 'FOOTBALL'")
+    fun selectAllPlayer(): List<Guess>
 
     @Query("SELECT g.name FROM guess g WHERE guessType == 'SERIE'")
     fun selectSerieName(): List<String>

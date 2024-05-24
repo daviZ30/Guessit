@@ -25,14 +25,13 @@ class ViewModelMain : ViewModel() {
     fun loadUser(email: String) {
         dataBase.collection("users").document(email).get().addOnSuccessListener {
             user.value = User(
-                it.get("email") as String, /* it.get("point") as Int*/0,
+                it.get("email") as String, (it.get("point") as Number).toInt(),
                 ProviderType.valueOf(it.get("provider") as String),
             )
             state.value = MainState.UserSuccess(
                 user.value!!
             )
         }
-
     }
 
     fun saveUser(u: User) {
@@ -50,7 +49,7 @@ class ViewModelMain : ViewModel() {
 
     fun saveImageProfile(manager: CloudStorageManager, uri: Uri) {
         viewModelScope.launch {
-            manager.updateFile(user.value!!.email,uri)
+            manager.updateFile(user.value!!.email, uri)
             getUserProfileImageByEmail(manager)
         }
 

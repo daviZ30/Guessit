@@ -73,22 +73,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView6" />
 
-            <com.github.nikartm.button.FitButton
-                android:id="@+id/btnCategoty"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:paddingHorizontal="40dp"
-                app:fb_backgroundColor="@color/BlueRange5"
-                app:fb_cornerRadius="12dp"
-                app:fb_icon="@drawable/category"
-                app:fb_iconColor="#FFF"
-                app:fb_iconPosition="left"
-                app:fb_shape="circle"
-                app:layout_constraintBottom_toBottomOf="@+id/navBtnEditProfile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/navBtnEditProfile" />
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnCategoty"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:paddingHorizontal="40dp"
+            app:fb_backgroundColor="@color/BlueRange5"
+            app:fb_cornerRadius="12dp"
+            app:fb_icon="@drawable/category"
+            app:fb_iconColor="#FFF"
+            app:fb_iconPosition="left"
+            app:fb_shape="circle"
+            app:layout_constraintBottom_toBottomOf="@+id/btnNext"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
             <com.github.nikartm.button.FitButton
@@ -131,22 +130,22 @@
                     android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSearch"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="1dp"
-                android:maxHeight="220dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@+id/tilSearch"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/navBtnEditProfile"
-                app:reverseLayout="true"
-                app:stackFromEnd="true" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearch"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="1dp"
+            android:maxHeight="220dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/tilSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnNext"
+            app:reverseLayout="true"
+            app:stackFromEnd="true" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvDailyHelp"
@@ -157,6 +156,7 @@
                 android:layout_marginEnd="16dp"
                 app:cardBackgroundColor="@color/gris_transparente"
                 app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

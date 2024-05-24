@@ -45,6 +45,15 @@ class ViewModelMenu : ViewModel() {
         previousNum = r
         return lista[r]
     }
+    fun getPlayer(): Guess {
+        val lista = Repository.getPlayerList()
+        var r:Int
+        do {
+            r = Random.nextInt(lista.size)
+        }while (r == previousNum)
+        previousNum = r
+        return lista[r]
+    }
     fun getState(): LiveData<ExtraState> {
         return state
     }
@@ -57,25 +66,20 @@ class ViewModelMenu : ViewModel() {
     fun getAllUserAccounts() {
         val usersRef = dataBase.collection("users")
         usersRef.get().addOnCompleteListener { task ->
+            userList.clear()
             if (task.isSuccessful) {
                 for (document in task.result) {
-                    val documentId = document.id
-                    val userData = document.data
-                    // Aquí puedes procesar los datos de cada documento
-                    // Por ejemplo, imprimir el ID y los datos del documento
-                    println("ID del documento: $documentId")
-                    println("Datos del documento: $userData")
-
-                    userList.add(
-                        User(
-                            userData.get("email") as String,
-                            (userData.get("point") as Number).toInt(),
-                            ProviderType.valueOf(userData.get("provider") as String),
-                        )
+                     val userData = document.data
+                    var user = User(
+                        userData["email"] as String,
+                        (userData["point"] as Number).toInt(),
+                        ProviderType.valueOf(userData["provider"] as String),
                     )
-                    state.value = ExtraState.refreshUserList
-
+                    userList.add(
+                        user
+                    )
                 }
+               state.value = ExtraState.refreshUserList
             } else {
                 println("Error al obtener documentos: ${task.exception}")
             }

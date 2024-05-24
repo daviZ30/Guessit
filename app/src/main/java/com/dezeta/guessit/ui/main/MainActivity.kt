@@ -31,6 +31,7 @@ import com.dezeta.guessit.databinding.ActivityMainBinding
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.ui.login.LoginActivity
 import com.dezeta.guessit.utils.CloudStorageManager
+import com.dezeta.guessit.utils.Locator
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
@@ -131,6 +132,7 @@ class MainActivity : AppCompatActivity() {
     private fun setup() {
         val bundle = intent.extras
         var email = bundle?.getString("email") as String
+        Locator.email = email
         viewModel.loadUser(email)
         viewModel.loadDatabase()
         manager = CloudStorageManager()

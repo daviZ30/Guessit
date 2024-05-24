@@ -300,7 +300,7 @@ abstract class SerieDataBase : RoomDatabase() {
                     imgDao().insert(Img("country14", "https://i.postimg.cc/6qSJ7NVM/ando2.png", 2))
                     imgDao().insert(Img("country14", "https://i.postimg.cc/QNnrYpLc/ando3.png", 3))
 
-                    GuessDao().insert(Guess("country15","Arabia Saudita", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    GuessDao().insert(Guess("country15","Arabia Saudí", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
                     imgDao().insert(Img("country15", "https://i.postimg.cc/pdBwfjYh/arabia1.png", 1))
                     imgDao().insert(Img("country15", "https://i.postimg.cc/y804NtDT/arabia2.png", 2))
                     imgDao().insert(Img("country15", "https://i.postimg.cc/4dLjMT0X/arabia3.png", 3))
@@ -344,6 +344,115 @@ abstract class SerieDataBase : RoomDatabase() {
                     imgDao().insert(Img("country23", "https://i.postimg.cc/3RmnjQHL/salomon1.jpg", 1))
                     imgDao().insert(Img("country23", "https://i.postimg.cc/RhTd81hK/salomon2.jpg", 2))
                     imgDao().insert(Img("country23", "https://i.postimg.cc/G3PXHRKt/salomon3.jpg", 3))
+
+                    GuessDao().insert(Guess("player1","Lionel Messi", Difficulty.Easy, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player1", "https://i.postimg.cc/pXj5sq35/messi1.png", 1))
+                    imgDao().insert(Img("player1", "https://i.postimg.cc/7ZyGdSys/messi2.png", 2))
+                    imgDao().insert(Img("player1", "https://i.postimg.cc/t4tZj7qX/messi3.png", 3))
+
+                    GuessDao().insert(Guess("player2","Pelé", Difficulty.Easy, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player2", "https://i.postimg.cc/6p3TGKCK/pele1.png", 1))
+                    imgDao().insert(Img("player2", "https://i.postimg.cc/zvgvPG2Y/pele2.png", 2))
+                    imgDao().insert(Img("player2", "https://i.postimg.cc/YjB0cBTG/pele3.png", 3))
+
+                    GuessDao().insert(Guess("player3","Zinedine Zidane", Difficulty.Easy, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player3", "https://i.postimg.cc/1tNqVShX/zidane1.png", 1))
+                    imgDao().insert(Img("player3", "https://i.postimg.cc/D0kbqNng/zidane2.png", 2))
+                    imgDao().insert(Img("player3", "https://i.postimg.cc/kGQRwy5d/zidane3.png", 3))
+
+                    GuessDao().insert(Guess("player4","Ronaldo Nazário", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player4", "https://i.postimg.cc/zvgFNWXd/ronaldo1.png", 1))
+                    imgDao().insert(Img("player4", "https://i.postimg.cc/J7Dqjwcb/ronaldo2.png", 2))
+                    imgDao().insert(Img("player4", "https://i.postimg.cc/tRKz5r28/ronaldo3.png", 3))
+
+                    GuessDao().insert(Guess("player5","Alfredo Di Stéfano", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player5", "https://i.postimg.cc/vTffks3k/stefano1.png", 1))
+                    imgDao().insert(Img("player5", "https://i.postimg.cc/vBp50BL5/stefano2.png", 2))
+                    imgDao().insert(Img("player5", "https://i.postimg.cc/h4dLfLcs/stefano3.png", 3))
+
+                    GuessDao().insert(Guess("player6","Paolo Maldini", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player6", "https://i.postimg.cc/pV4nQgct/maldini1.png", 1))
+                    imgDao().insert(Img("player6", "https://i.postimg.cc/5yYQd30G/maldini2.png", 2))
+                    imgDao().insert(Img("player6", "https://i.postimg.cc/tJKZXxng/maldini3.png", 3))
+
+                    GuessDao().insert(Guess("player7","Ronaldinho", Difficulty.Easy, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player7", "https://i.postimg.cc/d1D9WgMc/ronaldinho1.png", 1))
+                    imgDao().insert(Img("player7", "https://i.postimg.cc/5ts3SbRm/ronaldinho2.png", 2))
+                    imgDao().insert(Img("player7", "https://i.postimg.cc/76cnjXDG/ronaldinho3.png", 3))
+
+                    GuessDao().insert(Guess("player8","Garrincha", Difficulty.Difficult, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player8", "https://i.postimg.cc/G2Mv1tjB/garrincha1.png", 1))
+                    imgDao().insert(Img("player8", "https://i.postimg.cc/5y6L9JPs/garrincha2.png", 2))
+                    imgDao().insert(Img("player8", "https://i.postimg.cc/mkJMtnJB/garrincha3.png", 3))
+
+                    GuessDao().insert(Guess("player9","Andrés Iniesta", Difficulty.Easy, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player9", "https://i.postimg.cc/P5mZ524n/iniesta1.png", 1))
+                    imgDao().insert(Img("player9", "https://i.postimg.cc/W1RgVQ07/iniesta2.png", 2))
+                    imgDao().insert(Img("player9", "https://i.postimg.cc/d06y83pW/iniesta3.png", 3))
+
+                    GuessDao().insert(Guess("player10","Xavi Hernández", Difficulty.Easy, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player10", "https://i.postimg.cc/DwBst5Pv/xavi1.png", 1))
+                    imgDao().insert(Img("player10", "https://i.postimg.cc/k5G898Tx/xavi2.png", 2))
+                    imgDao().insert(Img("player10", "https://i.postimg.cc/FK6SKR6w/xavi3.png", 3))
+
+                    GuessDao().insert(Guess("player11","Michael Owen", Difficulty.Difficult, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player11", "https://i.postimg.cc/zfxyyMH6/owen.png", 1))
+                    imgDao().insert(Img("player11", "https://i.postimg.cc/XJXpd8wJ/owen2.png", 2))
+                    imgDao().insert(Img("player11", "https://i.postimg.cc/853sH6Hb/owen3.png", 3))
+
+                    GuessDao().insert(Guess("player12","Fabio Cannavaro", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player12", "https://i.postimg.cc/63BhXDJP/canavaro1.png", 1))
+                    imgDao().insert(Img("player12", "https://i.postimg.cc/Y09f4YSf/canavaro2.png", 2))
+                    imgDao().insert(Img("player12", "https://i.postimg.cc/qBbxPbmm/canavaro3.png", 3))
+
+                    GuessDao().insert(Guess("player13","Fabio Grosso", Difficulty.Difficult, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player13", "https://i.postimg.cc/0Q573D7R/groso1.png", 1))
+                    imgDao().insert(Img("player13", "https://i.postimg.cc/c1bf9KH2/groso2.png", 2))
+                    imgDao().insert(Img("player13", "https://i.postimg.cc/gkL8fYLJ/groso3.png", 3))
+
+                    GuessDao().insert(Guess("player14","Francesco Toldo", Difficulty.Difficult, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player14", "https://i.postimg.cc/nhHBRN7S/toldo1.png", 1))
+                    imgDao().insert(Img("player14", "https://i.postimg.cc/YqB1gvSH/toldo2.png", 2))
+                    imgDao().insert(Img("player14", "https://i.postimg.cc/GhPvjbBs/toldo3.png", 3))
+
+                    GuessDao().insert(Guess("player15","Daniele De Rossi", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player15", "https://i.postimg.cc/65Cf1dPq/rossi1.png", 1))
+                    imgDao().insert(Img("player15", "https://i.postimg.cc/bw89XZXT/rossi2.png", 2))
+                    imgDao().insert(Img("player15", "https://i.postimg.cc/13HcyysZ/rossi3.png", 3))
+
+                    GuessDao().insert(Guess("player16","Leonardo Bonucci", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player16", "https://i.postimg.cc/W4Ln9d9T/bonucci1.png", 1))
+                    imgDao().insert(Img("player16", "https://i.postimg.cc/VNqF2zTM/bonucci2.png", 2))
+                    imgDao().insert(Img("player16", "https://i.postimg.cc/9M1YFJcQ/bonucci3.png", 3))
+
+                    GuessDao().insert(Guess("player17","João Cancelo", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player17", "https://i.postimg.cc/CLRsSGXw/cancelo1.png", 1))
+                    imgDao().insert(Img("player17", "https://i.postimg.cc/VvV9Xvry/cancelo2.png", 2))
+                    imgDao().insert(Img("player17", "https://i.postimg.cc/nh7KQHn5/cancelo3.png", 3))
+
+                    GuessDao().insert(Guess("player18","Andrew Robertson", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player18", "https://i.postimg.cc/8zVt1yvL/roberson1.png", 1))
+                    imgDao().insert(Img("player18", "https://i.postimg.cc/zGSp3nw6/roberson2.png", 2))
+                    imgDao().insert(Img("player18", "https://i.postimg.cc/jjxcfLZ5/roberson3.png", 3))
+
+                    GuessDao().insert(Guess("player19","Marcos Llorente", Difficulty.Medium, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player19", "https://i.postimg.cc/bJv2L8jq/llorente.png", 1))
+                    imgDao().insert(Img("player19", "https://i.postimg.cc/TPfbLg7L/llorente2.png", 2))
+                    imgDao().insert(Img("player19", "https://i.postimg.cc/LX0gb7HL/llorente3.png", 3))
+
+                    GuessDao().insert(Guess("player20","Sergio Ramos", Difficulty.Easy, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player20", "https://i.postimg.cc/mZJmnZ2X/ramos1.png", 1))
+                    imgDao().insert(Img("player20", "https://i.postimg.cc/MZvstfxf/ramos2.png", 2))
+                    imgDao().insert(Img("player20", "https://i.postimg.cc/SN9gb0ny/ramos3.png", 3))
+
+                    GuessDao().insert(Guess("player21","Jadon Sancho", Difficulty.Difficult, Category.NULL ,GuessType.FOOTBALL))
+                    imgDao().insert(Img("player21", "https://i.postimg.cc/1z30tb3V/sancho1.png", 1))
+                    imgDao().insert(Img("player21", "https://i.postimg.cc/d0N2TnhH/sancho2.png", 2))
+                    imgDao().insert(Img("player21", "https://i.postimg.cc/1tgp0669/sancho3.png", 3))
+
+
+
+
 
                 }
             }

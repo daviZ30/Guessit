@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 object Locator {
     public var application: Application? = null
     var ImagePath = "/data/data/com.dezeta.guessit/app_imageDir/"
-
+    var email = ""
 
     //inline, Cuando la llamas se inicializa y te lo da
     public inline val requiredApplication
