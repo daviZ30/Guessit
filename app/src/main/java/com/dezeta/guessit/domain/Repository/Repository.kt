@@ -120,7 +120,6 @@ class Repository {
                 "Ferenc Puskás",
                 "Marco van Basten",
                 "Roberto Baggio",
-                "Paolo Maldini",
                 "Raheem Sterling",
                 "Lev Yashin",
                 "Ronaldinho",
@@ -216,7 +215,6 @@ class Repository {
                 "Fernando Redondo",
                 "Juan Román Riquelme",
                 "Gabriel Batistuta",
-                "Alessandro Nesta",
                 "Paolo Rossi",
                 "Gigi Riva",
                 "Giuseppe Meazza",
@@ -246,7 +244,6 @@ class Repository {
                 "Paolo Cannavaro",
                 "Alessandro Nesta",
                 "Marco Materazzi",
-                "Fabio Grosso",
                 "Andrea Barzagli",
                 "Giorgio Chiellini",
                 "Leonardo Bonucci",
@@ -265,8 +262,6 @@ class Repository {
                 "Angelo Peruzzi",
                 "Gianluca Pagliuca",
                 "Dino Zoff",
-                "Fabio Cannavaro",
-                "Paolo Cannavaro",
                 "Alessandro Nesta",
                 "Marco Materazzi",
                 "Fabio Grosso",
@@ -385,7 +380,5 @@ class Repository {
                 "Jules Koundé"
             )
         }
-
-
     }
 }
