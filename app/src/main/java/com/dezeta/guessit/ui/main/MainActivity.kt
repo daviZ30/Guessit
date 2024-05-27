@@ -6,8 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -28,7 +26,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityMainBinding
-import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.ui.login.LoginActivity
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
@@ -92,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val headerView: View = navigationView.getHeaderView(0)
 
-        val btnEditProfile = headerView.findViewById<Button>(R.id.navBtnEditProfile)
+        val btnEditProfile = headerView.findViewById<Button>(R.id.navBtnDeleteProfile)
         val imgEditProfile = headerView.findViewById<ImageView>(R.id.navImgEditProfile)
         val tvDrawerName = headerView.findViewById<TextView>(R.id.navTvEmail)
         val tvEmail = headerView.findViewById<TextView>(R.id.navTvEmail)
@@ -106,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnEditProfile.setOnClickListener {
-            if (editProfile) {
+            /*if (editProfile) {
                 viewModel.saveUser(
                     User(
                         viewModel.user.value!!.email,
@@ -124,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                 editProfile = true
                 tvDrawerName.visibility = View.INVISIBLE
                 imgEditProfile.visibility = View.VISIBLE
-            }
+            }*/
 
         }
     }
@@ -166,7 +163,6 @@ class MainActivity : AppCompatActivity() {
         Glide.with(this)
             .load(url)
             .into(navImg)
-
     }
 
     private fun refreshHeader() {

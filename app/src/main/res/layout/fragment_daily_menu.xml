@@ -209,7 +209,7 @@
             app:fb_iconMarginEnd="40dp"
             app:fb_iconPosition="left"
             app:fb_shape="rectangle"
-            app:fb_text="Película Diario"
+            app:fb_text="Serie Diaria"
             app:fb_textColor="#FFF"
             app:fb_textSize="23sp"
             app:layout_constraintEnd_toEndOf="parent"

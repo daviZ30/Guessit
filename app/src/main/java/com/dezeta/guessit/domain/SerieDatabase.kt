@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.dezeta.guessit.domain.Dao.AnswerTestDao
 import com.dezeta.guessit.domain.Dao.ImgDao
 import com.dezeta.guessit.domain.Dao.InfoDao
 import com.dezeta.guessit.domain.Dao.GuessDao
@@ -13,6 +14,7 @@ import com.dezeta.guessit.domain.converter.CategoryConverter
 import com.dezeta.guessit.domain.converter.DifficultyConverter
 import com.dezeta.guessit.domain.converter.GuessTypeConverter
 import com.dezeta.guessit.domain.converter.InstantConverter
+import com.dezeta.guessit.domain.entity.AnswerTest
 import com.dezeta.guessit.domain.entity.Category
 import com.dezeta.guessit.domain.entity.Difficulty
 import com.dezeta.guessit.domain.entity.Img
@@ -27,7 +29,7 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 
 @Database(
-    entities = [Img::class, Info::class, Guess::class],
+    entities = [Img::class, Info::class, Guess::class, AnswerTest::class],
     version = 1,
     exportSchema = false
 )
@@ -42,6 +44,7 @@ abstract class SerieDataBase : RoomDatabase() {
     abstract fun imgDao(): ImgDao
     abstract fun infoDao(): InfoDao
     abstract fun GuessDao(): GuessDao
+    abstract fun AnswerTestDao(): AnswerTestDao
 
 
     companion object {
@@ -450,6 +453,29 @@ abstract class SerieDataBase : RoomDatabase() {
                     imgDao().insert(Img("player21", "https://i.postimg.cc/d0N2TnhH/sancho2.png", 2))
                     imgDao().insert(Img("player21", "https://i.postimg.cc/1tgp0669/sancho3.png", 3))
 
+                    GuessDao().insert(Guess("test1","¿En qué película de ciencia ficción se encuentra la inteligencia artificial HAL 9000?", Difficulty.Medium, Category.NULL ,GuessType.TEST))
+                    imgDao().insert(Img("test1", "https://i.postimg.cc/pV52gJMf/test1.png", 0))
+                    AnswerTestDao().insert(AnswerTest("test1","2001: Una odisea del espacio",true))
+                    AnswerTestDao().insert(AnswerTest("test1","Blade Runner",false))
+                    AnswerTestDao().insert(AnswerTest("test1","Matrix",false))
+                    AnswerTestDao().insert(AnswerTest("test1","Ex Machina",false))
+
+                    GuessDao().insert(Guess("test2","¿Cuál de las siguientes películas ganó el premio a la Mejor Película en los Premios de la Academia (Oscar) en 2020?", Difficulty.Medium, Category.NULL ,GuessType.TEST))
+                    imgDao().insert(Img("test2", "https://i.postimg.cc/wTK6HR9S/test2.png", 0))
+                    AnswerTestDao().insert(AnswerTest("test2","Parasite",true))
+                    AnswerTestDao().insert(AnswerTest("test2","Joker",false))
+                    AnswerTestDao().insert(AnswerTest("test2","1917",false))
+                    AnswerTestDao().insert(AnswerTest("test2","Once Upon a Time in Hollywood",false))
+
+                    GuessDao().insert(Guess("test3","¿Cuál de las siguientes películas ganó el premio a la Mejor Película en los Premios de la Academia (Oscar) en 1994?", Difficulty.Difficult, Category.NULL ,GuessType.TEST))
+                    imgDao().insert(Img("test3", "https://i.postimg.cc/bNQqvYJd/test3.png", 0))
+                    AnswerTestDao().insert(AnswerTest("test3","Pulp Fiction",false))
+                    AnswerTestDao().insert(AnswerTest("test3","Forrest Gump",true))
+                    AnswerTestDao().insert(AnswerTest("test3","El silencio de los corderos",false))
+                    AnswerTestDao().insert(AnswerTest("test3","Titanic",false))
+                    /*
+                    genera un tipo test relacionado con alguna pelicula, con 5 preguntas, cada una de ella con 4 respuestas (Dime la correcta). Con un nivel de difficultad medio alto
+                     */
 
 
 

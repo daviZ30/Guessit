@@ -113,14 +113,15 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/navBtnEditProfile"
+            android:id="@+id/navBtnDeleteProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:gravity="center"
             android:paddingVertical="6dp"
+            android:backgroundTint="@color/BlueRange4"
             android:paddingHorizontal="10dp"
-            android:text="Editar"
+            android:text="Eliminar Cuenta"
             android:textColor="@color/white"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"

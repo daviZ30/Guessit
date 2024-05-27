@@ -20,6 +20,8 @@ interface GuessDao {
 
     @Query("SELECT * FROM guess WHERE guessType == 'SERIE'")
     fun selectAllSerie(): List<Guess>
+    @Query("SELECT * FROM guess WHERE guessType == 'TEST'")
+    fun selectAllTest(): List<Guess>
     @Query("SELECT * FROM guess WHERE guessType == 'COUNTRY'")
     fun selectAllCountry(): List<Guess>
 

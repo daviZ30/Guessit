@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="menu.test.TestFragment" >
+
+
+    <ImageView
+        android:id="@+id/imgBackTest"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:src="@drawable/edit_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imgBackTest2"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:visibility="invisible"
+        android:src="@drawable/edit_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imgBackTest3"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:visibility="invisible"
+        android:src="@drawable/edit_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/btnTest1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:paddingVertical="8dp"
+        app:fb_backgroundColor="@color/BlueRange1_1"
+        app:fb_cornerRadius="30dp"
+        app:fb_shape="rectangle"
+        app:fb_text="@string/category_pais_diario"
+        app:fb_textColor="#FFF"
+        app:fb_textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBackTest" />
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/btnTest2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:paddingVertical="8dp"
+        app:fb_backgroundColor="@color/BlueRange1_1"
+        app:fb_cornerRadius="30dp"
+        app:fb_shape="rectangle"
+        app:fb_text="@string/category_pais_diario"
+        app:fb_textColor="#FFF"
+        app:fb_textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTest1" />
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/btnTest3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:paddingVertical="8dp"
+        app:fb_backgroundColor="@color/BlueRange1_1"
+        app:fb_cornerRadius="30dp"
+        app:fb_shape="rectangle"
+        app:fb_text="@string/category_pais_diario"
+        app:fb_textColor="#FFF"
+        app:fb_textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTest2" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieLoadAnimation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="5dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imgBackTest"
+        app:layout_constraintEnd_toEndOf="@+id/imgBackTest"
+        app:layout_constraintStart_toStartOf="@+id/imgBackTest"
+        app:layout_constraintTop_toTopOf="@+id/imgBackTest" />
+
+    <com.github.nikartm.button.FitButton
+        android:id="@+id/btnTest4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:paddingVertical="8dp"
+        app:fb_backgroundColor="@color/BlueRange1_1"
+        app:fb_cornerRadius="30dp"
+        app:fb_shape="rectangle"
+        app:fb_text="@string/category_pais_diario"
+        app:fb_textColor="#FFF"
+        app:fb_textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTest3" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/blue_transparent_2"
+        app:layout_constraintBottom_toBottomOf="@+id/imgBackTest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgBackTest" >
+
+        <TextView
+            android:id="@+id/tvTestTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="¿Esto es un ejemplo muy bueno?"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

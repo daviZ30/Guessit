@@ -4,5 +4,6 @@ enum class GuessType {
     LOCAL,
     SERIE,
     FOOTBALL,
-    COUNTRY
+    COUNTRY,
+    TEST
 }

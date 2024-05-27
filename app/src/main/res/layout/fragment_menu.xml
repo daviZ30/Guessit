@@ -28,9 +28,8 @@
 
             <ImageView
                 android:id="@+id/imgLocalGame"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/Image_menu_with"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:src="@drawable/game" />
 
             <TextView
@@ -68,9 +67,8 @@
 
             <ImageView
                 android:id="@+id/imgDaily"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/Image_menu_with"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:src="@drawable/calendar" />
 
             <TextView
@@ -80,7 +78,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/serie_diaria"
+                android:text="@string/Daily_Title"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -88,7 +86,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cvCategory"
+        android:id="@+id/cvTest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -108,9 +106,8 @@
 
             <ImageView
                 android:id="@+id/imgCategory"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/Image_menu_with"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:src="@drawable/category_menu" />
 
             <TextView
@@ -120,7 +117,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/categor_a"
+                android:text="@string/test_title"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -138,7 +135,7 @@
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvCategory">
+        app:layout_constraintTop_toBottomOf="@+id/cvTest">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -148,9 +145,8 @@
 
             <ImageView
                 android:id="@+id/imgLevels"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/Image_menu_with"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:src="@drawable/levels" />
 
             <TextView
@@ -188,9 +184,8 @@
 
             <ImageView
                 android:id="@+id/imgDuel"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/Image_menu_with"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:src="@drawable/duel" />
 
             <TextView

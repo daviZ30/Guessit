@@ -9,13 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.dezeta.guessit.R
-import com.dezeta.guessit.databinding.FragmentCategoryBinding
+import com.dezeta.guessit.databinding.FragmentDailyMenuBinding
 import com.dezeta.guessit.utils.CloudStorageManager
 
 
-class CategoryFragment : Fragment() {
+class DailyMenuFragment : Fragment() {
 
-    private var _binding: FragmentCategoryBinding? = null
+    private var _binding: FragmentDailyMenuBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: ViewModelMenu by viewModels()
@@ -32,7 +32,7 @@ class CategoryFragment : Fragment() {
     ): View? {
 
         // Inflate the layout for this fragment
-        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        _binding = FragmentDailyMenuBinding.inflate(inflater, container, false)
         binding.viewmodel = this.viewModel
         manager = CloudStorageManager()
         binding.lifecycleOwner = this
@@ -44,6 +44,13 @@ class CategoryFragment : Fragment() {
         binding.btnDailyCountry.setOnClickListener {
             val bundle = Bundle().apply {
                 putSerializable("serie", viewModel.getCountry())
+                putBoolean("local", false)
+            }
+            findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
+        }
+        binding.btnDailyGame.setOnClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("serie", viewModel.getSerie())
                 putBoolean("local", false)
             }
             findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)

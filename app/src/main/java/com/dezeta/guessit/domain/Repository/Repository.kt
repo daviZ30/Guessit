@@ -51,7 +51,9 @@ class Repository {
         fun getSeriesList(): List<Guess> {
             return SerieDataBase.getInstance().GuessDao().selectAllSerie()
         }
-
+        fun getTestList(): List<Guess> {
+            return SerieDataBase.getInstance().GuessDao().selectAllTest()
+        }
         fun getCountryList(): List<Guess> {
             return SerieDataBase.getInstance().GuessDao().selectAllCountry()
         }
@@ -84,6 +86,15 @@ class Repository {
                 Resource.Error(e)
             }
         }
+        fun getAnswerFromId(id: String): Resource {
+            return try {
+                Resource.Success(SerieDataBase.getInstance().AnswerTestDao().selectFromId(id))
+            } catch (e: SQLiteException) {
+                println(e.message)
+                Resource.Error(e)
+            }
+        }
+
 
         fun getSerieName(): List<String>? {
             return try {
@@ -234,7 +245,6 @@ class Repository {
                 "Marco Materazzi",
                 "Francesco Totti",
                 "Alessandro Del Piero",
-                "Roberto Baggio",
                 "Gianluigi Buffon",
                 "Francesco Toldo",
                 "Angelo Peruzzi",
@@ -256,7 +266,6 @@ class Repository {
                 "Simone Perrotta",
                 "Francesco Totti",
                 "Alessandro Del Piero",
-                "Roberto Baggio",
                 "Gianluigi Buffon",
                 "Francesco Toldo",
                 "Angelo Peruzzi",
@@ -380,5 +389,9 @@ class Repository {
                 "Jules Koundé"
             )
         }
+
+
+
+
     }
 }

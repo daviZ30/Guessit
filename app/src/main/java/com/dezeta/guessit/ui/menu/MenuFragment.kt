@@ -37,15 +37,20 @@ class MenuFragment : Fragment() {
         binding.cvLevels.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
-        binding.cvCategory.setOnClickListener {
-            findNavController().navigate(R.id.action_MenuFragment_to_categoryFragment)
-        }
-        binding.cvDaily.setOnClickListener {
+        binding.cvTest.setOnClickListener {
             val bundle = Bundle().apply {
-                putSerializable("serie", viewModel.getSerie())
+                var list = viewModel.getTestList()
+                putSerializable("guess0",list[0])
+                putSerializable("guess1",list[1])
+                putSerializable("guess2",list[2])
+
                 putBoolean("local", false)
             }
-            findNavController().navigate(R.id.action_FirstFragment_to_dailyFragment, bundle)
+            findNavController().navigate(R.id.action_MenuFragment_to_testFragment,bundle)
+        }
+        binding.cvDaily.setOnClickListener {
+
+            findNavController().navigate(R.id.action_MenuFragment_to_categoryFragment)
         }
         binding.cvDuel.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_duelFragment)

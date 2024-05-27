@@ -1,6 +1,5 @@
 package com.dezeta.guessit.ui.menu
 
-import android.provider.ContactsContract.CommonDataKinds.Email
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +9,6 @@ import com.dezeta.guessit.domain.Repository.Repository
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
-import com.dezeta.guessit.ui.main.MainState
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -28,48 +26,69 @@ class ViewModelMenu : ViewModel() {
     var previousNum: Int? = null
     fun getSerie(): Guess {
         val lista = Repository.getSeriesList()
-        var r:Int
+        var r: Int
         do {
             r = Random.nextInt(lista.size)
-        }while (r == previousNum)
+        } while (r == previousNum)
         previousNum = r
         return lista[r]
+    }
+
+    fun getTestList(): List<Guess> {
+        val list = Repository.getTestList()
+        println()
+        val newList = mutableListOf<Guess>()
+        var r: Int = Random.nextInt(list.size)
+        do {
+            val guess = list[r]
+            if (!newList.contains(guess)) {
+                newList.add(guess)
+            }
+            println(newList.size)
+            r = Random.nextInt(list.size)
+        } while (newList.size != 3)
+
+        return newList
     }
 
     fun getCountry(): Guess {
         val lista = Repository.getCountryList()
-        var r:Int
+        var r: Int
         do {
             r = Random.nextInt(lista.size)
-        }while (r == previousNum)
+        } while (r == previousNum)
         previousNum = r
         return lista[r]
     }
+
     fun getPlayer(): Guess {
         val lista = Repository.getPlayerList()
-        var r:Int
+        var r: Int
         do {
             r = Random.nextInt(lista.size)
-        }while (r == previousNum)
+        } while (r == previousNum)
         previousNum = r
         return lista[r]
     }
+
     fun getState(): LiveData<ExtraState> {
         return state
     }
-    fun getUserProfileImageByEmail(manager: CloudStorageManager,email: String,view: ImageView) {
+
+    fun getUserProfileImageByEmail(manager: CloudStorageManager, email: String, view: ImageView) {
         viewModelScope.launch {
-            state.value = ExtraState.refreshUserProfile(view,manager.getUserImages(email))
+            state.value = ExtraState.refreshUserProfile(view, manager.getUserImages(email))
         }
 
     }
+
     fun getAllUserAccounts() {
         val usersRef = dataBase.collection("users")
         usersRef.get().addOnCompleteListener { task ->
             userList.clear()
             if (task.isSuccessful) {
                 for (document in task.result) {
-                     val userData = document.data
+                    val userData = document.data
                     var user = User(
                         userData["email"] as String,
                         (userData["point"] as Number).toInt(),
@@ -79,7 +98,7 @@ class ViewModelMenu : ViewModel() {
                         user
                     )
                 }
-               state.value = ExtraState.refreshUserList
+                state.value = ExtraState.refreshUserList
             } else {
                 println("Error al obtener documentos: ${task.exception}")
             }
