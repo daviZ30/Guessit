@@ -1,6 +1,5 @@
 package com.dezeta.guessit.ui.test
 
-import android.R.id.button3
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -10,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -30,7 +30,7 @@ class TestFragment : Fragment() {
 
     private var _binding: FragmentTestBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TestViewModel by viewModels()
+    private val viewModel: ViewModelTest by viewModels()
     var NumImage = 0
 
     override fun onCreateView(
@@ -306,8 +306,10 @@ class TestFragment : Fragment() {
 
             override fun onAnimationEnd(animation: Animator) {
                 if (success) {
+                    viewModel.point += 10
                     nextTest()
                 } else {
+                    showErrorMessage()
                     findNavController().popBackStack()
                 }
                 stopAnimation(btnMain!!, btn1!!, btn2!!, btn3!!)
@@ -357,6 +359,8 @@ class TestFragment : Fragment() {
     private fun nextTest() {
         NumImage++
         if (NumImage >= 3) {
+            showSuccessMessage()
+            viewModel.updatePoint()
             findNavController().popBackStack()
         } else {
             nextImage()
@@ -381,5 +385,29 @@ class TestFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun showSuccessMessage() {
+        val message = "Has superado el test obteniendo ${viewModel.point} puntos}."
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("¡Felicidades!")
+        builder.setMessage(message)
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showErrorMessage() {
+        val message = "No has superado el test"
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Has Fallado")
+        builder.setMessage(message)
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 }

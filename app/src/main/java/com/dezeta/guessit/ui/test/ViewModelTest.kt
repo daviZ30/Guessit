@@ -6,8 +6,13 @@ import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.AnswerTest
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.Img
+import com.dezeta.guessit.domain.entity.ProviderType
+import com.dezeta.guessit.domain.entity.User
+import com.dezeta.guessit.utils.Locator
+import com.google.firebase.firestore.FirebaseFirestore
 
-class TestViewModel : ViewModel() {
+class ViewModelTest : ViewModel() {
+    var dataBase = FirebaseFirestore.getInstance()
     var tests = mutableListOf<Guess>()
     lateinit var img0: Img
     var answers0: List<AnswerTest>? = null
@@ -16,6 +21,7 @@ class TestViewModel : ViewModel() {
     lateinit var img2: Img
     var answers2: List<AnswerTest>? = null
     var local = false
+    var point = 0;
 
     fun getImageUrl(guess: Guess): Img? {
         return when (val result = Repository.getImageFromId(guess.id)) {
@@ -28,6 +34,24 @@ class TestViewModel : ViewModel() {
         return when (val result = Repository.getAnswerFromId(guess.id)) {
             is Resource.Error -> null
             is Resource.Success<*> -> result.data as List<AnswerTest>
+        }
+    }
+
+    fun updatePoint() {
+        val email = Locator.email
+        dataBase.collection("users").document(email).get().addOnSuccessListener {
+            val p = (it.get("point") as Number).toInt() + point
+            val user = User(
+                it.get("email") as String, p,
+                ProviderType.valueOf(it.get("provider") as String),
+            )
+            dataBase.collection("users").document(user.email).set(
+                hashMapOf(
+                    "provider" to user.provider,
+                    "email" to user.email,
+                    "point" to user.point
+                )
+            )
         }
     }
 }

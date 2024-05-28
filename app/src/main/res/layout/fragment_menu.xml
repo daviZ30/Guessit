@@ -108,7 +108,7 @@
                 android:id="@+id/imgCategory"
                 android:layout_width="@dimen/Image_menu_with"
                 android:layout_height="60dp"
-                android:src="@drawable/category_menu" />
+                android:src="@drawable/test" />
 
             <TextView
                 android:id="@+id/tvCategory"

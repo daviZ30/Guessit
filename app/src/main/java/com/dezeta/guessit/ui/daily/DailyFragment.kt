@@ -186,7 +186,7 @@ class DailyFragment : Fragment() {
             if (binding.tieSearch.text.toString().trim().uppercase(Locale.ROOT)
                 == viewModel.serie!!.name.uppercase(Locale.ROOT)
             ) {
-                if(!viewModel.local){
+                if (!viewModel.local) {
                     viewModel.updatePoint()
                     refreshHeader()
                 }
@@ -209,7 +209,10 @@ class DailyFragment : Fragment() {
 
         }
         binding.btnNext.setOnClickListener {
-
+            binding.btnPrevious.isEnabled = true
+            if (NumImage == 2) {
+                binding.btnNext.isEnabled = false
+            }
             if (NumImage < 3 && !viewModel.local) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
                 if (NumImage == LastImage) {
@@ -231,7 +234,10 @@ class DailyFragment : Fragment() {
             }
         }
         binding.btnPrevious.setOnClickListener {
-
+            binding.btnNext.isEnabled = true
+            if (NumImage == 2) {
+                binding.btnPrevious.isEnabled = false
+            }
             if (NumImage > 1 && !viewModel.local) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
                 NumImage--
@@ -247,24 +253,27 @@ class DailyFragment : Fragment() {
 
     private fun showConfirmationDialog() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-        builder.setTitle("¿Desea sacrificar dos vidas para mostrar la lista completa?")
+        builder.setTitle("¿Desea sacrificar una vida para mostrar la lista completa?")
         builder.setPositiveButton("Si") { _, _ ->
             showError()
-            showError()
-            when(viewModel.serie?.guessType){
-                GuessType.COUNTRY ->{
+            when (viewModel.serie?.guessType) {
+                GuessType.COUNTRY -> {
                     adapterList.update(viewModel.getCountryNameList())
                 }
-                GuessType.FOOTBALL ->{
+
+                GuessType.FOOTBALL -> {
                     adapterList.update(viewModel.getPlayerNameList().toMutableList())
                 }
-                GuessType.SERIE ->{
+
+                GuessType.SERIE -> {
 
                 }
+
                 else -> {
                     adapterList.update(viewModel.getSerieList().map { it.name }.toMutableList())
                 }
             }
+            binding.swShowList.isEnabled = false
 
         }
 
@@ -272,6 +281,8 @@ class DailyFragment : Fragment() {
             binding.swShowList.isChecked = false
         }
         builder.show()
+
+
     }
 
     private fun showCustomDialog() {
@@ -302,10 +313,11 @@ class DailyFragment : Fragment() {
 
     private fun showCongratulatoryMessage() {
         var mesage = ""
-        if(viewModel.local)
+        if (viewModel.local)
             mesage = "Has superado el nivel: ${viewModel.serie!!.name}."
         else
-            mesage = "Has superado el nivel: ${viewModel.serie!!.name}. Has obtenido ${viewModel.point} puntos"
+            mesage =
+                "Has superado el nivel: ${viewModel.serie!!.name}. Has obtenido ${viewModel.point} puntos"
         val builder = AlertDialog.Builder(context)
         builder.setTitle("¡Felicidades!")
         builder.setMessage(mesage)

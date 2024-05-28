@@ -25,6 +25,7 @@ class ViewModelDaily : ViewModel() {
     fun getSerieList(): List<Guess> {
         return Repository.getSeriesList()
     }
+
     fun getPlayerNameList(): List<String> {
         return Repository.getPlayerName()
     }
@@ -40,7 +41,7 @@ class ViewModelDaily : ViewModel() {
 
     fun getFilterList(str: String): MutableList<String> {
         val lista = mutableListOf<String>()
-        when(serie?.guessType){
+        when (serie?.guessType) {
             GuessType.COUNTRY -> {
                 getCountryNameList().forEach {
                     if (it.uppercase().contains(str.uppercase())) {
@@ -48,6 +49,7 @@ class ViewModelDaily : ViewModel() {
                     }
                 }
             }
+
             GuessType.SERIE -> {
                 Repository.getSerieName()?.forEach {
                     if (it.uppercase().contains(str.uppercase())) {
@@ -55,6 +57,7 @@ class ViewModelDaily : ViewModel() {
                     }
                 }
             }
+
             GuessType.FOOTBALL -> {
                 Repository.getPlayerName().forEach {
                     if (it.uppercase().contains(str.uppercase())) {
@@ -62,6 +65,7 @@ class ViewModelDaily : ViewModel() {
                     }
                 }
             }
+
             else -> {
                 Repository.getLocalList().forEach {
                     if (it.name.uppercase().contains(str.uppercase())) {
@@ -92,9 +96,8 @@ class ViewModelDaily : ViewModel() {
         return list
     }
 
-     fun updatePoint() {
-//         val email = FirebaseAuth.getInstance().currentUser!!.email
-         val email = Locator.email
+    fun updatePoint() {
+        val email = Locator.email
         dataBase.collection("users").document(email).get().addOnSuccessListener {
             val p = (it.get("point") as Number).toInt() + point
             val user = User(

@@ -56,22 +56,23 @@
                 app:layout_constraintEnd_toStartOf="@+id/btnCategoty"
                 app:layout_constraintTop_toBottomOf="@+id/cardView6" />
 
-            <com.github.nikartm.button.FitButton
-                android:id="@+id/btnPrevious"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="45dp"
-                android:gravity="center"
-                android:paddingHorizontal="20dp"
-                app:fb_backgroundColor="@color/BlueRange4"
-                app:fb_cornerRadius="12dp"
-                app:fb_shape="rectangle"
-                app:fb_text="Anterior"
-                app:fb_textColor="#FFF"
-                app:fb_textSize="25sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView6" />
+        <com.github.nikartm.button.FitButton
+            android:id="@+id/btnPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="45dp"
+            android:enabled="false"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            app:fb_backgroundColor="@color/BlueRange4"
+            app:fb_cornerRadius="12dp"
+            app:fb_shape="rectangle"
+            app:fb_text="Anterior"
+            app:fb_textColor="#FFF"
+            app:fb_textSize="25sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView6" />
 
         <com.github.nikartm.button.FitButton
             android:id="@+id/btnCategoty"
@@ -255,29 +256,30 @@
             </LinearLayout>
 
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cvShowList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:cardBackgroundColor="@color/gris_transparente"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvShowList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:cardBackgroundColor="@color/gris_transparente"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-                <Switch
-                    android:id="@+id/swShowList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginHorizontal="3dp"
-                    android:backgroundTint="@color/gris_transparente"
-                    android:elevation="2dp"
-                    android:shadowColor="@color/BlueRange1_4"
-                    android:text="Mostrar Lista "
-                    android:textSize="14sp" />
-            </androidx.cardview.widget.CardView>
+            <Switch
+                android:id="@+id/swShowList"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="3dp"
+                android:backgroundTint="@color/gris_transparente"
+                android:elevation="2dp"
+                android:shadowColor="@color/BlueRange1_4"
+                android:text="Mostrar Lista "
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
