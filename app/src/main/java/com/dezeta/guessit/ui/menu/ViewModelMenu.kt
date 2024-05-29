@@ -35,20 +35,7 @@ class ViewModelMenu : ViewModel() {
     }
 
     fun getTestList(): List<Guess> {
-        val list = Repository.getTestList()
-        println()
-        val newList = mutableListOf<Guess>()
-        var r: Int = Random.nextInt(list.size)
-        do {
-            val guess = list[r]
-            if (!newList.contains(guess)) {
-                newList.add(guess)
-            }
-            println(newList.size)
-            r = Random.nextInt(list.size)
-        } while (newList.size != 3)
-
-        return newList
+        return Repository.getTestList()
     }
 
     fun getCountry(): Guess {

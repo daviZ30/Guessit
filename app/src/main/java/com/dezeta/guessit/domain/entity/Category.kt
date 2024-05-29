@@ -9,5 +9,6 @@ enum class Category {
     Police,
     Historial_Fiction,
     Historical_Drama,
+    Medical_Drama,
     NULL
 }

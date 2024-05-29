@@ -26,6 +26,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityMainBinding
+import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.ui.login.LoginActivity
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
     private lateinit var navView: NavigationView
+
     private lateinit var preferences: SharedPreferences.Editor
     private val viewModel: ViewModelMain by viewModels()
     //var file = createImageFile(this)

@@ -9,12 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentMenuBinding
+import com.dezeta.guessit.domain.entity.Guess
 import kotlin.random.Random
 
 class MenuFragment : Fragment() {
     private var random = Random(98765498)
     private var _binding: FragmentMenuBinding? = null
-
+    var testNum = 0
+    lateinit var testlist: List<Guess>
     private val binding get() = _binding!!
 
     private val viewModel: ViewModelMenu by viewModels()
@@ -22,8 +24,11 @@ class MenuFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // findNavController().navigate(R.id.loginFragment)
+        // findNavController().navigate(R.id.loginFragment)
+        testlist = viewModel.getTestList().shuffled()
+        println("------------------------------------------------------------------------------------------------")
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,14 +44,19 @@ class MenuFragment : Fragment() {
         }
         binding.cvTest.setOnClickListener {
             val bundle = Bundle().apply {
-                var list = viewModel.getTestList()
-                putSerializable("guess0",list[0])
-                putSerializable("guess1",list[1])
-                putSerializable("guess2",list[2])
+                if (testNum + 2 >= viewModel.getTestList().size) {
+                    testlist = viewModel.getTestList().shuffled()
+                }
+
+                putSerializable("guess0", testlist[testNum])
+                putSerializable("guess1", testlist[testNum + 1])
+                putSerializable("guess2", testlist[testNum + 2])
+
+                testNum += 3
 
                 putBoolean("local", false)
             }
-            findNavController().navigate(R.id.action_MenuFragment_to_testFragment,bundle)
+            findNavController().navigate(R.id.action_MenuFragment_to_testFragment, bundle)
         }
         binding.cvDaily.setOnClickListener {
 

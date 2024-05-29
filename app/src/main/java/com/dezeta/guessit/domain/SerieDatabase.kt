@@ -223,17 +223,118 @@ abstract class SerieDataBase : RoomDatabase() {
                         "Dark es una serie alemana de ciencia ficción creada por Baran bo Odar y Jantje Friese. La trama se desarrolla en la pequeña ciudad ficticia de Winden, donde cuatro familias están conectadas por secretos oscuros y viajes en el tiempo. A medida que los personajes exploran misterios, paradojas temporales y relaciones complejas, descubrimos que la línea entre pasado, presente y futuro es más delgada de lo que imaginamos. Dark es conocida por su narrativa intrincada, atmósfera sombría y giros sorprendentes. Si te gustan las historias complejas y enigmáticas, esta serie es una excelente elección."
                         )
                     )
-                    GuessDao().insert(Guess("online14","The Good Doctor", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
-                    imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/5052/kyFfVg.png", 0))
-                    imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/6535/Bs3xLH.png", 1))
-                    imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img924/2766/G5vXnQ.jpg", 2))
-                    imgDao().insert(Img("online14", "https://imagizer.imageshack.com/img922/74/X0gWyr.jpg", 3))
-                    infoDao().insert(Info("online14", 8.0, SetFecha("2017-09-25"),
-                        "La serie sigue a Shaun Murphy, un joven cirujano con autismo y síndrome del sabio, mientras trabaja en el ficticio hospital St. Bonaventure en San José, California. A pesar del escepticismo inicial de sus colegas, Shaun demuestra su valía con métodos milagrosos. La serie se estrenó en 2017 y ha sido un fenómeno televisivo en EE. UU."
+
+                    GuessDao().insert(Guess("online14","La que se avecina", Difficulty.Easy, Category.Spanish ,GuessType.SERIE))
+                    imgDao().insert(Img("online14", "https://i.postimg.cc/3r2fjm7r/avecina0.png", 0))
+                    imgDao().insert(Img("online14", "https://i.postimg.cc/KvFq0jvP/avecina1.png", 1))
+                    imgDao().insert(Img("online14", "https://i.postimg.cc/bww6j5nd/avecina2.png", 2))
+                    imgDao().insert(Img("online14", "https://i.postimg.cc/NjCdGx8D/avecina3.png", 3))
+                    infoDao().insert(Info("online14", 7.5, SetFecha("2007-04-22"),
+                        "La que se avecina es una serie de comedia española que sigue las peripecias de los variopintos vecinos en el complejo residencial Mirador de Montepinar. En ella, encontrarás situaciones cómicas, enredos amorosos y personajes extravagantes."
+                          )
+                    )
+
+                    GuessDao().insert(Guess("online15","Aquí no hay quien viva", Difficulty.Easy, Category.Spanish ,GuessType.SERIE))
+                    imgDao().insert(Img("online15", "https://i.postimg.cc/bvMVgRsr/aqui0.png", 0))
+                    imgDao().insert(Img("online15", "https://i.postimg.cc/G2y75syQ/aqui1.png", 1))
+                    imgDao().insert(Img("online15", "https://i.postimg.cc/T1jkRMQ5/aqui2.png", 2))
+                    imgDao().insert(Img("online15", "https://i.postimg.cc/yxCQ4Yhz/aqui3.png", 3))
+                    infoDao().insert(Info("online15", 8.2, SetFecha("2003-09-07"),
+                        "Aquí no hay quien viva es una serie de televisión española de género humorístico que se emitió en Antena 3 entre el 7 de septiembre de 2003 y el 6 de julio de 2006. La trama gira en torno a la vida de una peculiar comunidad de vecinos en Desengaño 21, un edificio con tres pisos, dos casas por planta, un ático, una portería y un local contiguo."
+                         )
+                    )
+
+                    GuessDao().insert(Guess("online16","Los Serrano", Difficulty.Easy, Category.Spanish ,GuessType.SERIE))
+                    imgDao().insert(Img("online16", "https://i.postimg.cc/7h4VttDH/serrano0.png", 0))
+                    imgDao().insert(Img("online16", "https://i.postimg.cc/tCXkhc2D/serrano1.png", 1))
+                    imgDao().insert(Img("online16", "https://i.postimg.cc/7hNNF1Yg/serrano2.png", 2))
+                    imgDao().insert(Img("online16", "https://i.postimg.cc/kMNwRCFB/serrano3.png", 3))
+                    infoDao().insert(Info("online16", 7.5, SetFecha("2003-04-22"),
+                        "Los Serrano es una serie de televisión española de comedia dramática producida por Globomedia. Se emitió originalmente en la cadena española Telecinco y consta de 8 temporadas con un total de 147 episodios. La trama transcurre en el ficticio barrio de Santa Justa, localizado en la Ribera del río Manzanares en Madrid, donde la familia regenta la taberna “Hermanos Serrano”. "
                         )
                     )
 
-                    GuessDao().insert(Guess("country1","Spain", Difficulty.Medium, Category.NULL ,GuessType.COUNTRY))
+                    GuessDao().insert(Guess("online17","Aida", Difficulty.Medium, Category.Spanish ,GuessType.SERIE))
+                    imgDao().insert(Img("online17", "https://i.postimg.cc/FsgqvcnC/aida0.png", 0))
+                    imgDao().insert(Img("online17", "https://i.postimg.cc/t4BMZbbh/aida1.png", 1))
+                    imgDao().insert(Img("online17", "https://i.postimg.cc/rwVHwmBV/aida2.png", 2))
+                    imgDao().insert(Img("online17", "https://i.postimg.cc/43nFp04j/aida3.png", 3))
+                    infoDao().insert(Info("online17", 6.6, SetFecha("2005-01-16"),
+                        "Aída es una serie de televisión española de comedia de situación creada por Nacho G. Velilla y producida por Globomedia para la cadena Telecinco. La protagonista es Aída, interpretada por Carmen Machi. La trama comienza cuando Aída, tras heredar la casa de su padre, se muda con sus hijos Lorena y Jonathan a vivir con su madre, al tiempo que intenta sacar adelante a su familia."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online18","Hospital Central", Difficulty.Medium, Category.Spanish ,GuessType.SERIE))
+                    imgDao().insert(Img("online18", "https://i.postimg.cc/JnN3X3X9/central0.png", 0))
+                    imgDao().insert(Img("online18", "https://i.postimg.cc/L8WVF8R0/central1.png", 1))
+                    imgDao().insert(Img("online18", "https://i.postimg.cc/vm6tYwZ8/central2.png", 2))
+                    imgDao().insert(Img("online18", "https://i.postimg.cc/vBFLD24r/central3.png", 3))
+                    infoDao().insert(Info("online18", 5.5, SetFecha("2000-04-30"),
+                            "Hospital Central es una serie de televisión española producida por Videomedia para la cadena Telecinco. Se estrenó el 30 de abril de 2000 y finalizó el 27 de diciembre de 2012. La trama gira en torno a las vidas personales y profesionales de los trabajadores del ficticio Hospital Central de Madrid. "
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online19","Curro Jiménez", Difficulty.Difficult, Category.Spanish ,GuessType.SERIE))
+                    imgDao().insert(Img("online19", "https://i.postimg.cc/TY9kFxpZ/curro0.png", 0))
+                    imgDao().insert(Img("online19", "https://i.postimg.cc/Dzt5LyMb/curro1.png", 1))
+                    imgDao().insert(Img("online19", "https://i.postimg.cc/W3g8nLBY/curro2.png", 2))
+                    imgDao().insert(Img("online19", "https://i.postimg.cc/N0ypKrpc/curro3.png", 3))
+                    infoDao().insert(Info("online19", 7.3, SetFecha("1976-12-22"),
+                        "Curro Jiménez fue una serie de televisión española emitida entre 1976 y 1978 en La 1 de TVE. La trama se basa en el bandolerismo andaluz del siglo XIX, y la acción se desarrolla principalmente en la Serranía de Ronda."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online20","The Mentalist", Difficulty.Difficult, Category.Police ,GuessType.SERIE))
+                    imgDao().insert(Img("online20", "https://i.postimg.cc/rpg41q2h/mentalist0.jpg", 0))
+                    imgDao().insert(Img("online20", "https://i.postimg.cc/3WM08R2w/mentalist1.png", 1))
+                    imgDao().insert(Img("online20", "https://i.postimg.cc/7P5BZWgv/mentalist2.png", 2))
+                    imgDao().insert(Img("online20", "https://i.postimg.cc/YCH882Tk/mentalist3.png", 3))
+                    infoDao().insert(Info("online20", 8.2, SetFecha("2008-09-23"),
+                        "The Mentalist es una serie de televisión estadounidense que se emitió desde 2008 hasta 2015. La trama sigue a Patrick Jane, un consultor independiente para el Buró de Investigación de California (CBI), con sede en Sacramento. Aunque no es un oficial de la ley, utiliza sus habilidades de su antigua carrera como un exitoso, aunque admite ser un médium psíquico fraudulento, para ayudar a un equipo de agentes del CBI a resolver asesinatos."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online21","The Man in the High Castle", Difficulty.Difficult, Category.Historial_Fiction ,GuessType.SERIE))
+                    imgDao().insert(Img("online21", "https://i.postimg.cc/jdjFPjV1/castle0.jpg", 0))
+                    imgDao().insert(Img("online21", "https://i.postimg.cc/SKcTk28n/Castle1.png", 1))
+                    imgDao().insert(Img("online21", "https://i.postimg.cc/KjpQJnXH/Castle2.png", 2))
+                    imgDao().insert(Img("online21", "https://i.postimg.cc/7L1Vpv87/castle3.png", 3))
+                    infoDao().insert(Info("online21", 7.9, SetFecha("2015-01-13"),
+                        "The Man in the High Castle es una serie de televisión estadounidense que se emitió desde 2015 hasta 2019. La trama se desarrolla en un universo alternativo donde las potencias del Eje (Nazi Alemania y el Imperio de Japón) ganaron la Segunda Guerra Mundial."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online22","The Good Doctor", Difficulty.Medium, Category.Medical_Drama ,GuessType.SERIE))
+                    imgDao().insert(Img("online22", "https://i.postimg.cc/XJHwb42Z/good-Doctor0.png", 0))
+                    imgDao().insert(Img("online22", "https://i.postimg.cc/nzcvgC1b/good-Doctor1.png", 1))
+                    imgDao().insert(Img("online22", "https://i.postimg.cc/9fBdLGZY/good-Doctor2.jpg", 2))
+                    imgDao().insert(Img("online22", "https://i.postimg.cc/5yDLXpWb/gooddoctor3.jpg", 3))
+                    infoDao().insert(Info("online22", 7.9, SetFecha("2017-09-25"),
+                        ""
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online23","Reacher", Difficulty.Difficult, Category.Criminal_Drama ,GuessType.SERIE))
+                    imgDao().insert(Img("online23", "https://i.postimg.cc/nLV2bRHP/reacher0.jpg", 0))
+                    imgDao().insert(Img("online23", "https://i.postimg.cc/nzC1MX9K/reacher1.png", 1))
+                    imgDao().insert(Img("online23", "https://i.postimg.cc/ryRJktkM/reacher2.png", 2))
+                    imgDao().insert(Img("online23", "https://i.postimg.cc/HnM44F2V/reacher3.png", 3))
+                    infoDao().insert(Info("online23", 8.1, SetFecha("2022-09-03"),
+                        "Reacher es una serie de televisión basada en los libros de Lee Child, protagonizada por Jack Reacher, un expolicía militar errante que lucha contra criminales peligrosos en sus viajes. La trama se desarrolla en la ciudad de Margrave, Georgia, donde Reacher se ve atrapado en una conspiración letal."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online24","22.11.63", Difficulty.Difficult, Category.Historial_Fiction ,GuessType.SERIE))
+                    imgDao().insert(Img("online24", "https://i.postimg.cc/05n4zw4m/63-0.jpg", 0))
+                    imgDao().insert(Img("online24", "https://i.postimg.cc/26FKFb8s/63-1.png", 1))
+                    imgDao().insert(Img("online24", "https://i.postimg.cc/j5r17QK6/63-2.jpg", 2))
+                    imgDao().insert(Img("online24", "https://i.postimg.cc/SRStZSnJ/63-3.png", 3))
+                    infoDao().insert(Info("online24", 8.1, SetFecha("2016-09-15"),
+                        "22.11.63 es una miniserie de televisión basada en la novela 11/22/63 de Stephen King. La trama sigue a Jake Epping (interpretado por James Franco), un profesor de secundaria que, tras su divorcio, decide viajar en el tiempo para impedir el magnicidio del Presidente Kennedy ocurrido el 22 de noviembre de 1963."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("country1","España", Difficulty.Difficult, Category.NULL ,GuessType.COUNTRY))
                     imgDao().insert(Img("country1", "https://i.postimg.cc/3J5HH3Rw/espanha1.png", 1))
                     imgDao().insert(Img("country1", "https://i.postimg.cc/44hTMYXM/espanha2.png", 2))
                     imgDao().insert(Img("country1", "https://i.postimg.cc/VLqPf2rW/espanha3.png", 3))
@@ -569,8 +670,8 @@ abstract class SerieDataBase : RoomDatabase() {
 
                     GuessDao().insert(Guess("test17","¿Cuál es el nombre del río más largo del mundo?", Difficulty.Easy, Category.NULL ,GuessType.TEST))
                     imgDao().insert(Img("test17", "https://i.postimg.cc/pV1RBDPF/test17.png", 0))
-                    AnswerTestDao().insert(AnswerTest("test17","Nilo",false))
-                    AnswerTestDao().insert(AnswerTest("test17","Amazonas",true))
+                    AnswerTestDao().insert(AnswerTest("test17","Nilo",true))
+                    AnswerTestDao().insert(AnswerTest("test17","Amazonas",false))
                     AnswerTestDao().insert(AnswerTest("test17","Danubio",false))
                     AnswerTestDao().insert(AnswerTest("test17","Ebro",false))
 
