@@ -324,13 +324,93 @@ abstract class SerieDataBase : RoomDatabase() {
                         )
                     )
 
-                    GuessDao().insert(Guess("online24","22.11.63", Difficulty.Difficult, Category.Historial_Fiction ,GuessType.SERIE))
-                    imgDao().insert(Img("online24", "https://i.postimg.cc/05n4zw4m/63-0.jpg", 0))
-                    imgDao().insert(Img("online24", "https://i.postimg.cc/26FKFb8s/63-1.png", 1))
-                    imgDao().insert(Img("online24", "https://i.postimg.cc/j5r17QK6/63-2.jpg", 2))
-                    imgDao().insert(Img("online24", "https://i.postimg.cc/SRStZSnJ/63-3.png", 3))
-                    infoDao().insert(Info("online24", 8.1, SetFecha("2016-09-15"),
+                    GuessDao().insert(Guess("online24","Riverdale", Difficulty.Medium, Category.Drama ,GuessType.SERIE))
+                    imgDao().insert(Img("online24", "https://i.postimg.cc/9FmyqhzF/riverdale0.png", 0))
+                    imgDao().insert(Img("online24", "https://i.postimg.cc/Wb5gGHJm/riverdale1.png", 1))
+                    imgDao().insert(Img("online24", "https://i.postimg.cc/bwdb39Q7/riverdale2.png", 2))
+                    imgDao().insert(Img("online24", "https://i.postimg.cc/g25h5Lsn/riverdale3.png3", 3))
+                    infoDao().insert(Info("online24",   6.5, SetFecha("2017-01-26"),
+                        "La serie sigue la vida de un grupo de adolescentes en el pequeño pueblo Riverdale y explora la oscuridad oculta detrás de su imagen aparentemente perfecta."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online25","iCarly", Difficulty.Medium, Category.Comedy ,GuessType.SERIE))
+                    imgDao().insert(Img("online25", "https://i.postimg.cc/pdwD955g/icarly0.png", 0))
+                    imgDao().insert(Img("online25", "https://i.postimg.cc/Twnnn2rh/icarly1.png", 1))
+                    imgDao().insert(Img("online25", "https://i.postimg.cc/Rh9KdrRd/icarly2.png", 2))
+                    imgDao().insert(Img("online25", "https://i.postimg.cc/DfdqZZvM/icarly3.png", 3))
+                    infoDao().insert(Info("online25", 6.8, SetFecha("2007-09-08"),
+                        "iCarly es una serie de televisión de comedia de situación adolescente creada por el productor de televisión, Dan Schneider, y transmitida originalmente por la cadena Nickelodeon. La trama sigue la historia de Carly Shay, una adolescente que, junto a sus dos mejores amigos, Sam Puckett y Freddie Benson, crea un webshow llamado iCarly. La serie fue producida por Schneider’s Bakery en asociación con Nickelodeon Productions."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online26","Fallout", Difficulty.Medium, Category.Science_Fiction ,GuessType.SERIE))
+                    imgDao().insert(Img("online26", "https://i.postimg.cc/qqXXHBRW/fallout0.png", 0))
+                    imgDao().insert(Img("online26", "https://i.postimg.cc/gjDRBMtW/fallaut1.png", 1))
+                    imgDao().insert(Img("online26", "https://i.postimg.cc/G3kjyKQz/fallaut2.png", 2))
+                    imgDao().insert(Img("online26", "https://i.postimg.cc/pXRJYjcv/fallaut3.png", 3))
+                    infoDao().insert(Info("online26", 8.5, SetFecha("2024-04-10"),
+                        " Fallout es una serie de televisión postapocalíptica desarrollada por Lisa Joy y Jonathan Nolan para el servicio de vídeo por demanda Amazon Prime Video. La trama nos sitúa 200 años después del apocalipsis nuclear ocurrido en el año 2077. En este mundo devastado, los habitantes de los lujosos refugios se ven obligados a regresar a la superficie y descubren un universo increíblemente complejo, alegremente extraño y muy violento. "
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online27","Doctor Who", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
+                    imgDao().insert(Img("online27", "https://i.postimg.cc/qqjhGNgB/who0.png", 0))
+                    imgDao().insert(Img("online27", "https://i.postimg.cc/660vKmzs/who1.png", 1))
+                    imgDao().insert(Img("online27", "https://i.postimg.cc/k4C23QbX/who2.png", 2))
+                    imgDao().insert(Img("online27", "https://i.postimg.cc/k4yBn2QN/who3.png", 3))
+                    infoDao().insert(Info("online27", 8.6, SetFecha("2022-09-03"),
+                        "Doctor Who es una serie de televisión británica de ciencia ficción producida por la BBC. La trama sigue las aventuras de un Señor del Tiempo conocido como “el Doctor”, quien viaja a través del tiempo y el espacio en su nave espacial, la TARDIS."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online28","22.11.63", Difficulty.Difficult, Category.Historial_Fiction ,GuessType.SERIE))
+                    imgDao().insert(Img("online28", "https://i.postimg.cc/05n4zw4m/63-0.jpg", 0))
+                    imgDao().insert(Img("online28", "https://i.postimg.cc/26FKFb8s/63-1.png", 1))
+                    imgDao().insert(Img("online28", "https://i.postimg.cc/j5r17QK6/63-2.jpg", 2))
+                    imgDao().insert(Img("online28", "https://i.postimg.cc/SRStZSnJ/63-3.png", 3))
+                    infoDao().insert(Info("online28", 8.1, SetFecha("2016-09-15"),
                         "22.11.63 es una miniserie de televisión basada en la novela 11/22/63 de Stephen King. La trama sigue a Jake Epping (interpretado por James Franco), un profesor de secundaria que, tras su divorcio, decide viajar en el tiempo para impedir el magnicidio del Presidente Kennedy ocurrido el 22 de noviembre de 1963."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online29","El señor de los anillos: Los anillos de poder", Difficulty.Medium, Category.Fantasy ,GuessType.SERIE))
+                    imgDao().insert(Img("online29", "https://i.postimg.cc/jjLXnrgJ/anillos0.png", 0))
+                    imgDao().insert(Img("online29", "https://i.postimg.cc/tT6NDNHq/anillos1.png", 1))
+                    imgDao().insert(Img("online29", "https://i.postimg.cc/bvWRQFWV/anillos2.png", 2))
+                    imgDao().insert(Img("online29", "https://i.postimg.cc/prtYS52D/anillos3.png", 3))
+                    infoDao().insert(Info("online29", 8.1, SetFecha("2022-09-01"),
+                        "La serie de televisión ‘El Señor de los Anillos: Los Anillos de Poder’ está ambientada en la Segunda Edad de la Tierra Media y sigue los eventos previos a la trilogía de películas. Los personajes se enfrentan al resurgimiento del mal mientras luchan por la paz y la supervivencia"
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online30","Imperdonable", Difficulty.Medium, Category.Drama ,GuessType.SERIE))
+                    imgDao().insert(Img("online30", "https://i.postimg.cc/hGTX5yh5/imperdonable0.png", 0))
+                    imgDao().insert(Img("online30", "https://i.postimg.cc/157VnVLJ/imperdoble1.png", 1))
+                    imgDao().insert(Img("online30", "https://i.postimg.cc/6p72d5Kw/imperdoble2.png", 2))
+                    imgDao().insert(Img("online30", "https://i.postimg.cc/mg0cVfZ9/imperdoble3.png", 3))
+                    infoDao().insert(Info("online30", 7.1, SetFecha("2021-11-24"),
+                        "Imperdonable es un drama que sigue la vida de Ruth Slater, una mujer liberada de la cárcel en una sociedad que no está dispuesta a perdonar su pasado. Ruth busca reconectar con su hermana menor, quien tan solo tenía 5 años cuando ocurrió un homicidio que la llevó a prisión. Si tienes más preguntas o necesitas más detalles, no dudes en preguntar. "
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online31","Resident Evil", Difficulty.Medium, Category.Science_Fiction  ,GuessType.SERIE))
+                    imgDao().insert(Img("online31", "https://i.postimg.cc/xdvdRX4r/resident0.png", 0))
+                    imgDao().insert(Img("online31", "https://i.postimg.cc/KzQv6dbJ/residen1.png", 1))
+                    imgDao().insert(Img("online31", "https://i.postimg.cc/W3s1fsBd/residen2.png", 2))
+                    imgDao().insert(Img("online31", "https://i.postimg.cc/C51LSmLY/residen3.png", 3))
+                    infoDao().insert(Info("online31", 4.2, SetFecha("2022-07-14"),
+                        "La serie sigue a las hermanas Jade y Billie Wesker en New Raccoon City, donde descubren oscuros secretos y un virus que convierte a las personas en zombis. Además, un grupo de policías investiga los sucesos y se enfrenta a la amenaza del virus."
+                        )
+                    )
+
+                    GuessDao().insert(Guess("online32","Star Trek: Discovery", Difficulty.Medium, Category.Science_Fiction ,GuessType.SERIE))
+                    imgDao().insert(Img("online32", "https://i.postimg.cc/85g6k8qG/trek0.png", 0))
+                    imgDao().insert(Img("online32", "https://i.postimg.cc/k5bSdMYw/trek1.png", 1))
+                    imgDao().insert(Img("online32", "https://i.postimg.cc/8c1fWRpn/trek2.png", 2))
+                    imgDao().insert(Img("online32", "https://i.postimg.cc/26dBVcDZ/trek3.png", 3))
+                    infoDao().insert(Info("online32", 7.0, SetFecha("2017-09-24"),
+                        "Star Trek: Discovery es una serie de televisión estadounidense que sigue las aventuras de la tripulación del USS Discovery mientras exploran nuevos mundos y formas de vida en el espacio. La trama se desarrolla aproximadamente una década antes de la serie original de Star Trek."
                         )
                     )
 

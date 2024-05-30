@@ -5,6 +5,7 @@ enum class Category {
     Spanish,
     Science_Fiction,
     Criminal_Drama,
+    Drama,
     Fantasy,
     Police,
     Historial_Fiction,

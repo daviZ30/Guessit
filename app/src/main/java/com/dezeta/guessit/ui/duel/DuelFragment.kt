@@ -1,5 +1,6 @@
 package com.dezeta.guessit.ui.duel
 
+import android.app.AlertDialog
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -60,6 +61,7 @@ class DuelFragment : Fragment() {
                 with(viewModel.score) {
                     value = (value!!.toInt() + 1).toString()
                 }
+                viewModel.point += 3
             } else
                 starAnimationButton(R.raw.error, false)
         }
@@ -69,6 +71,7 @@ class DuelFragment : Fragment() {
                 with(viewModel.score) {
                     value = (value!!.toInt() + 1).toString()
                 }
+                viewModel.point += 3
             } else
                 starAnimationButton(R.raw.error, false)
         }
@@ -167,7 +170,6 @@ class DuelFragment : Fragment() {
                         override fun onAnimationRepeat(animation: Animation?) {}
 
                         override fun onAnimationEnd(animation: Animation?) {
-                            // findNavController().popBackStack()
                             binding.lottieFullAnimation.visibility = View.GONE
                             if (win) {
                                 with(binding) {
@@ -177,6 +179,8 @@ class DuelFragment : Fragment() {
                                 }
                                 next()
                             } else {
+                                viewModel.updatePoint()
+                                showCongratulatoryMessage()
                                 findNavController().popBackStack()
                             }
                         }
@@ -185,6 +189,20 @@ class DuelFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun showCongratulatoryMessage() {
+        val mesage = "Has logrado una racha de : ${viewModel.score.value}, consiguiendo ${viewModel.point} puntos."
+
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("¡Felicidades!")
+        builder.setMessage(mesage)
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun next() {
