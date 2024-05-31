@@ -27,24 +27,11 @@ class ViewModelMain : ViewModel() {
         dataBase.collection("users").document(email).get().addOnSuccessListener {
             user.value = User(
                 it.get("email") as String, (it.get("point") as Number).toInt(),
-                ProviderType.valueOf(it.get("provider") as String),
+                ProviderType.valueOf(it.get("provider") as String),(it.get("level") as Number).toInt(),
             )
             state.value = MainState.UserSuccess(
                 user.value!!
             )
-        }
-    }
-
-    fun saveUser(u: User) {
-        dataBase.collection("users").document(u.email).set(
-            hashMapOf(
-                "provider" to u.provider,
-                "email" to u.email,
-                "point" to u.point
-            )
-        ).addOnCompleteListener {
-            user.value = u
-            state.value = MainState.RefreshUser(u)
         }
     }
 

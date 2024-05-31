@@ -65,6 +65,9 @@ class Repository {
         fun getSerieFromName(name: String): Guess {
             return SerieDataBase.getInstance().GuessDao().selectSerieFromName(name)
         }
+        fun getGuessFromId(id: String): Guess {
+            return SerieDataBase.getInstance().GuessDao().selectFromID(id)
+        }
 
         fun deleteFromId(id: String): Resource {
             return try {

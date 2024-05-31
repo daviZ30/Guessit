@@ -21,7 +21,7 @@ class ViewModelDaily : ViewModel() {
     var local = false
     var help = true
     var error = 0
-    var point = 50
+    var point = 60
     fun getSerieList(): List<Guess> {
         return Repository.getSeriesList()
     }
@@ -102,13 +102,14 @@ class ViewModelDaily : ViewModel() {
             val p = (it.get("point") as Number).toInt() + point
             val user = User(
                 it.get("email") as String, p,
-                ProviderType.valueOf(it.get("provider") as String),
+                ProviderType.valueOf(it.get("provider") as String), (it.get("level") as Number).toInt()
             )
             dataBase.collection("users").document(user.email).set(
                 hashMapOf(
                     "provider" to user.provider,
                     "email" to user.email,
-                    "point" to user.point
+                    "point" to user.point,
+                    "level" to user.level
                 )
             )
         }

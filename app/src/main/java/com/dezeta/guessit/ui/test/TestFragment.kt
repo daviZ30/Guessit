@@ -353,7 +353,6 @@ class TestFragment : Fragment() {
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(colorAnimator, scaleAnimatorSet, secondAnimation)
         animatorSet.start()
-
     }
 
     private fun nextTest() {
@@ -369,7 +368,6 @@ class TestFragment : Fragment() {
                 1 -> {
                     lista = viewModel.answers1!!
                 }
-
                 2 -> {
                     lista = viewModel.answers2!!
                 }
@@ -384,7 +382,6 @@ class TestFragment : Fragment() {
                 }
             }
         }
-
     }
 
     private fun showSuccessMessage() {

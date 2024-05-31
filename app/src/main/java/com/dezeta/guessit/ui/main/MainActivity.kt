@@ -86,6 +86,9 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
         setup()
     }
+    fun updateHeader(){
+        viewModel.loadUser(Locator.email)
+    }
 
     private fun setupHeader() {
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
@@ -105,25 +108,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnEditProfile.setOnClickListener {
-            /*if (editProfile) {
-                viewModel.saveUser(
-                    User(
-                        viewModel.user.value!!.email,
-                        viewModel.user.value!!.point,
-                        viewModel.user.value!!.provider
-                    )
-                )
-
-                editProfile = false
-                btnEditProfile.setText("Editar")
-                tvDrawerName.visibility = View.VISIBLE
-                imgEditProfile.visibility = View.GONE
-            } else {
-                btnEditProfile.setText("Ok")
-                editProfile = true
-                tvDrawerName.visibility = View.INVISIBLE
-                imgEditProfile.visibility = View.VISIBLE
-            }*/
 
         }
     }

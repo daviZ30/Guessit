@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentMenuBinding
 import com.dezeta.guessit.domain.entity.Guess
+import com.dezeta.guessit.ui.main.MainActivity
 import kotlin.random.Random
 
 class MenuFragment : Fragment() {
@@ -26,7 +27,11 @@ class MenuFragment : Fragment() {
         super.onCreate(savedInstanceState)
         // findNavController().navigate(R.id.loginFragment)
         testlist = viewModel.getTestList().shuffled()
-        println("------------------------------------------------------------------------------------------------")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (requireActivity() as MainActivity).updateHeader()
     }
 
     override fun onCreateView(

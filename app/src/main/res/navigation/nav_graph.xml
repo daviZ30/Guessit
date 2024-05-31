@@ -13,7 +13,7 @@
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/LevelFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_duelFragment"
             app:destination="@id/duelFragment" />
@@ -28,10 +28,20 @@
             app:destination="@id/testFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.dezeta.guessit.ui.NivelesFragment"
+        android:id="@+id/LevelFragment"
+        android:name="com.dezeta.guessit.ui.level.LevelFragment"
         android:label=""
-        tools:layout="@layout/fragment_niveles"/>
+        tools:layout="@layout/fragment_niveles">
+        <action
+            android:id="@+id/action_LevelFragment_to_dailyFragment"
+            app:destination="@id/dailyFragment" />
+        <action
+            android:id="@+id/action_LevelFragment_to_testFragment"
+            app:destination="@id/testFragment" />
+        <action
+            android:id="@+id/action_LevelFragment_to_duelFragment"
+            app:destination="@id/duelFragment" />
+    </fragment>
     <fragment
         android:id="@+id/dailyFragment"
         android:name="com.dezeta.guessit.ui.daily.DailyFragment"

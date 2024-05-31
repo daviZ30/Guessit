@@ -62,7 +62,8 @@ class ViewModelLogin : ViewModel() {
             hashMapOf(
                 "provider" to u.provider,
                 "email" to u.email,
-                "point" to u.point
+                "point" to u.point,
+                "level" to u.level
             )
         )
     }
@@ -78,7 +79,8 @@ class ViewModelLogin : ViewModel() {
                 user = User(
                     r.result?.user?.email ?: "",
                     0,
-                    ProviderType.BASIC
+                    ProviderType.BASIC,
+                    0
                 )
                 saveUser(user!!)
                 result.value = Resource.Success(
@@ -101,14 +103,8 @@ class ViewModelLogin : ViewModel() {
                 if (!r.result.user!!.isEmailVerified)
                     state.value = LoginState.EmailNotVerifiedError
                 else {
-                    user =
-                        User(
-                            r.result?.user?.email ?: "",
-                            0,
-                            ProviderType.BASIC
-                        )
                     result.value = Resource.Success(
-                        user!!.email
+                        r.result?.user?.email ?: ""
                     )
                 }
 

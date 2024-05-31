@@ -28,9 +28,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
-
     private lateinit var binding: ActivityLoginBinding
 
     private lateinit var fadeInAnimation: Animation
@@ -120,11 +117,7 @@ class LoginActivity : AppCompatActivity() {
                             tieLoginPassword.setText("")
                             tieConfirmPassword.setText("")
                             btnChanged.callOnClick()
-                            //register = false
-                            //  tilConfirmPassword.visibility = View.GONE
-                            //btnChanged.text = "Registrar"
                         }
-
                     } else {
                         showHome(it.data as String)
                     }
@@ -216,7 +209,6 @@ class LoginActivity : AppCompatActivity() {
                         override fun onAnimationRepeat(animation: Animation?) {}
 
                         override fun onAnimationEnd(animation: Animation?) {
-                            // findNavController().popBackStack()
                             if (!endload) {
                                 playAnimation()
                             }

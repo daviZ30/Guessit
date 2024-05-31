@@ -274,7 +274,6 @@ class DailyFragment : Fragment() {
                 }
             }
             binding.swShowList.isEnabled = false
-
         }
 
         builder.setNegativeButton("No") { _, _ ->

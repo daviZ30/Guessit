@@ -28,6 +28,8 @@ interface GuessDao {
     @Query("SELECT * FROM guess WHERE guessType == 'FOOTBALL'")
     fun selectAllPlayer(): List<Guess>
 
+    @Query("SELECT * FROM guess WHERE id == :id")
+    fun selectFromID(id: String): Guess
     @Query("SELECT g.name FROM guess g WHERE guessType == 'SERIE'")
     fun selectSerieName(): List<String>
 
