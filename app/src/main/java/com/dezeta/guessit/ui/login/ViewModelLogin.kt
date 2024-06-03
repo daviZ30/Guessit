@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
+import com.dezeta.guessit.utils.UserManager
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,14 +59,7 @@ class ViewModelLogin : ViewModel() {
 
 
     fun saveUser(u: User) {
-        dataBase.collection("users").document(u.email).set(
-            hashMapOf(
-                "provider" to u.provider,
-                "email" to u.email,
-                "point" to u.point,
-                "level" to u.level
-            )
-        )
+        UserManager.saveUser(u)
     }
 
     fun signup(uri: Uri) {
@@ -80,6 +74,7 @@ class ViewModelLogin : ViewModel() {
                     r.result?.user?.email ?: "",
                     0,
                     ProviderType.BASIC,
+                    0,
                     0
                 )
                 saveUser(user!!)

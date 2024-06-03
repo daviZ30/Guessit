@@ -6,17 +6,16 @@ import com.dezeta.guessit.domain.Repository.Repository
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Info
 import com.dezeta.guessit.domain.entity.Guess
-import com.dezeta.guessit.domain.entity.ProviderType
-import com.dezeta.guessit.domain.entity.User
-import com.dezeta.guessit.utils.Locator
-import com.google.firebase.firestore.FirebaseFirestore
+import com.dezeta.guessit.utils.UserManager
 import kotlin.random.Random
 
 class ViewModelDuel : ViewModel() {
-    var dataBase = FirebaseFirestore.getInstance()
     var score = MutableLiveData<String>()
     var previousNum: Int? = null
     var point = 0
+    fun updateLevel(level: Int) {
+       UserManager.UpdateCompleteLevel(level)
+    }
     fun getSerie(): Guess {
         val lista = Repository.getSeriesList()
         var r: Int
@@ -27,22 +26,7 @@ class ViewModelDuel : ViewModel() {
         return lista[r]
     }
     fun updatePoint() {
-        val email = Locator.email
-        dataBase.collection("users").document(email).get().addOnSuccessListener {
-            val p = (it.get("point") as Number).toInt() + point
-            val user = User(
-                it.get("email") as String, p,
-                ProviderType.valueOf(it.get("provider") as String), (it.get("level") as Number).toInt()
-            )
-            dataBase.collection("users").document(user.email).set(
-                hashMapOf(
-                    "provider" to user.provider,
-                    "email" to user.email,
-                    "point" to user.point,
-                    "level" to user.level
-                )
-            )
-        }
+        UserManager.UpdatePoint(point)
     }
 
     fun getImage0(serie: Guess): Img? {

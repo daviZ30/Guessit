@@ -31,11 +31,27 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/image"
+                    android:id="@+id/imgDaily1"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_margin="10dp"
                     android:src="@drawable/ic_launcher_background" />
+
+                <ImageView
+                    android:id="@+id/imgDaily2"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_launcher_background"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/imgDaily3"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_launcher_background"
+                    android:visibility="invisible" />
 
             </androidx.cardview.widget.CardView>
 

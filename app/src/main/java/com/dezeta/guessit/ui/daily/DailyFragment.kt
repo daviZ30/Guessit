@@ -40,7 +40,7 @@ class DailyFragment : Fragment() {
     //TODO CAmbiar la forma de dectetar local
     var listRed = mutableListOf<String>()
     var listGreen = mutableListOf<String>()
-
+    var level: Int? = null
     var NumImage = 1
     var LastImage = 1
     var img: Img? = null
@@ -51,19 +51,13 @@ class DailyFragment : Fragment() {
 
     private val viewModel: ViewModelDaily by viewModels()
 
-    /*
-     movieListView.setOnItemClickListener { _, _, position, _ ->
-            val selectedMovie = movieTitles[position]
-            Toast.makeText(this, "Película seleccionada: $selectedMovie", Toast.LENGTH_SHORT).show()
-        }
-     */
     private var _binding: FragmentDailyBinding? = null
     private val binding get() = _binding!!
 
-    private fun getImage(): String? {
+    private fun getImage(n: Int): String? {
         images?.forEach {
             println(it)
-            if (it.order == NumImage)
+            if (it.order == n)
                 img = it
         }
         return img?.img_url
@@ -79,6 +73,11 @@ class DailyFragment : Fragment() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.loadUser()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,6 +85,7 @@ class DailyFragment : Fragment() {
         _binding = FragmentDailyBinding.inflate(inflater, container, false)
         arguments.let {
             if (it != null) {
+                level = it.getInt("level")
                 viewModel.serie = it.getSerializable("serie") as Guess
                 if (viewModel.serie!!.guessType == GuessType.COUNTRY || viewModel.serie!!.guessType == GuessType.FOOTBALL) {
                     binding.btnCategoty.visibility = View.GONE
@@ -97,16 +97,20 @@ class DailyFragment : Fragment() {
                         help = false
                         with(binding) {
                             tvDailyHelp.text = "Puedes activar la ayuda en los ajustes"
-                            image.setImageBitmap(loadImageBitmapFromInternalStorage(getImage()!!))
                             btnCategoty.visibility = View.GONE
                             cvShowList.visibility = View.GONE
                         }
+                        binding.imgDaily1.setImageBitmap(loadImageBitmapFromInternalStorage(getImage(1)!!))
+                        binding.imgDaily2.setImageBitmap(loadImageBitmapFromInternalStorage(getImage(2)!!))
+                        binding.imgDaily3.setImageBitmap(loadImageBitmapFromInternalStorage(getImage(3)!!))
 
                     } else {
                         binding.tvDailyHelp.text =
                             "Si saltas la imagen tendrás que sacrificar una vida"
                         help = true
-                        loadImage()
+                        for (i in 1..3) {
+                            loadImage(i)
+                        }
                     }
 
                 }
@@ -115,39 +119,88 @@ class DailyFragment : Fragment() {
         return binding.root
     }
 
-    private fun loadImage() {
+    private fun loadImage(i: Int) {
+        var img = ""
+
+        val view = when (i) {
+            1 -> {
+                img = getImage(i)!!
+                binding.imgDaily1
+            }
+
+            2 -> {
+                img = getImage(i)!!
+                binding.imgDaily2
+            }
+
+            3 -> {
+                img = getImage(i)!!
+                binding.imgDaily3
+            }
+
+            else -> null
+        }
+
         with(binding.lottieLoadAnimation) {
             visibility = View.VISIBLE
             setAnimation(R.raw.load_image)
             playAnimation()
         }
-        Glide.with(requireContext())
-            .load(getImage())
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return true
-                }
+        if (i == 3) {
+            Glide.with(requireContext())
+                .load(img)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return true
+                    }
 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    binding.lottieLoadAnimation.cancelAnimation()
-                    binding.lottieLoadAnimation.visibility = View.GONE
-                    binding.image.setImageDrawable(resource)
-                    return true
-                }
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        binding.lottieLoadAnimation.cancelAnimation()
+                        binding.lottieLoadAnimation.visibility = View.INVISIBLE
+                        view!!.setImageDrawable(resource)
+                        return true
+                    }
 
-            })
-            .into(binding.image)
+                })
+                .into(view!!)
+        } else {
+            Glide.with(requireContext())
+                .load(img)
+                .into(view!!)
+        }
+    }
+
+    private fun nextImage() {
+        when (NumImage) {
+            1 -> {
+                binding.imgDaily1.visibility = View.VISIBLE
+                binding.imgDaily2.visibility = View.INVISIBLE
+                binding.imgDaily3.visibility = View.INVISIBLE
+            }
+
+            2 -> {
+                binding.imgDaily1.visibility = View.INVISIBLE
+                binding.imgDaily2.visibility = View.VISIBLE
+                binding.imgDaily3.visibility = View.INVISIBLE
+            }
+
+            3 -> {
+                binding.imgDaily1.visibility = View.INVISIBLE
+                binding.imgDaily2.visibility = View.INVISIBLE
+                binding.imgDaily3.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -155,6 +208,13 @@ class DailyFragment : Fragment() {
         val inputMethodManager =
             requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
+        viewModel.getState().observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is DailyState.insertSuccess -> {
+                    findNavController().popBackStack()
+                }
+            }
+        }
         adapterList = SearchAdapter() {
             binding.tieSearch.setText(it)
         }
@@ -186,15 +246,32 @@ class DailyFragment : Fragment() {
             if (binding.tieSearch.text.toString().trim().uppercase(Locale.ROOT)
                 == viewModel.serie!!.name.uppercase(Locale.ROOT)
             ) {
-                if (!viewModel.local) {
+                if (!viewModel.local && level == 0) {
                     viewModel.updatePoint()
+                    showCongratulatoryMessage()
                     refreshHeader()
+                    findNavController().popBackStack()
+                } else if (!viewModel.local && level != 0) {
+                    if (level != 24) {
+                        showLevelMessage()
+                        viewModel.updateLevel(level!!)
+                    } else {
+                        viewModel.update2500Point()
+                        val builder = AlertDialog.Builder(requireContext())
+                        builder.setTitle("!Felicidades¡")
+                        builder.setMessage("Has desbloqueado todos los niveles obteniendo 2500 puntos")
+                        builder.setPositiveButton("Aceptar") { _, _ -> }
+                        builder.show()
+                    }
+                } else {
+                    showCongratulatoryMessage()
+                    findNavController().popBackStack()
                 }
-                showCongratulatoryMessage()
-                findNavController().popBackStack()
+
             } else {
                 showError()
-                val newSerie = viewModel.getSerieFromName(binding.tieSearch.text.toString().trim())
+                val newSerie =
+                    viewModel.getSerieFromName(binding.tieSearch.text.toString().trim())
                 when {
                     newSerie == null -> {}
                     newSerie.category == viewModel.serie!!.category -> {
@@ -213,7 +290,7 @@ class DailyFragment : Fragment() {
             if (NumImage == 2) {
                 binding.btnNext.isEnabled = false
             }
-            if (NumImage < 3 && !viewModel.local) {
+            if (NumImage < 3) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
                 if (NumImage == LastImage) {
                     showError()
@@ -222,15 +299,7 @@ class DailyFragment : Fragment() {
                 if (NumImage > LastImage) {
                     LastImage = NumImage
                 }
-                loadImage()
-            } else if (NumImage < 3 && viewModel.local) {
-                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-                if (NumImage == LastImage) {
-                    showError()
-                }
-                NumImage++
-                LastImage = NumImage
-                binding.image.setImageBitmap(loadImageBitmapFromInternalStorage(getImage()!!))
+                nextImage()
             }
         }
         binding.btnPrevious.setOnClickListener {
@@ -238,15 +307,10 @@ class DailyFragment : Fragment() {
             if (NumImage == 2) {
                 binding.btnPrevious.isEnabled = false
             }
-            if (NumImage > 1 && !viewModel.local) {
+            if (NumImage > 1) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
                 NumImage--
-                loadImage()
-            } else if (NumImage > 1 && viewModel.local) {
-                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-                NumImage--
-                showError()
-                binding.image.setImageBitmap(loadImageBitmapFromInternalStorage(getImage()!!))
+                nextImage()
             }
         }
     }
@@ -317,6 +381,19 @@ class DailyFragment : Fragment() {
         else
             mesage =
                 "Has superado el nivel: ${viewModel.serie!!.name}. Has obtenido ${viewModel.point} puntos"
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("¡Felicidades!")
+        builder.setMessage(mesage)
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showLevelMessage() {
+        val mesage = "Has superado el nivel ${level}."
         val builder = AlertDialog.Builder(context)
         builder.setTitle("¡Felicidades!")
         builder.setMessage(mesage)

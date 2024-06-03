@@ -80,7 +80,9 @@ class ViewModelMenu : ViewModel() {
                         userData["email"] as String,
                         (userData["point"] as Number).toInt(),
                         ProviderType.valueOf(userData["provider"] as String),
-                        (userData["level"] as Number).toInt()
+                        (userData["level"] as Number).toInt(),
+                        (userData["completeLevel"] as Number).toInt()
+
                     )
                     userList.add(
                         user

@@ -22,11 +22,14 @@ import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentDuelBinding
 import com.dezeta.guessit.domain.entity.Info
 import com.dezeta.guessit.domain.entity.Guess
+import com.dezeta.guessit.domain.entity.GuessType
+import com.dezeta.guessit.loadImageBitmapFromInternalStorage
 
 class DuelFragment : Fragment() {
     private var _binding: FragmentDuelBinding? = null
     private val binding get() = _binding!!
-
+    private var score: Int? = null
+    private var level: Int? = null
 
     private val viewModel: ViewModelDuel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +51,12 @@ class DuelFragment : Fragment() {
         binding.lifecycleOwner = this
         fadeOutAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
         slideUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_up)
+        arguments.let {
+            if (it != null) {
+                level = it.getInt("level")
+                score = it.getInt("score")
+            }
+        }
         return binding.root
     }
 
@@ -177,11 +186,25 @@ class DuelFragment : Fragment() {
                                     btnDualMore.visibility = View.VISIBLE
                                     btnDualLess.visibility = View.VISIBLE
                                 }
-                                next()
+                                if (score != null) {
+                                    if (viewModel.score.value!!.toInt() == score) {
+                                        viewModel.updateLevel(level!!)
+                                        showLevelMessage()
+                                        findNavController().popBackStack()
+                                    } else {
+                                        next()
+                                    }
+                                } else {
+                                    next()
+                                }
                             } else {
-                                viewModel.updatePoint()
-                                showCongratulatoryMessage()
-                                findNavController().popBackStack()
+                                if (score == null) {
+                                    viewModel.updatePoint()
+                                    showCongratulatoryMessage()
+                                    findNavController().popBackStack()
+                                }else{
+                                    findNavController().popBackStack()
+                                }
                             }
                         }
                     })
@@ -192,8 +215,22 @@ class DuelFragment : Fragment() {
     }
 
     private fun showCongratulatoryMessage() {
-        val mesage = "Has logrado una racha de : ${viewModel.score.value}, consiguiendo ${viewModel.point} puntos."
+        val mesage =
+            "Has logrado una racha de : ${viewModel.score.value}, consiguiendo ${viewModel.point} puntos."
 
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("¡Felicidades!")
+        builder.setMessage(mesage)
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showLevelMessage() {
+        val mesage = "Has superado el nivel ${level}."
         val builder = AlertDialog.Builder(context)
         builder.setTitle("¡Felicidades!")
         builder.setMessage(mesage)

@@ -32,7 +32,6 @@ class LevelFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.loadUser()
         btnList = mutableListOf()
         for (i in 0 until binding.table.childCount) {
             val row: TableRow = binding.table.getChildAt(i) as TableRow
@@ -45,6 +44,7 @@ class LevelFragment : Fragment() {
                 }
             }
         }
+        viewModel.loadUser()
     }
 
 
@@ -53,21 +53,22 @@ class LevelFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LevelState.Success<*> -> {
-                    setup((state.data as User).level)
-
+                    setup()
                 }
             }
         }
-
     }
 
-    private fun setup(levels: Int) {
-        for (i in 0 until levels) {
-            LevelUnlocked(btnList[i])
+    private fun setup() {
+        for (i in 0 until viewModel.user.completeLevel) {
+            CompleteLevel(btnList[i])
         }
-        if (levels <= btnList.size - 1) {
-            btnList[levels].isEnabled = true
-            btnList[levels].setButtonColor(Color.parseColor("#44B4C4"))
+        if(viewModel.user.level > viewModel.user.completeLevel && viewModel.user.completeLevel < 24){
+            btnList[viewModel.user.completeLevel].isEnabled = true
+            btnList[viewModel.user.completeLevel].setButtonColor(Color.parseColor("#142B3B"))
+        }else if(viewModel.user.completeLevel < 24){
+            btnList[viewModel.user.completeLevel].isEnabled = true
+            btnList[viewModel.user.completeLevel].setButtonColor(Color.parseColor("#44B4C4"))
         }
 
     }
@@ -76,7 +77,6 @@ class LevelFragment : Fragment() {
         override fun onClick(view: View) {
             val botonId = view.id
             when (botonId) {
-
                 R.id.btnLevel1 -> {
                     if (viewModel.user.level + 1 == 1) {
                         showConfirmationDialog("Tendrás que adivinar una serie")
@@ -85,6 +85,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("online14"))
                         putBoolean("local", false)
+                        putInt("level",1)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -97,6 +98,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("online2"))
                         putBoolean("local", false)
+                        putInt("level",2)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -110,7 +112,7 @@ class LevelFragment : Fragment() {
                         putSerializable("guess0", viewModel.getGuess("test11"))
                         putSerializable("guess1", viewModel.getGuess("test17"))
                         putSerializable("guess2", viewModel.getGuess("test21"))
-
+                        putInt("level",3)
                         putBoolean("local", false)
                     }
                     findNavController().navigate(
@@ -128,7 +130,7 @@ class LevelFragment : Fragment() {
                         putSerializable("guess0", viewModel.getGuess("test25"))
                         putSerializable("guess1", viewModel.getGuess("test5"))
                         putSerializable("guess2", viewModel.getGuess("test22"))
-
+                        putInt("level",4)
                         putBoolean("local", false)
                     }
                     findNavController().navigate(
@@ -145,6 +147,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("country7"))
                         putBoolean("local", false)
+                        putInt("level",5)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -157,6 +160,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("country17"))
                         putBoolean("local", false)
+                        putInt("level",6)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -169,6 +173,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("player1"))
                         putBoolean("local", false)
+                        putInt("level",7)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -180,6 +185,7 @@ class LevelFragment : Fragment() {
                     }
                     val bundle = Bundle().apply {
                         putInt("score",10)
+                        putInt("level",8)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_duelFragment, bundle)
                 }
@@ -192,6 +198,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("player17"))
                         putBoolean("local", false)
+                        putInt("level",9)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -204,6 +211,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("online29"))
                         putBoolean("local", false)
+                        putInt("level",10)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -216,6 +224,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("online27"))
                         putBoolean("local", false)
+                        putInt("level",11)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -228,6 +237,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("country14"))
                         putBoolean("local", false)
+                        putInt("level",12)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -239,6 +249,7 @@ class LevelFragment : Fragment() {
                     }
                     val bundle = Bundle().apply {
                         putInt("score",10)
+                        putInt("level",13)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_duelFragment, bundle)
                 }
@@ -252,7 +263,7 @@ class LevelFragment : Fragment() {
                         putSerializable("guess0", viewModel.getGuess("test12"))
                         putSerializable("guess1", viewModel.getGuess("test5"))
                         putSerializable("guess2", viewModel.getGuess("test22"))
-
+                        putInt("level",14)
                         putBoolean("local", false)
                     }
                     findNavController().navigate(
@@ -269,6 +280,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("player6"))
                         putBoolean("local", false)
+                        putInt("level",15)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -281,6 +293,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("country16"))
                         putBoolean("local", false)
+                        putInt("level",16)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -293,6 +306,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("online31"))
                         putBoolean("local", false)
+                        putInt("level",17)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -305,6 +319,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("online20"))
                         putBoolean("local", false)
+                        putInt("level",18)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -317,6 +332,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("player21"))
                         putBoolean("local", false)
+                        putInt("level",19)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -328,6 +344,7 @@ class LevelFragment : Fragment() {
                     }
                     val bundle = Bundle().apply {
                         putInt("score",20)
+                        putInt("level",20)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_duelFragment, bundle)
                 }
@@ -340,6 +357,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("player15"))
                         putBoolean("local", false)
+                        putInt("level",21)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -352,6 +370,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("online28"))
                         putBoolean("local", false)
+                        putInt("level",22)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -364,6 +383,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("online9"))
                         putBoolean("local", false)
+                        putInt("level",23)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
 
@@ -377,6 +397,7 @@ class LevelFragment : Fragment() {
                     val bundle = Bundle().apply {
                         putSerializable("serie", viewModel.getGuess("player9"))
                         putBoolean("local", false)
+                        putInt("level",24)
                     }
                     findNavController().navigate(R.id.action_LevelFragment_to_dailyFragment, bundle)
                 }
@@ -407,10 +428,10 @@ class LevelFragment : Fragment() {
         builder.show()
     }
 
-    private fun LevelUnlocked(btn: FitButton) {
-        println("Nivel Desbloqueado")
+
+    private fun CompleteLevel(btn: FitButton) {
         btn.isEnabled = true
-        btn.setButtonColor(Color.parseColor("#142B3B"))
+        btn.setButtonColor(Color.parseColor("#FF39A121"))
     }
 
 

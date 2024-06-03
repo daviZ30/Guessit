@@ -32,6 +32,7 @@ class TestFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ViewModelTest by viewModels()
     var NumImage = 0
+    private var level: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +41,7 @@ class TestFragment : Fragment() {
         _binding = FragmentTestBinding.inflate(inflater, container, false)
         arguments.let {
             if (it != null) {
+                level = it.getInt("level")
                 with(viewModel) {
                     tests.add(it.getSerializable("guess0") as Guess)
                     tests.add(it.getSerializable("guess1") as Guess)
@@ -358,9 +360,16 @@ class TestFragment : Fragment() {
     private fun nextTest() {
         NumImage++
         if (NumImage >= 3) {
-            showSuccessMessage()
-            viewModel.updatePoint()
-            findNavController().popBackStack()
+            if(level == 0){
+                showSuccessMessage()
+                viewModel.updatePoint()
+                findNavController().popBackStack()
+            }else{
+                showLevelMessage()
+                viewModel.updateLevel(level!!)
+                findNavController().popBackStack()
+            }
+
         } else {
             nextImage()
             var lista: List<AnswerTest>? = null
@@ -368,6 +377,7 @@ class TestFragment : Fragment() {
                 1 -> {
                     lista = viewModel.answers1!!
                 }
+
                 2 -> {
                     lista = viewModel.answers2!!
                 }
@@ -384,8 +394,20 @@ class TestFragment : Fragment() {
         }
     }
 
+    private fun showLevelMessage() {
+        val mesage = "Has superado el nivel ${level}."
+        val builder = android.app.AlertDialog.Builder(context)
+        builder.setTitle("¡Felicidades!")
+        builder.setMessage(mesage)
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
     private fun showSuccessMessage() {
-        val message = "Has superado el test obteniendo ${viewModel.point} puntos}."
+        val message = "Has superado el test obteniendo ${viewModel.point} puntos."
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("¡Felicidades!")
         builder.setMessage(message)

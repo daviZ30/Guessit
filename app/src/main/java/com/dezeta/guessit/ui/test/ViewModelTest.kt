@@ -9,6 +9,7 @@ import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.Locator
+import com.dezeta.guessit.utils.UserManager
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ViewModelTest : ViewModel() {
@@ -38,21 +39,9 @@ class ViewModelTest : ViewModel() {
     }
 
     fun updatePoint() {
-        val email = Locator.email
-        dataBase.collection("users").document(email).get().addOnSuccessListener {
-            val p = (it.get("point") as Number).toInt() + point
-            val user = User(
-                it.get("email") as String, p,
-                ProviderType.valueOf(it.get("provider") as String), (it.get("level") as Number).toInt()
-            )
-            dataBase.collection("users").document(user.email).set(
-                hashMapOf(
-                    "provider" to user.provider,
-                    "email" to user.email,
-                    "point" to user.point,
-                    "level" to user.level
-                )
-            )
-        }
+       UserManager.UpdatePoint(point)
+    }
+    fun updateLevel(level:Int) {
+        UserManager.UpdateCompleteLevel(level)
     }
 }
