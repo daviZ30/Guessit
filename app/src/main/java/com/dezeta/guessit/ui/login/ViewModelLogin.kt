@@ -72,6 +72,7 @@ class ViewModelLogin : ViewModel() {
                 FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
                 user = User(
                     r.result?.user?.email ?: "",
+                    listOf(r.result?.user?.email ?: ""),
                     0,
                     ProviderType.BASIC,
                     0,

@@ -10,6 +10,7 @@ import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.CloudStorageManager
+import com.dezeta.guessit.utils.Locator
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -77,12 +78,12 @@ class ViewModelMenu : ViewModel() {
                     val userData = document.data
                     val user = User(
                         userData["email"] as String,
+                        userData["friends"] as List<String>,
                         (userData["point"] as Number).toInt(),
                         ProviderType.valueOf(userData["provider"] as String),
                         (userData["level"] as Number).toInt(),
                         "",
                         (userData["completeLevel"] as Number).toInt()
-
                     )
                     userList.add(
                         user

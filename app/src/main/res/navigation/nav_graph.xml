@@ -93,5 +93,14 @@
         android:id="@+id/friendFragment"
         android:name="com.dezeta.guessit.ui.friend.FriendFragment"
         android:label=""
-        tools:layout="@layout/fragment_friend" />
+        tools:layout="@layout/fragment_friend" >
+        <action
+            android:id="@+id/action_friendFragment_to_addFriendFragment"
+            app:destination="@id/addFriendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFriendFragment"
+        android:name="com.dezeta.guessit.ui.addFriend.AddFriendFragment"
+        android:label=""
+        tools:layout="@layout/fragment_add_friend" />
 </navigation>

@@ -24,6 +24,7 @@ class ViewModelLevel : ViewModel() {
         dataBase.collection("users").document(email).get().addOnSuccessListener {
             user = User(
                 it.get("email") as String,
+                it.get("friends") as List<String>,
                 (it.get("point") as Number).toInt(),
                 ProviderType.valueOf(it.get("provider") as String),
                 (it.get("level") as Number).toInt(),

@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setup() {
         val bundle = intent.extras
-        var email = bundle?.getString("email") as String
+        val email = bundle?.getString("email") as String
         Locator.email = email
         viewModel.loadUser(email)
         viewModel.loadDatabase()
