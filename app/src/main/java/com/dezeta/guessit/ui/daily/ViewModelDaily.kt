@@ -39,6 +39,7 @@ class ViewModelDaily : ViewModel() {
                 (it.get("point") as Number).toInt(),
                 ProviderType.valueOf(it.get("provider") as String),
                 (it.get("level") as Number).toInt(),
+                "",
                 (it.get("completeLevel") as Number).toInt(),
             )
         }
@@ -146,6 +147,7 @@ class ViewModelDaily : ViewModel() {
                 (it.get("point") as Number).toInt(),
                 ProviderType.valueOf(it.get("provider") as String),
                 (it.get("level") as Number).toInt(),
+                "",
                 level,
             )
             if(level >= (it.get("completeLevel") as Number).toInt()){

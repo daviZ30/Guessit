@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_MenuFragment_to_testFragment"
             app:destination="@id/testFragment" />
+        <action
+            android:id="@+id/action_MenuFragment_to_friendFragment"
+            app:destination="@id/friendFragment" />
     </fragment>
     <fragment
         android:id="@+id/LevelFragment"
@@ -86,4 +89,9 @@
         android:name="com.dezeta.guessit.ui.test.TestFragment"
         android:label=""
         tools:layout="@layout/fragment_test" />
+    <fragment
+        android:id="@+id/friendFragment"
+        android:name="com.dezeta.guessit.ui.friend.FriendFragment"
+        android:label=""
+        tools:layout="@layout/fragment_friend" />
 </navigation>

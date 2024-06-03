@@ -238,7 +238,6 @@ class DailyFragment : Fragment() {
             )
         )
         with(binding.rvSearch) {
-
             adapter = adapterList
             layoutManager = LinearLayoutManager(requireContext())
         }

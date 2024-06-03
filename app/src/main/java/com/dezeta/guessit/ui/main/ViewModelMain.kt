@@ -27,7 +27,7 @@ class ViewModelMain : ViewModel() {
         dataBase.collection("users").document(email).get().addOnSuccessListener {
             user.value = User(
                 it.get("email") as String, (it.get("point") as Number).toInt(),
-                ProviderType.valueOf(it.get("provider") as String),(it.get("level") as Number).toInt(),(it.get("completeLevel") as Number).toInt(),
+                ProviderType.valueOf(it.get("provider") as String),(it.get("level") as Number).toInt(),"",(it.get("completeLevel") as Number).toInt(),
             )
             state.value = MainState.UserSuccess(
                 user.value!!

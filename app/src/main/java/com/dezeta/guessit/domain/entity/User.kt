@@ -7,6 +7,7 @@ data class User(
     var point: Int,
     val provider: ProviderType,
     var level: Int,
+    var img_url: String,
     var completeLevel: Int
 ) :
     Serializable

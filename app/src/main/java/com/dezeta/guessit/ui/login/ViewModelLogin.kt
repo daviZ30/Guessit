@@ -75,6 +75,7 @@ class ViewModelLogin : ViewModel() {
                     0,
                     ProviderType.BASIC,
                     0,
+                    "",
                     0
                 )
                 saveUser(user!!)

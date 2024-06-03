@@ -27,6 +27,7 @@ class UserManager {
                     (it.get("point") as Number).toInt(),
                     ProviderType.valueOf(it.get("provider") as String),
                     (it.get("level") as Number).toInt(),
+                    "",
                     level,
                 )
                 if(level >= (it.get("completeLevel") as Number).toInt()){
@@ -52,6 +53,7 @@ class UserManager {
                     p,
                     ProviderType.valueOf(it.get("provider") as String),
                     (it.get("level") as Number).toInt(),
+                    "",
                     (it.get("completeLevel") as Number).toInt(),
                 )
                 dataBase.collection("users").document(user.email).set(

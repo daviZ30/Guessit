@@ -14,7 +14,6 @@ import com.dezeta.guessit.ui.main.MainActivity
 import kotlin.random.Random
 
 class MenuFragment : Fragment() {
-    private var random = Random(98765498)
     private var _binding: FragmentMenuBinding? = null
     var testNum = 0
     lateinit var testlist: List<Guess>
@@ -72,6 +71,9 @@ class MenuFragment : Fragment() {
         }
         binding.cvLocalGame.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_localGameFragment)
+        }
+        binding.btnAboutUs.setOnClickListener {
+            findNavController().navigate(R.id.action_MenuFragment_to_friendFragment)
         }
     }
 

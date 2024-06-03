@@ -66,7 +66,6 @@ class ViewModelMenu : ViewModel() {
         viewModelScope.launch {
             state.value = ExtraState.refreshUserProfile(view, manager.getUserImages(email))
         }
-
     }
 
     fun getAllUserAccounts() {
@@ -76,11 +75,12 @@ class ViewModelMenu : ViewModel() {
             if (task.isSuccessful) {
                 for (document in task.result) {
                     val userData = document.data
-                    var user = User(
+                    val user = User(
                         userData["email"] as String,
                         (userData["point"] as Number).toInt(),
                         ProviderType.valueOf(userData["provider"] as String),
                         (userData["level"] as Number).toInt(),
+                        "",
                         (userData["completeLevel"] as Number).toInt()
 
                     )

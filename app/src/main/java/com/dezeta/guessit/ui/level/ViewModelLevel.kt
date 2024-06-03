@@ -27,6 +27,7 @@ class ViewModelLevel : ViewModel() {
                 (it.get("point") as Number).toInt(),
                 ProviderType.valueOf(it.get("provider") as String),
                 (it.get("level") as Number).toInt(),
+                "",
                 (it.get("completeLevel") as Number).toInt(),
             )
             state.value = LevelState.Success(user)
