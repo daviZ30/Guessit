@@ -45,18 +45,31 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/navTvEmail"
+            android:id="@+id/navTvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:text="hgvjhgvj"
-            android:textSize="20sp"
+            android:text="Nombre"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/navImgProfile"
             app:layout_constraintStart_toStartOf="@+id/navImgProfile"
             app:layout_constraintTop_toBottomOf="@+id/navImgProfile" />
 
+
+        <TextView
+            android:id="@+id/navTvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Correo"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/navTvName"
+            app:layout_constraintStart_toStartOf="@+id/navTvName"
+            app:layout_constraintTop_toBottomOf="@+id/navTvName" />
 
         <ImageView
             android:id="@+id/navImgDolar"

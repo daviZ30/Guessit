@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dezeta.guessit.R
 import com.dezeta.guessit.adapter.FriendAdapter
 import com.dezeta.guessit.databinding.FragmentFriendBinding
+import com.dezeta.guessit.utils.Locator
 
 class FriendFragment : Fragment() {
 
@@ -20,6 +21,11 @@ class FriendFragment : Fragment() {
     private val viewModel: FriendViewModel by viewModels()
     override fun onStart() {
         super.onStart()
+        with(binding.lottieLoadAnimation) {
+            visibility = View.VISIBLE
+            setAnimation(R.raw.load_image)
+            playAnimation()
+        }
         viewModel.userList = mutableListOf()
         viewModel.getAllFriend()
     }
@@ -40,6 +46,8 @@ class FriendFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is FriendState.AddFriend -> {
+                    binding.lottieLoadAnimation.cancelAnimation()
+                    binding.lottieLoadAnimation.visibility = View.INVISIBLE
                     adapterFriend.update(viewModel.userList)
                 }
 
@@ -54,7 +62,11 @@ class FriendFragment : Fragment() {
     }
 
     private fun setup() {
-        adapterFriend = FriendAdapter() {
+        adapterFriend = FriendAdapter({}) {
+            if(it.email != Locator.email){
+                viewModel.removeFriend(it)
+                adapterFriend.update(viewModel.userList)
+            }
 
         }
         with(binding.rvFriend) {

@@ -13,6 +13,7 @@ class UserManager {
                     "friends" to user.friends,
                     "provider" to user.provider,
                     "email" to user.email,
+                    "name" to user.name,
                     "point" to user.point,
                     "level" to user.level,
                     "completeLevel" to user.completeLevel
@@ -25,6 +26,7 @@ class UserManager {
             dataBase.collection("users").document(Locator.email).get().addOnSuccessListener {
                 val user = User(
                     it.get("email") as String,
+                    it.get("name") as String,
                     list,
                     (it.get("point") as Number).toInt(),
                     ProviderType.valueOf(it.get("provider") as String),
@@ -37,6 +39,7 @@ class UserManager {
                         "friends" to user.friends,
                         "provider" to user.provider,
                         "email" to user.email,
+                        "name" to user.name,
                         "point" to user.point,
                         "level" to user.level,
                         "completeLevel" to user.completeLevel
@@ -53,6 +56,7 @@ class UserManager {
             dataBase.collection("users").document(email).get().addOnSuccessListener {
                 val user = User(
                     it.get("email") as String,
+                    it.get("name") as String,
                     it.get("friends") as List<String>,
                     (it.get("point") as Number).toInt(),
                     ProviderType.valueOf(it.get("provider") as String),
@@ -66,6 +70,7 @@ class UserManager {
                             "friends" to user.friends,
                             "provider" to user.provider,
                             "email" to user.email,
+                            "name" to user.name,
                             "point" to user.point,
                             "level" to user.level,
                             "completeLevel" to user.completeLevel
@@ -82,6 +87,7 @@ class UserManager {
                 val p = (it.get("point") as Number).toInt() + point
                 val user = User(
                     it.get("email") as String,
+                    it.get("name") as String,
                     it.get("friends") as List<String>,
                     p,
                     ProviderType.valueOf(it.get("provider") as String),
@@ -94,6 +100,7 @@ class UserManager {
                         "friends" to user.friends,
                         "provider" to user.provider,
                         "email" to user.email,
+                        "name" to user.name,
                         "point" to user.point,
                         "level" to user.level,
                         "completeLevel" to user.completeLevel
@@ -109,6 +116,7 @@ class UserManager {
                     "friends" to user.friends,
                     "provider" to user.provider,
                     "email" to user.email,
+                    "name" to user.name,
                     "point" to user.point,
                     "level" to user.level,
                     "completeLevel" to user.completeLevel

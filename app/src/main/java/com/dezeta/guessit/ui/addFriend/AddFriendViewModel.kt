@@ -23,9 +23,9 @@ class AddFriendViewModel : ViewModel() {
         val usersRef = dataBase.collection("users")
         usersRef.document(Locator.email).get().addOnSuccessListener {
             friends = (it.get("friends") as List<String>)
-           /* println(friends)
-            for (f in friends) {
-            }*/
+            /* println(friends)
+             for (f in friends) {
+             }*/
             getAllUserAccounts()
         }
 
@@ -45,6 +45,7 @@ class AddFriendViewModel : ViewModel() {
                         val userData = document.data
                         val user = User(
                             userData["email"] as String,
+                            userData["name"] as String,
                             userData["friends"] as List<String>,
                             (userData["point"] as Number).toInt(),
                             ProviderType.valueOf(userData["provider"] as String),
@@ -54,10 +55,10 @@ class AddFriendViewModel : ViewModel() {
                         )
                         println("LISTAAAAAA ${friends}")
                         if (!friends.contains(user.email)) {
-                        userList.add(
-                            user
-                        )
-                          }
+                            userList.add(
+                                user
+                            )
+                        }
                         state.value = FriendState.AddFriend
                     }
                 }
@@ -82,8 +83,29 @@ class AddFriendViewModel : ViewModel() {
         usersRef.document(Locator.email).get().addOnSuccessListener {
             val friends: MutableList<String> = (it.get("friends") as List<String>).toMutableList()
             friends.add(user.email)
-            UserManager.UpdateFriends(friends)
-            state.value = FriendState.InsertFriend
+            val user = User(
+                it.get("email") as String,
+                it.get("name") as String,
+                friends,
+                (it.get("point") as Number).toInt(),
+                ProviderType.valueOf(it.get("provider") as String),
+                (it.get("level") as Number).toInt(),
+                "",
+                (it.get("completeLevel") as Number).toInt(),
+            )
+            dataBase.collection("users").document(Locator.email).set(
+                hashMapOf(
+                    "friends" to user.friends,
+                    "provider" to user.provider,
+                    "email" to user.email,
+                    "name" to user.name,
+                    "point" to user.point,
+                    "level" to user.level,
+                    "completeLevel" to user.completeLevel
+                )
+            ).addOnSuccessListener {
+                state.value = FriendState.InsertFriend
+            }
         }
     }
 

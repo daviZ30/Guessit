@@ -36,6 +36,7 @@ class ViewModelDaily : ViewModel() {
         dataBase.collection("users").document(email).get().addOnSuccessListener {
             user = User(
                 it.get("email") as String,
+                it.get("name") as String,
                 it.get("friends") as List<String>,
                 (it.get("point") as Number).toInt(),
                 ProviderType.valueOf(it.get("provider") as String),
@@ -145,6 +146,7 @@ class ViewModelDaily : ViewModel() {
         dataBase.collection("users").document(email).get().addOnSuccessListener {
             val user = User(
                 it.get("email") as String,
+                it.get("name") as String,
                 it.get("friends") as List<String>,
                 (it.get("point") as Number).toInt(),
                 ProviderType.valueOf(it.get("provider") as String),
@@ -155,9 +157,11 @@ class ViewModelDaily : ViewModel() {
             if(level >= (it.get("completeLevel") as Number).toInt()){
                 dataBase.collection("users").document(user.email).set(
                     hashMapOf(
-                        "provider" to user.provider,
                         "email" to user.email,
+                        "name" to user.name,
+                        "friends" to user.friends,
                         "point" to user.point,
+                        "provider" to user.provider,
                         "level" to user.level,
                         "completeLevel" to user.completeLevel
                     )

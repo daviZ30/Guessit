@@ -96,12 +96,13 @@ class MainActivity : AppCompatActivity() {
 
         val btnEditProfile = headerView.findViewById<Button>(R.id.navBtnDeleteProfile)
         val imgEditProfile = headerView.findViewById<ImageView>(R.id.navImgEditProfile)
-        val tvDrawerName = headerView.findViewById<TextView>(R.id.navTvEmail)
+        val tvDrawerName = headerView.findViewById<TextView>(R.id.navTvName)
         val tvEmail = headerView.findViewById<TextView>(R.id.navTvEmail)
         val tvDrawerPoint = headerView.findViewById<TextView>(R.id.navTvPoint)
 
         viewModel.getUserProfileImageByEmail(manager)
         tvEmail.text = viewModel.user.value!!.email
+        tvDrawerName.text = viewModel.user.value!!.name
         tvDrawerPoint.text = viewModel.user.value!!.point.toString()
         imgEditProfile.setOnClickListener {
             pickPhotoFromGallery()

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dezeta.guessit.R
 import com.dezeta.guessit.adapter.FriendAdapter
 import com.dezeta.guessit.databinding.FragmentAddFriendBinding
 import com.dezeta.guessit.ui.friend.FriendState
@@ -35,8 +36,11 @@ class AddFriendFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is FriendState.AddFriend -> {
+                    binding.lottieLoadAnimation.cancelAnimation()
+                    binding.lottieLoadAnimation.visibility = View.INVISIBLE
                     adapterFriend.update(viewModel.userList)
                 }
+
                 is FriendState.InsertFriend -> {
                     findNavController().popBackStack()
                 }
@@ -51,13 +55,16 @@ class AddFriendFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        with(binding.lottieLoadAnimation) {
+            visibility = View.VISIBLE
+            setAnimation(R.raw.load_image)
+            playAnimation()
+        }
         viewModel.load()
     }
 
     private fun setup() {
-        adapterFriend = FriendAdapter(){
-            viewModel.addFriend(it)
-        }
+        adapterFriend = FriendAdapter({ viewModel.addFriend(it) }) {}
         with(binding.rvAddFriend) {
             adapter = adapterFriend
             layoutManager = LinearLayoutManager(requireContext())

@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
                     if (account != null) {
                         starLoadAnimation()
                         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                        viewModel.signInGoogle(credential, account.email)
+                        viewModel.signInGoogle(credential, account.email,account.displayName ?: "Username")
                     }
                 } catch (e: ApiException) {
                     showAlert("Error", "No se ha podido iniciar sesión con google")
@@ -91,11 +91,11 @@ class LoginActivity : AppCompatActivity() {
         fadeOutAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {
-                binding.tilConfirmPassword.visibility = View.GONE
             }
 
             override fun onAnimationEnd(animation: Animation?) {
                 binding.tilConfirmPassword.visibility = View.GONE
+                binding.tilLoginName.visibility = View.GONE
             }
         })
         viewModel.getResult().observe(this) {
@@ -128,6 +128,21 @@ class LoginActivity : AppCompatActivity() {
         }
         viewModel.getState().observe(this) { state ->
             when (state) {
+                is LoginState.nameEmtyError -> {
+                    with(binding.tilLoginName){
+                        error = "Introduce un nombre de usuario"
+                        requestFocus()
+                    }
+                }
+                is LoginState.nameEqualsError -> {
+                    with(binding.tilLoginName){
+                        error = "El nombre introducido ya existe"
+                        requestFocus()
+                    }
+                }
+                is LoginState.GoogleSuccess -> {
+                    showHome(state.email)
+                }
                 is LoginState.EmailNotVerifiedError -> {
                     showAlert(
                         "Error",
@@ -264,6 +279,11 @@ class LoginActivity : AppCompatActivity() {
                 binding.tilLoginMail
             )
         )
+        binding.tieLoginName.addTextChangedListener(
+            TextWatcher(
+                binding.tilLoginName
+            )
+        )
         binding.tieLoginPassword.addTextChangedListener(
             TextWatcher(
                 binding.tilLoginPassword
@@ -290,6 +310,8 @@ class LoginActivity : AppCompatActivity() {
                 with(binding) {
                     tilConfirmPassword.visibility = View.VISIBLE
                     tilConfirmPassword.startAnimation(fadeInAnimation)
+                    tilLoginName.visibility = View.VISIBLE
+                    tilLoginName.startAnimation(fadeInAnimation)
 
                     btnChanged.text = "Login"
                 }
@@ -298,6 +320,7 @@ class LoginActivity : AppCompatActivity() {
                 register = false
                 with(binding) {
                     tilConfirmPassword.startAnimation(fadeOutAnimation)
+                    tilLoginName.startAnimation(fadeOutAnimation)
                     btnChanged.text = "Registrar"
                 }
 

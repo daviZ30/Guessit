@@ -8,6 +8,7 @@ import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
+import com.dezeta.guessit.utils.UserManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,7 @@ class FriendViewModel : ViewModel() {
             viewModelScope.launch {
                 val user = User(
                     it.get("email") as String,
+                    it.get("name") as String,
                     it.get("friends") as List<String>,
                     (it.get("point") as Number).toInt(),
                     ProviderType.valueOf(it.get("provider") as String),
@@ -46,6 +48,15 @@ class FriendViewModel : ViewModel() {
             for (f in friends) {
                 loadUser(f)
             }
+        }
+    }
+    fun removeFriend(user: User) {
+        userList.remove(user)
+        val usersRef = dataBase.collection("users")
+        usersRef.document(Locator.email).get().addOnSuccessListener {
+            val friends: MutableList<String> = (it.get("friends") as List<String>).toMutableList()
+            friends.remove(user.email)
+            UserManager.UpdateFriends(friends)
         }
     }
 }

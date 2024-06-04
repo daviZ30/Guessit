@@ -78,6 +78,7 @@ class ViewModelMenu : ViewModel() {
                     val userData = document.data
                     val user = User(
                         userData["email"] as String,
+                        userData["name"] as String,
                         userData["friends"] as List<String>,
                         (userData["point"] as Number).toInt(),
                         ProviderType.valueOf(userData["provider"] as String),

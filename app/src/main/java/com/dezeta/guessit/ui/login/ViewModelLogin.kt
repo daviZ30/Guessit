@@ -18,11 +18,15 @@ import java.lang.Exception
 class ViewModelLogin : ViewModel() {
     var dataBase = FirebaseFirestore.getInstance()
     var mail = MutableLiveData<String>()
+    var name = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     var confPassword = MutableLiveData<String>()
     private var state = MutableLiveData<LoginState>()
     private var result = MutableLiveData<Resource>()
     var user: User? = null
+    var userList: MutableList<User> = mutableListOf()
+
+
     fun getState(): LiveData<LoginState> {
         return state
     }
@@ -72,6 +76,7 @@ class ViewModelLogin : ViewModel() {
                 FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
                 user = User(
                     r.result?.user?.email ?: "",
+                    name.value!!,
                     listOf(r.result?.user?.email ?: ""),
                     0,
                     ProviderType.BASIC,
@@ -119,19 +124,56 @@ class ViewModelLogin : ViewModel() {
     }
 
     fun validateSignUp() {
-        when {
-            TextUtils.isEmpty(mail.value) -> state.value = LoginState.emailEmtyError
-            TextUtils.isEmpty(password.value) -> state.value = LoginState.passwordEmtyError
-            !validarEmail(mail.value!!) -> state.value = LoginState.emailFormatError
-            !validarPassword(password.value!!) -> state.value = LoginState.passwordFormatError
-            confPassword.value != password.value -> state.value =
-                LoginState.NotEqualsPasswordError
+        val usersRef = dataBase.collection("users")
+        usersRef.get().addOnCompleteListener { task ->
+            userList.clear()
+            if (task.isSuccessful) {
+                for (document in task.result) {
+                    val userData = document.data
+                    val user = User(
+                        userData["email"] as String,
+                        userData["name"] as String,
+                        userData["friends"] as List<String>,
+                        (userData["point"] as Number).toInt(),
+                        ProviderType.valueOf(userData["provider"] as String),
+                        (userData["level"] as Number).toInt(),
+                        "",
+                        (userData["completeLevel"] as Number).toInt()
+                    )
+                    userList.add(
+                        user
+                    )
+                }
+                when {
+                    TextUtils.isEmpty(mail.value) -> state.value = LoginState.emailEmtyError
+                    TextUtils.isEmpty(password.value) -> state.value = LoginState.passwordEmtyError
+                    TextUtils.isEmpty(name.value) -> state.value = LoginState.nameEmtyError
+                    !validarName(name.value, userList) -> state.value = LoginState.nameEqualsError
+                    !validarEmail(mail.value!!) -> state.value = LoginState.emailFormatError
+                    !validarPassword(password.value!!) -> state.value =
+                        LoginState.passwordFormatError
 
-            else -> {
-                state.value = LoginState.Success
+                    confPassword.value != password.value -> state.value =
+                        LoginState.NotEqualsPasswordError
 
+                    else -> {
+                        state.value = LoginState.Success
+
+                    }
+                }
+            } else {
+                println("Error al obtener documentos: ${task.exception}")
             }
         }
+    }
+
+    private fun validarName(value: String?, userList: MutableList<User>): Boolean {
+        var bool = true
+        userList.forEach {
+            if (it.name == value)
+                bool = false
+        }
+        return bool
     }
 
     fun validateSignIn() {
@@ -143,23 +185,63 @@ class ViewModelLogin : ViewModel() {
         }
     }
 
-    fun signInGoogle(credential: AuthCredential, email: String?) {
+    fun signInGoogle(credential: AuthCredential, e: String?, n: String) {
         FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                /*user = User(
-                    email ?: "",
-                    0,
-                    ProviderType.GOOGLE
-                )
-                saveUser(user!!)*/
-                result.value = Resource.Success(email)
+                val usersRef = dataBase.collection("users")
+                usersRef.get().addOnCompleteListener { task ->
+                    userList.clear()
+                    if (task.isSuccessful) {
+                        for (document in task.result) {
+                            val userData = document.data
+                            val user = User(
+                                userData["email"] as String,
+                                userData["name"] as String,
+                                userData["friends"] as List<String>,
+                                (userData["point"] as Number).toInt(),
+                                ProviderType.valueOf(userData["provider"] as String),
+                                (userData["level"] as Number).toInt(),
+                                "",
+                                (userData["completeLevel"] as Number).toInt()
+                            )
+                            userList.add(
+                                user
+                            )
+                        }
+                        var exists = false
+                        userList.forEach {
+                            if (it.email == e) {
+                                exists = true
+                            }
+                        }
+                        if (!exists) {
+                            val u = User(
+                                e!!,
+                                n,
+                                listOf(e),
+                                0,
+                                ProviderType.GOOGLE,
+                                0,
+                                "",
+                                0
+                            )
+                            saveUser(u)
+                            state.value = LoginState.GoogleSuccess(e)
+                        } else {
+                            state.value = LoginState.GoogleSuccess(e!!)
+                        }
+                    } else {
+                        println("Error al obtener documentos: ${task.exception}")
+                    }
+                }
+
+
             } else {
                 result.value =
                     Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
             }
         }
     }
-
 
 
 }

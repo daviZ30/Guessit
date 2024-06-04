@@ -88,7 +88,7 @@ class DailyMenuFragment : Fragment() {
 
                 with(binding) {
                     viewModel.getUserProfileImageByEmail(manager, user.email, imgProfile1)
-                    tvProfile1.text = filterText(user.email)
+                    tvProfile1.text = user.name
                     tvProfile1Points.text = user.point.toString()
                 }
             }
@@ -97,10 +97,10 @@ class DailyMenuFragment : Fragment() {
                 with(binding) {
                     viewModel.getUserProfileImageByEmail(manager, viewModel.userList[0].email, imgProfile1)
                     viewModel.getUserProfileImageByEmail(manager, viewModel.userList[1].email, imgProfile2)
-                    tvProfile1.text = filterText(viewModel.userList[0].email)
+                    tvProfile1.text = viewModel.userList[0].name
                     tvProfile1Points.text = viewModel.userList[0].point.toString()
 
-                    tvProfile2.text = filterText(viewModel.userList[1].email)
+                    tvProfile2.text = viewModel.userList[1].name
                     tvProfile2Points.text = viewModel.userList[1].point.toString()
                 }
             }
@@ -110,13 +110,13 @@ class DailyMenuFragment : Fragment() {
                     viewModel.getUserProfileImageByEmail(manager, viewModel.userList[0].email,imgProfile1)
                     viewModel.getUserProfileImageByEmail(manager, viewModel.userList[1].email,imgProfile2)
                     viewModel.getUserProfileImageByEmail(manager, viewModel.userList[2].email,imgProfile3)
-                    tvProfile1.text = filterText(viewModel.userList[0].email)
+                    tvProfile1.text = viewModel.userList[0].name
                     tvProfile1Points.text = viewModel.userList[0].point.toString()
 
-                    tvProfile2.text = filterText(viewModel.userList[1].email)
+                    tvProfile2.text = viewModel.userList[1].name
                     tvProfile2Points.text = viewModel.userList[1].point.toString()
 
-                    tvProfile3.text = filterText(viewModel.userList[2].email)
+                    tvProfile3.text = viewModel.userList[2].name
                     tvProfile3Points.text = viewModel.userList[2].point.toString()
                 }
             }
@@ -124,14 +124,6 @@ class DailyMenuFragment : Fragment() {
             else -> {
 
             }
-        }
-    }
-    fun filterText(str: String): String {
-        val indiceArroba = str.indexOf('@')
-        return if (indiceArroba != -1) {
-            str.substring(0, indiceArroba)
-        } else {
-            ""
         }
     }
 

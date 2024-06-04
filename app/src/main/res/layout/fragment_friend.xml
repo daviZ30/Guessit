@@ -25,6 +25,17 @@
             android:layout_height="match_parent" />
     </androidx.cardview.widget.CardView>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieLoadAnimation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="5dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="@+id/cardView" />
+
     <com.github.nikartm.button.FitButton
         android:id="@+id/btnAddFriend"
         android:layout_width="0dp"
