@@ -1,5 +1,6 @@
 package com.dezeta.guessit.ui.menu
 
+import android.content.SharedPreferences
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,8 +11,9 @@ import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.CloudStorageManager
-import com.dezeta.guessit.utils.Locator
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -71,29 +73,32 @@ class ViewModelMenu : ViewModel() {
 
     fun getAllUserAccounts() {
         val usersRef = dataBase.collection("users")
-        usersRef.get().addOnCompleteListener { task ->
-            userList.clear()
-            if (task.isSuccessful) {
-                for (document in task.result) {
-                    val userData = document.data
-                    val user = User(
-                        userData["email"] as String,
-                        userData["name"] as String,
-                        userData["friends"] as List<String>,
-                        (userData["point"] as Number).toInt(),
-                        ProviderType.valueOf(userData["provider"] as String),
-                        (userData["level"] as Number).toInt(),
-                        "",
-                        (userData["completeLevel"] as Number).toInt()
-                    )
-                    userList.add(
-                        user
-                    )
+        viewModelScope.launch(Dispatchers.Default) {
+            usersRef.get().addOnCompleteListener { task ->
+                userList.clear()
+                if (task.isSuccessful) {
+                    for (document in task.result) {
+                        val userData = document.data
+                        val user = User(
+                            userData["email"] as String,
+                            userData["name"] as String,
+                            userData["friends"] as List<String>,
+                            (userData["point"] as Number).toInt(),
+                            ProviderType.valueOf(userData["provider"] as String),
+                            (userData["level"] as Number).toInt(),
+                            "",
+                            (userData["completeLevel"] as Number).toInt()
+                        )
+                        userList.add(
+                            user
+                        )
+                    }
+                    state.value = ExtraState.refreshUserList
+                } else {
+                    println("Error al obtener documentos: ${task.exception}")
                 }
-                state.value = ExtraState.refreshUserList
-            } else {
-                println("Error al obtener documentos: ${task.exception}")
             }
         }
     }
+
 }

@@ -3,6 +3,7 @@ package com.dezeta.guessit.ui.daily
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dezeta.guessit.domain.Repository.Repository
 import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.Category
@@ -17,6 +18,8 @@ import com.dezeta.guessit.utils.Locator
 import com.dezeta.guessit.utils.UserManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class ViewModelDaily : ViewModel() {
@@ -31,19 +34,22 @@ class ViewModelDaily : ViewModel() {
     fun getState(): LiveData<DailyState> {
         return state
     }
+
     fun loadUser() {
         val email = Locator.email
-        dataBase.collection("users").document(email).get().addOnSuccessListener {
-            user = User(
-                it.get("email") as String,
-                it.get("name") as String,
-                it.get("friends") as List<String>,
-                (it.get("point") as Number).toInt(),
-                ProviderType.valueOf(it.get("provider") as String),
-                (it.get("level") as Number).toInt(),
-                "",
-                (it.get("completeLevel") as Number).toInt(),
-            )
+        viewModelScope.launch(Dispatchers.IO) {
+            dataBase.collection("users").document(email).get().addOnSuccessListener {
+                user = User(
+                    it.get("email") as String,
+                    it.get("name") as String,
+                    it.get("friends") as List<String>,
+                    (it.get("point") as Number).toInt(),
+                    ProviderType.valueOf(it.get("provider") as String),
+                    (it.get("level") as Number).toInt(),
+                    "",
+                    (it.get("completeLevel") as Number).toInt(),
+                )
+            }
         }
     }
 
@@ -111,7 +117,7 @@ class ViewModelDaily : ViewModel() {
     }
 
     fun getCountryNameList(): MutableList<String> {
-        var list = mutableListOf<String>()
+        val list = mutableListOf<String>()
         val isoCountryCodes = Locale.getISOCountries()
         for (countryCode in isoCountryCodes) {
             val locale = Locale(Locale.getDefault().isO3Language, countryCode)
@@ -128,47 +134,51 @@ class ViewModelDaily : ViewModel() {
     fun update2500Point() {
         user!!.point += 2500
         user!!.completeLevel = 24
-        dataBase.collection("users").document(user!!.email).set(
-            hashMapOf(
-                "provider" to user!!.provider,
-                "email" to user!!.email,
-                "point" to user!!.point,
-                "level" to user!!.level,
-                "completeLevel" to user!!.completeLevel
-            )
-        ).addOnSuccessListener {
-            state.value = DailyState.insertSuccess
+        viewModelScope.launch(Dispatchers.IO) {
+            dataBase.collection("users").document(user!!.email).set(
+                hashMapOf(
+                    "provider" to user!!.provider,
+                    "email" to user!!.email,
+                    "point" to user!!.point,
+                    "level" to user!!.level,
+                    "completeLevel" to user!!.completeLevel
+                )
+            ).addOnSuccessListener {
+                state.value = DailyState.insertSuccess
+            }
         }
     }
 
     fun updateLevel(level: Int) {
         val email = Locator.email
-        dataBase.collection("users").document(email).get().addOnSuccessListener {
-            val user = User(
-                it.get("email") as String,
-                it.get("name") as String,
-                it.get("friends") as List<String>,
-                (it.get("point") as Number).toInt(),
-                ProviderType.valueOf(it.get("provider") as String),
-                (it.get("level") as Number).toInt(),
-                "",
-                level,
-            )
-            if(level >= (it.get("completeLevel") as Number).toInt()){
-                dataBase.collection("users").document(user.email).set(
-                    hashMapOf(
-                        "email" to user.email,
-                        "name" to user.name,
-                        "friends" to user.friends,
-                        "point" to user.point,
-                        "provider" to user.provider,
-                        "level" to user.level,
-                        "completeLevel" to user.completeLevel
-                    )
+        viewModelScope.launch(Dispatchers.IO) {
+            dataBase.collection("users").document(email).get().addOnSuccessListener {
+                val user = User(
+                    it.get("email") as String,
+                    it.get("name") as String,
+                    it.get("friends") as List<String>,
+                    (it.get("point") as Number).toInt(),
+                    ProviderType.valueOf(it.get("provider") as String),
+                    (it.get("level") as Number).toInt(),
+                    "",
+                    level,
                 )
+                if (level >= (it.get("completeLevel") as Number).toInt()) {
+                    dataBase.collection("users").document(user.email).set(
+                        hashMapOf(
+                            "email" to user.email,
+                            "name" to user.name,
+                            "friends" to user.friends,
+                            "point" to user.point,
+                            "provider" to user.provider,
+                            "level" to user.level,
+                            "completeLevel" to user.completeLevel
+                        )
+                    )
+                }
+            }.addOnSuccessListener {
+                state.value = DailyState.insertSuccess
             }
-        }.addOnSuccessListener {
-            state.value = DailyState.insertSuccess
         }
     }
 

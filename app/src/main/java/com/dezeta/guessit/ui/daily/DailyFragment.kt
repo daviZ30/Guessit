@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,8 @@ import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.loadImageBitmapFromInternalStorage
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class DailyFragment : Fragment() {
@@ -100,9 +103,27 @@ class DailyFragment : Fragment() {
                             btnCategoty.visibility = View.GONE
                             cvShowList.visibility = View.GONE
                         }
-                        binding.imgDaily1.setImageBitmap(loadImageBitmapFromInternalStorage(getImage(1)!!))
-                        binding.imgDaily2.setImageBitmap(loadImageBitmapFromInternalStorage(getImage(2)!!))
-                        binding.imgDaily3.setImageBitmap(loadImageBitmapFromInternalStorage(getImage(3)!!))
+                        binding.imgDaily1.setImageBitmap(
+                            loadImageBitmapFromInternalStorage(
+                                getImage(
+                                    1
+                                )!!
+                            )
+                        )
+                        binding.imgDaily2.setImageBitmap(
+                            loadImageBitmapFromInternalStorage(
+                                getImage(
+                                    2
+                                )!!
+                            )
+                        )
+                        binding.imgDaily3.setImageBitmap(
+                            loadImageBitmapFromInternalStorage(
+                                getImage(
+                                    3
+                                )!!
+                            )
+                        )
 
                     } else {
                         binding.tvDailyHelp.text =
@@ -147,38 +168,68 @@ class DailyFragment : Fragment() {
             playAnimation()
         }
         if (i == 3) {
-            Glide.with(requireContext())
-                .load(img)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        return true
-                    }
+            lifecycleScope.launch {
+                Glide.with(requireContext())
+                    .load(img)
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return true
+                        }
 
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        binding.lottieLoadAnimation.cancelAnimation()
-                        binding.lottieLoadAnimation.visibility = View.INVISIBLE
-                        view!!.setImageDrawable(resource)
-                        return true
-                    }
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            view!!.setImageDrawable(resource)
+                            binding.lottieLoadAnimation.visibility = View.INVISIBLE
+                            binding.lottieLoadAnimation.cancelAnimation()
+                            return true
+                        }
 
-                })
-                .into(view!!)
+                    })
+                    .into(view!!)
+            }
+
         } else {
-            Glide.with(requireContext())
-                .load(img)
-                .into(view!!)
+            lifecycleScope.launch {
+                Glide.with(requireContext())
+                    .load(img)
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return true
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            view!!.setImageDrawable(resource)
+                            return true
+                        }
+
+                    })
+                    .into(view!!)
+            }
+
+
         }
+
     }
 
     private fun nextImage() {

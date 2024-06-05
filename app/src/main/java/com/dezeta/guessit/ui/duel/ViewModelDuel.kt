@@ -2,11 +2,14 @@ package com.dezeta.guessit.ui.duel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dezeta.guessit.domain.Repository.Repository
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Info
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.utils.UserManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class ViewModelDuel : ViewModel() {
@@ -14,8 +17,11 @@ class ViewModelDuel : ViewModel() {
     var previousNum: Int? = null
     var point = 0
     fun updateLevel(level: Int) {
-       UserManager.UpdateCompleteLevel(level)
+        viewModelScope.launch(Dispatchers.IO) {
+            UserManager.UpdateCompleteLevel(level)
+        }
     }
+
     fun getSerie(): Guess {
         val lista = Repository.getSeriesList()
         var r: Int
@@ -25,8 +31,12 @@ class ViewModelDuel : ViewModel() {
         previousNum = r
         return lista[r]
     }
+
     fun updatePoint() {
-        UserManager.UpdatePoint(point)
+        viewModelScope.launch(Dispatchers.IO) {
+            UserManager.UpdatePoint(point)
+        }
+
     }
 
     fun getImage0(serie: Guess): Img? {

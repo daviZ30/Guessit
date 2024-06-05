@@ -11,6 +11,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
@@ -24,6 +25,7 @@ import com.dezeta.guessit.domain.entity.Info
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.loadImageBitmapFromInternalStorage
+import kotlinx.coroutines.launch
 
 class DuelFragment : Fragment() {
     private var _binding: FragmentDuelBinding? = null
@@ -92,32 +94,35 @@ class DuelFragment : Fragment() {
             setAnimation(R.raw.load_image)
             playAnimation()
         }
-        Glide.with(requireContext())
-            .load(imageUrl)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return true
-                }
+        lifecycleScope.launch {
+            Glide.with(requireContext())
+                .load(imageUrl)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return true
+                    }
 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    animation.cancelAnimation()
-                    animation.visibility = View.GONE
-                    imageView.setImageDrawable(resource)
-                    return true
-                }
-            })
-            .into(imageView)
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        imageView.setImageDrawable(resource)
+                        animation.visibility = View.GONE
+                        animation.cancelAnimation()
+                        return true
+                    }
+                })
+                .into(imageView)
+        }
+
     }
 
     private fun setup() {
@@ -202,7 +207,7 @@ class DuelFragment : Fragment() {
                                     viewModel.updatePoint()
                                     showCongratulatoryMessage()
                                     findNavController().popBackStack()
-                                }else{
+                                } else {
                                     findNavController().popBackStack()
                                 }
                             }

@@ -142,50 +142,50 @@ abstract class SerieDataBase : RoomDatabase() {
                     )
 
                     GuessDao().insert(Guess("online6","Chernobyl", Difficulty.Easy, Category.Historical_Drama ,GuessType.SERIE))
-                    imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img924/6117/0oPcqT.jpg", 0))
-                    imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img923/9194/AuigFD.jpg", 1))
-                    imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img924/8702/kvwX3Y.jpg", 2))
-                    imgDao().insert(Img("online6", "https://imagizer.imageshack.com/img922/3899/9NedXl.jpg", 3))
+                    imgDao().insert(Img("online6", "https://i.postimg.cc/Qts6t8k0/cherno0.jpg", 0))
+                    imgDao().insert(Img("online6", "https://i.postimg.cc/cHmFtpFZ/chernobyl1.jpg", 1))
+                    imgDao().insert(Img("online6", "https://i.postimg.cc/D0wBrxNG/chernobyl2.jpg", 2))
+                    imgDao().insert(Img("online6", "https://i.postimg.cc/44W8fTKQ/chernobyl3.jpg", 3))
                     infoDao().insert(Info("online6", 9.3, SetFecha("2019-08-06"),
                             "Chernóbil es una miniserie de televisión que dramatiza los eventos en torno al desastre nuclear ocurrido en Chernóbil en abril de 1986. La serie se centra en los esfuerzos de limpieza sin precedentes que siguieron al colapso del reactor 4 de la planta nuclear. A través de cinco capítulos, la historia muestra las historias de los bomberos, voluntarios y equipos de mineros que arriesgaron sus vidas para contener la catástrofe. Basada en los recuerdos locales de Prípiat, la serie ofrece una experiencia intensa y conmovedora sobre uno de los eventos más impactantes de la historia moderna."
                         )
                     )
 
                     GuessDao().insert(Guess("online7","The Crown", Difficulty.Medium, Category.Historial_Fiction ,GuessType.SERIE))
-                    imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img924/6451/N2WM0C.jpg", 0))
-                    imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img924/538/wtnVld.png", 1))
-                    imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img923/7650/INzIVP.png", 2))
-                    imgDao().insert(Img("online7", "https://imagizer.imageshack.com/img924/8360/UZSxou.png", 3))
+                    imgDao().insert(Img("online7", "https://i.postimg.cc/T3tmmR6t/thecrown0.jpg", 0))
+                    imgDao().insert(Img("online7", "https://i.postimg.cc/d0XyH4Dd/theCrown1.png", 1))
+                    imgDao().insert(Img("online7", "https://i.postimg.cc/8PDr0Fky/theCrown2.png", 2))
+                    imgDao().insert(Img("online7", "https://i.postimg.cc/ry5rjGT0/theCrown3.webp", 3))
                     infoDao().insert(Info("online7", 8.6, SetFecha("2016-11-01"),
                             "The Crown es una serie dramática creada por Peter Morgan que narra la vida de la Reina Isabel II y su reinado desde sus inicios hasta la actualidad. A lo largo de las temporadas, exploramos los desafíos, intrigas y cambios significativos que enfrenta la monarquía británica. La serie ofrece una visión fascinante de la historia y la política detrás del trono, con un reparto excepcional y una cuidada ambientación. Si te interesan las historias de la realeza y la política, The Crown es una elección imperdible."
                         )
                     )
 
                     GuessDao().insert(Guess("online8","Sons of Anarchy", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
-                    imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/4563/Acn4DP.jpg", 0))
-                    imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/3627/vkfpvy.jpg", 1))
-                    imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img922/6123/YUomcT.png", 2))
-                    imgDao().insert(Img("online8", "https://imagizer.imageshack.com/img924/9828/qbqXw6.png", 3))
+                    imgDao().insert(Img("online8", "https://i.postimg.cc/QMMQnFmL/sons0.jpg", 0))
+                    imgDao().insert(Img("online8", "https://i.postimg.cc/vmSrRG24/sons1.jpg", 1))
+                    imgDao().insert(Img("online8", "https://i.postimg.cc/qRh84WWj/sons2.webp", 2))
+                    imgDao().insert(Img("online8", "https://i.postimg.cc/Gh1kn7Kx/sons3.png", 3))
                     infoDao().insert(Info("online8", 8.6, SetFecha("2008-09-03"),
                             "Sons of Anarchy es una serie de televisión estadounidense creada por Kurt Sutter. La trama sigue a la pandilla de motociclistas Sons of Anarchy Motorcycle Club, Redwood Original (SAMCRO) en la ficticia ciudad de Charming, California. Liderados por Jax Teller (interpretado por Charlie Hunnam), los miembros de SAMCRO se enfrentan a rivalidades, lealtades divididas y conflictos internos mientras luchan por mantener el control de su territorio y su estilo de vida. La serie combina acción, drama y elementos de tragedia griega, y se desarrolla en un mundo lleno de motos, violencia y secretos oscuros. Si te gustan las historias sobre lealtad, crimen organizado y personajes complejos, Sons of Anarchy es una opción emocionante. "
                         )
                     )
 
                     GuessDao().insert(Guess("online9","Dexter", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
-                    imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img923/8923/b0hhBY.jpg", 0))
-                    imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img923/4692/6TFwZ6.jpg", 1))
-                    imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img922/6652/bErunV.jpg", 3))
-                    imgDao().insert(Img("online9", "https://imagizer.imageshack.com/img922/6535/OfON2x.png", 2))
+                    imgDao().insert(Img("online9", "https://i.postimg.cc/gJNK2v02/dexter0.jpg", 0))
+                    imgDao().insert(Img("online9", "https://i.postimg.cc/mDbw4dBn/dester1.jpg", 1))
+                    imgDao().insert(Img("online9", "https://i.postimg.cc/PJJQpPLz/dexter2.png", 3))
+                    imgDao().insert(Img("online9", "https://i.postimg.cc/J7YqwcgT/dexter3.jpg", 2))
                     infoDao().insert(Info("online9", 8.6, SetFecha("2006-10-01"),
                             "Dexter es una serie de televisión estadounidense que combina elementos de drama, suspenso y crimen. La trama sigue a Dexter Morgan, un forense especializado en análisis de salpicaduras de sangre en el Departamento de Policía de Miami, pero también es un asesino en serie. Dexter tiene un código moral muy particular: solo mata a otros asesinos que han escapado de la justicia. La serie explora su doble vida, sus relaciones personales y su lucha interna entre su lado oscuro y su deseo de ser parte de la sociedad. A lo largo de las temporadas, vemos cómo Dexter enfrenta desafíos, investiga crímenes y mantiene su secreto mientras intenta llevar una vida normal. Si te gustan los personajes complejos y las tramas intrigantes, Dexter es una excelente opción. "
                         )
                     )
 
                     GuessDao().insert(Guess("online10","The Walking Dead", Difficulty.Easy, Category.Fantasy ,GuessType.SERIE))
-                    imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img923/5372/vHR7a9.jpg", 0))
-                    imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img924/9441/t6e2dg.jpg", 1))
-                    imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img923/9839/JKzblO.jpg", 2))
-                    imgDao().insert(Img("online10", "https://imagizer.imageshack.com/img922/2880/BpDrjn.png", 3))
+                    imgDao().insert(Img("online10", "https://i.postimg.cc/rmxKhTBX/walking0.jpg", 0))
+                    imgDao().insert(Img("online10", "https://i.postimg.cc/902zKS24/walking1.jpg", 1))
+                    imgDao().insert(Img("online10", "https://i.postimg.cc/5tZXqykS/walking2.jpg", 2))
+                    imgDao().insert(Img("online10", "https://i.postimg.cc/7hNbkVPK/walking3.png", 3))
                     infoDao().insert(Info("online10", 8.1, SetFecha("2010-10-31"),
                             "The Walking Dead es una serie de televisión estadounidense que combina elementos de drama, suspenso y crimen. La trama sigue a Dexter Morgan, un forense especializado en análisis de salpicaduras de sangre en el Departamento de Policía de Miami, pero también es un asesino en serie. Dexter tiene un código moral muy particular: solo mata a otros asesinos que han escapado de la justicia. La serie explora su doble vida, sus relaciones personales y su lucha interna entre su lado oscuro y su deseo de ser parte de la sociedad. A lo largo de las temporadas, vemos cómo Dexter enfrenta desafíos, investiga crímenes y mantiene su secreto mientras intenta llevar una vida normal. Si te gustan los personajes complejos y las tramas intrigantes, Dexter es una excelente opción."
                         )
@@ -193,10 +193,10 @@ abstract class SerieDataBase : RoomDatabase() {
 
 
                     GuessDao().insert(Guess("online11","Lost", Difficulty.Easy, Category.Fantasy ,GuessType.SERIE))
-                    imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/9593/DWksne.png", 0))
-                    imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/3241/rQ9dYq.jpg", 1))
-                    imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img922/6756/Blvx3t.png", 2))
-                    imgDao().insert(Img("online11", "https://imagizer.imageshack.com/img924/3180/myQ2Xw.png", 3))
+                    imgDao().insert(Img("online11", "https://i.postimg.cc/bN217X1J/lost0.png", 0))
+                    imgDao().insert(Img("online11", "https://i.postimg.cc/L4WzQ4Yw/lost1.jpg", 1))
+                    imgDao().insert(Img("online11", "https://i.postimg.cc/Dz7s48HJ/lost2.png", 2))
+                    imgDao().insert(Img("online11", "https://i.postimg.cc/mgYCrQXW/lost3.webp", 3))
                     infoDao().insert(Info("online11", 8.3, SetFecha("2004-09-22"),
                             "Lost es una serie de televisión estadounidense que combina elementos de drama, misterio, ciencia ficción y aventura. La trama sigue a un grupo de sobrevivientes de un accidente de avión que quedan varados en una misteriosa isla tropical. A medida que luchan por sobrevivir, descubren secretos oscuros, criaturas extrañas y una serie de eventos inexplicables. La serie se centra en los personajes, sus relaciones y sus pasados entrelazados, mientras exploran la isla y enfrentan desafíos tanto físicos como emocionales. Lost es conocida por su narrativa no lineal, giros sorprendentes y un final que generó debates entre los fanáticos. Si te gustan las historias intrigantes y llenas de enigmas, esta serie es una excelente opción."
                         )
@@ -204,10 +204,10 @@ abstract class SerieDataBase : RoomDatabase() {
 
 
                     GuessDao().insert(Guess("online12","Better Call Saul", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
-                    imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img923/2698/GMLpfu.jpg", 0))
-                    imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img924/6807/Lw5nze.png", 1))
-                    imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img924/4223/ycbUXe.jpg", 2))
-                    imgDao().insert(Img("online12", "https://imagizer.imageshack.com/img923/6126/u7vTpc.jpg", 3))
+                    imgDao().insert(Img("online12", "https://i.postimg.cc/4dqQcXpD/saul0.jpg", 0))
+                    imgDao().insert(Img("online12", "https://i.postimg.cc/c4qc44xY/saul1.png", 1))
+                    imgDao().insert(Img("online12", "https://i.postimg.cc/XY4cdHyY/saul2.jpg", 2))
+                    imgDao().insert(Img("online12", "https://i.postimg.cc/4xPv56zb/saul3.jpg", 3))
                     infoDao().insert(Info("online12", 9.0, SetFecha("2015-02-08"),
                             "Better Call Saul es una serie de televisión que sirve como precuela de la exitosa serie “Breaking Bad”. La trama se centra en el personaje del abogado Saul Goodman (interpretado por Bob Odenkirk) seis años antes de su encuentro con Walter White. La historia sigue la transformación de Jimmy McGill, un picapleitos de poca monta con problemas económicos, mientras se convierte en el abogado criminalista Saul Goodman. A medida que Jimmy lucha por sobrevivir en un mundo implacable, descubrimos los motivos y la evolución que lo llevan a adoptar la personalidad extravagante y astuta de Saul Goodman"
                         )
@@ -215,10 +215,10 @@ abstract class SerieDataBase : RoomDatabase() {
 
 
                     GuessDao().insert(Guess("online13","Dark", Difficulty.Medium, Category.Criminal_Drama ,GuessType.SERIE))
-                    imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img923/8017/5DIe6i.jpg", 0))
-                    imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img923/7185/yzxfVj.png", 1))
-                    imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img922/9651/kKHOBP.png", 2))
-                    imgDao().insert(Img("online13", "https://imagizer.imageshack.com/img924/5725/m9OCGC.jpg", 3))
+                    imgDao().insert(Img("online13", "https://i.postimg.cc/fTk8kgmn/dark0.jpg", 0))
+                    imgDao().insert(Img("online13", "https://i.postimg.cc/HsKBM49J/dark1.png", 1))
+                    imgDao().insert(Img("online13", "https://i.postimg.cc/nhDTGj33/dark2.png", 2))
+                    imgDao().insert(Img("online13", "https://i.postimg.cc/tgGkSqfp/dark3.jpg", 3))
                     infoDao().insert(Info("online13", 8.7, SetFecha("2017-11-20"),
                         "Dark es una serie alemana de ciencia ficción creada por Baran bo Odar y Jantje Friese. La trama se desarrolla en la pequeña ciudad ficticia de Winden, donde cuatro familias están conectadas por secretos oscuros y viajes en el tiempo. A medida que los personajes exploran misterios, paradojas temporales y relaciones complejas, descubrimos que la línea entre pasado, presente y futuro es más delgada de lo que imaginamos. Dark es conocida por su narrativa intrincada, atmósfera sombría y giros sorprendentes. Si te gustan las historias complejas y enigmáticas, esta serie es una excelente elección."
                         )

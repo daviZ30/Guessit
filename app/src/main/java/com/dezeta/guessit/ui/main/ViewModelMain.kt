@@ -10,7 +10,10 @@ import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.CloudStorageManager
+import com.dezeta.guessit.utils.Locator
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ViewModelMain : ViewModel() {
@@ -24,21 +27,35 @@ class ViewModelMain : ViewModel() {
     }
 
     fun loadUser(email: String) {
-        dataBase.collection("users").document(email).get().addOnSuccessListener {
-            user.value = User(
-                it.get("email") as String,
-                it.get("name") as String,
-                it.get("friends") as List<String>,
-                (it.get("point") as Number).toInt(),
-                ProviderType.valueOf(it.get("provider") as String),
-                (it.get("level") as Number).toInt(),
-                "",
-                (it.get("completeLevel") as Number).toInt(),
-            )
-            state.value = MainState.UserSuccess(
-                user.value!!
-            )
+        viewModelScope.launch(Dispatchers.IO) {
+            dataBase.collection("users").document(email).get().addOnSuccessListener {
+                user.value = User(
+                    it.get("email") as String,
+                    it.get("name") as String,
+                    it.get("friends") as List<String>,
+                    (it.get("point") as Number).toInt(),
+                    ProviderType.valueOf(it.get("provider") as String),
+                    (it.get("level") as Number).toInt(),
+                    "",
+                    (it.get("completeLevel") as Number).toInt(),
+                )
+                state.value = MainState.UserSuccess(
+                    user.value!!
+                )
+            }
         }
+
+    }
+
+    fun deleteUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataBase.collection("users").document(Locator.email).delete().addOnSuccessListener {
+                FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
+                    state.value = MainState.SignOut
+                }
+            }
+        }
+
     }
 
     fun saveImageProfile(manager: CloudStorageManager, uri: Uri) {

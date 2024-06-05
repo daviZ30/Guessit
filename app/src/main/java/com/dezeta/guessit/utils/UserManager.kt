@@ -3,6 +3,7 @@ package com.dezeta.guessit.utils
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.coroutineScope
 
 class UserManager {
     companion object {

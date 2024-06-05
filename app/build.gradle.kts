@@ -87,10 +87,14 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:21.1.1")
     implementation ("com.google.firebase:firebase-storage-ktx:21.0.0")
-
+    implementation ("androidx.work:work-runtime:2.7.0")
 
     //Circle Image
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+    //Corrutine
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
 
 

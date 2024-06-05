@@ -1,5 +1,7 @@
 package com.dezeta.guessit.ui.menu
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,15 +9,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.bumptech.glide.Glide
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentDailyMenuBinding
 import com.dezeta.guessit.utils.CloudStorageManager
+import com.dezeta.guessit.utils.Locator
+import com.dezeta.guessit.utils.MyWorker
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.delay
+import java.util.concurrent.TimeUnit
 
 
 class DailyMenuFragment : Fragment() {
-
+    private lateinit var workManager: WorkManager
     private var _binding: FragmentDailyMenuBinding? = null
+    private lateinit var editPreferences: SharedPreferences.Editor
     private val binding get() = _binding!!
 
     private val viewModel: ViewModelMenu by viewModels()
@@ -24,6 +36,15 @@ class DailyMenuFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         viewModel.getAllUserAccounts()
+        val preferences = requireActivity().getSharedPreferences(
+            getString(R.string.prefs_file),
+            Context.MODE_PRIVATE
+        )
+        val country = preferences.getBoolean("country", true)
+
+        if (!country) {
+            binding.btnDailyCountry.isEnabled = false
+        }
     }
 
     override fun onCreateView(
@@ -33,9 +54,16 @@ class DailyMenuFragment : Fragment() {
 
         // Inflate the layout for this fragment
         _binding = FragmentDailyMenuBinding.inflate(inflater, container, false)
+        workManager = WorkManager.getInstance(requireActivity().applicationContext)
         binding.viewmodel = this.viewModel
         manager = CloudStorageManager()
         binding.lifecycleOwner = this
+        editPreferences =
+            requireActivity().getSharedPreferences(
+                getString(R.string.prefs_file),
+                Context.MODE_PRIVATE
+            ).edit()
+
         return binding.root
     }
 
@@ -46,7 +74,23 @@ class DailyMenuFragment : Fragment() {
                 putSerializable("serie", viewModel.getCountry())
                 putBoolean("local", false)
             }
+            binding.btnDailyCountry.isEnabled = false
+            editPreferences.putBoolean("country", false)
+            editPreferences.apply()
+
+            val request = OneTimeWorkRequestBuilder<MyWorker>()
+                .setInputData(
+                    workDataOf(
+                        "btnType" to "country"
+                    )
+                )
+                .setInitialDelay(10,TimeUnit.SECONDS)
+                .build()
+
+            workManager.enqueue(request)
+
             findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
+
         }
         binding.btnDailyGame.setOnClickListener {
             val bundle = Bundle().apply {
@@ -67,7 +111,12 @@ class DailyMenuFragment : Fragment() {
                 is ExtraState.refreshUserList -> {
                     refreshUserList()
                 }
-                is ExtraState.refreshUserProfile ->{
+
+                is ExtraState.Country24 -> {
+                    binding.btnDailyCountry.isEnabled = true
+                }
+
+                is ExtraState.refreshUserProfile -> {
                     Glide.with(binding.root)
                         .load(state.url)
                         .into(state.view)
@@ -95,8 +144,16 @@ class DailyMenuFragment : Fragment() {
 
             2 -> {
                 with(binding) {
-                    viewModel.getUserProfileImageByEmail(manager, viewModel.userList[0].email, imgProfile1)
-                    viewModel.getUserProfileImageByEmail(manager, viewModel.userList[1].email, imgProfile2)
+                    viewModel.getUserProfileImageByEmail(
+                        manager,
+                        viewModel.userList[0].email,
+                        imgProfile1
+                    )
+                    viewModel.getUserProfileImageByEmail(
+                        manager,
+                        viewModel.userList[1].email,
+                        imgProfile2
+                    )
                     tvProfile1.text = viewModel.userList[0].name
                     tvProfile1Points.text = viewModel.userList[0].point.toString()
 
@@ -107,9 +164,21 @@ class DailyMenuFragment : Fragment() {
 
             in 3..Int.MAX_VALUE -> {
                 with(binding) {
-                    viewModel.getUserProfileImageByEmail(manager, viewModel.userList[0].email,imgProfile1)
-                    viewModel.getUserProfileImageByEmail(manager, viewModel.userList[1].email,imgProfile2)
-                    viewModel.getUserProfileImageByEmail(manager, viewModel.userList[2].email,imgProfile3)
+                    viewModel.getUserProfileImageByEmail(
+                        manager,
+                        viewModel.userList[0].email,
+                        imgProfile1
+                    )
+                    viewModel.getUserProfileImageByEmail(
+                        manager,
+                        viewModel.userList[1].email,
+                        imgProfile2
+                    )
+                    viewModel.getUserProfileImageByEmail(
+                        manager,
+                        viewModel.userList[2].email,
+                        imgProfile3
+                    )
                     tvProfile1.text = viewModel.userList[0].name
                     tvProfile1Points.text = viewModel.userList[0].point.toString()
 

@@ -1,6 +1,7 @@
 package com.dezeta.guessit.ui.test
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dezeta.guessit.domain.Repository.Repository
 import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.AnswerTest
@@ -11,9 +12,10 @@ import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.Locator
 import com.dezeta.guessit.utils.UserManager
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ViewModelTest : ViewModel() {
-    var dataBase = FirebaseFirestore.getInstance()
     var tests = mutableListOf<Guess>()
     lateinit var img0: Img
     var answers0: List<AnswerTest>? = null
@@ -39,9 +41,15 @@ class ViewModelTest : ViewModel() {
     }
 
     fun updatePoint() {
-       UserManager.UpdatePoint(point)
+        viewModelScope.launch(Dispatchers.IO) {
+            UserManager.UpdatePoint(point)
+        }
+
     }
-    fun updateLevel(level:Int) {
-        UserManager.UpdateCompleteLevel(level)
+
+    fun updateLevel(level: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            UserManager.UpdateCompleteLevel(level)
+        }
     }
 }

@@ -6,5 +6,6 @@ import com.google.firebase.firestore.auth.User
 
 sealed class ExtraState {
     data object refreshUserList : ExtraState()
+    data object Country24 : ExtraState()
     data class refreshUserProfile(val view: ImageView,val url:String) : ExtraState()
 }

@@ -23,6 +23,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityMainBinding
@@ -30,13 +32,14 @@ import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.ui.login.LoginActivity
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
+import com.dezeta.guessit.utils.MyWorker
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
 
 
 class MainActivity : AppCompatActivity() {
-
+private lateinit var lottieAnimationView: LottieAnimationView
 
     private lateinit var manager: CloudStorageManager
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -94,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val headerView: View = navigationView.getHeaderView(0)
 
+        lottieAnimationView = headerView.findViewById<LottieAnimationView>(R.id.navLottieLoadAnimation)
         val btnEditProfile = headerView.findViewById<Button>(R.id.navBtnDeleteProfile)
         val imgEditProfile = headerView.findViewById<ImageView>(R.id.navImgEditProfile)
         val tvDrawerName = headerView.findViewById<TextView>(R.id.navTvName)
@@ -109,6 +113,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnEditProfile.setOnClickListener {
+            with(lottieAnimationView) {
+                visibility = View.VISIBLE
+                setAnimation(R.raw.load_image)
+                playAnimation()
+            }
+            viewModel.deleteUser()
 
         }
     }
@@ -130,6 +140,14 @@ class MainActivity : AppCompatActivity() {
                 is MainState.UserSuccess -> {
                     setupHeader()
                 }
+                MainState.SignOut ->  {
+                    preferences.clear()
+                    preferences.apply()
+                    lottieAnimationView.cancelAnimation()
+                    lottieAnimationView.visibility = View.INVISIBLE
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
 
                 is MainState.RefreshUser -> {
                     refreshHeader()
@@ -139,6 +157,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     private fun refreshUri(url: String) {

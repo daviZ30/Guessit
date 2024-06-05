@@ -1,6 +1,7 @@
 package com.dezeta.guessit.utils
 
 import android.app.Application
+import com.github.nikartm.button.FitButton
 import com.google.firebase.firestore.FirebaseFirestore
 
 object Locator {
