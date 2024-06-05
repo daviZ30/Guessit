@@ -12,7 +12,11 @@ sealed class LoginState {
     data object EmailNotVerifiedError : LoginState()
     data object nameEqualsError : LoginState()
     data object GoogleSignInError : LoginState()
+    data object GoogleNameExists : LoginState()
+    data object GoogleNameEmpty : LoginState()
+    data object GoogleNameEquals : LoginState()
     data class GoogleSuccess(val email: String) : LoginState()
 
     data object Success : LoginState()
+
 }

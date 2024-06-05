@@ -22,6 +22,7 @@ class ViewModelLogin : ViewModel() {
     var dataBase = FirebaseFirestore.getInstance()
     var mail = MutableLiveData<String>()
     var name = MutableLiveData<String>()
+    var dialogName = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     var confPassword = MutableLiveData<String>()
     private var state = MutableLiveData<LoginState>()
@@ -225,26 +226,49 @@ class ViewModelLogin : ViewModel() {
                                 )
                             }
                             var exists = false
+                            var existsName = false
                             userList.forEach {
                                 if (it.email == e) {
                                     exists = true
                                 }
+                                if (it.name == n) {
+                                    existsName = true
+                                }
                             }
-                            if (!exists) {
-                                val u = User(
-                                    e!!,
-                                    n,
-                                    listOf(e),
-                                    0,
-                                    ProviderType.GOOGLE,
-                                    0,
-                                    "",
-                                    0
-                                )
-                                saveUser(u)
-                                state.value = LoginState.GoogleSuccess(e)
-                            } else {
-                                state.value = LoginState.GoogleSuccess(e!!)
+                            when {
+                                !exists && !existsName -> {
+                                    user = User(
+                                        e!!,
+                                        n,
+                                        listOf(e),
+                                        0,
+                                        ProviderType.GOOGLE,
+                                        0,
+                                        "",
+                                        0
+                                    )
+                                    saveUser(user!!)
+                                    state.value = LoginState.GoogleSuccess(e)
+                                }
+
+                                !exists && existsName -> {
+                                    user = User(
+                                        e!!,
+                                        n,
+                                        listOf(e),
+                                        0,
+                                        ProviderType.GOOGLE,
+                                        0,
+                                        "",
+                                        0
+                                    )
+                                    saveUser(user!!)
+                                    state.value = LoginState.GoogleNameExists
+                                }
+
+                                else -> {
+                                    state.value = LoginState.GoogleSuccess(e!!)
+                                }
                             }
                         } else {
                             println("Error al obtener documentos: ${task.exception}")
@@ -255,6 +279,45 @@ class ViewModelLogin : ViewModel() {
                 } else {
                     result.value =
                         Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
+                }
+            }
+        }
+
+    }
+
+    fun validateDialogName() {
+        val usersRef = dataBase.collection("users")
+        viewModelScope.launch(Dispatchers.Default) {
+            usersRef.get().addOnCompleteListener { task ->
+                userList.clear()
+                if (task.isSuccessful) {
+                    for (document in task.result) {
+                        val userData = document.data
+                        val user = User(
+                            userData["email"] as String,
+                            userData["name"] as String,
+                            userData["friends"] as List<String>,
+                            (userData["point"] as Number).toInt(),
+                            ProviderType.valueOf(userData["provider"] as String),
+                            (userData["level"] as Number).toInt(),
+                            "",
+                            (userData["completeLevel"] as Number).toInt()
+                        )
+                        userList.add(
+                            user
+                        )
+                    }
+                    when {
+                        TextUtils.isEmpty(dialogName.value) -> state.value = LoginState.GoogleNameEmpty
+                        !validarName(dialogName.value, userList) -> state.value = LoginState.GoogleNameEquals
+                        else -> {
+                            user!!.name = dialogName.value.toString()
+                            saveUser(user!!)
+                            state.value = LoginState.GoogleSuccess(user!!.email)
+                        }
+                    }
+                } else {
+                    println("Error al obtener documentos: ${task.exception}")
                 }
             }
         }

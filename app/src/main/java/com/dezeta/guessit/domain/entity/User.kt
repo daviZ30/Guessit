@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class User(
     val email: String,
-    val name: String,
+    var name: String,
     val friends: List<String>,
     var point: Int,
     val provider: ProviderType,

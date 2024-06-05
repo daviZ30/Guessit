@@ -1,6 +1,7 @@
 package com.dezeta.guessit.ui.login
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -9,30 +10,41 @@ import android.text.Editable
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.Spinner
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.dezeta.guessit.ui.main.MainActivity
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityLoginBinding
+import com.dezeta.guessit.databinding.DialogLoginNameBinding
 import com.dezeta.guessit.domain.Repository.Resource
+import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.User
+import com.dezeta.guessit.showSnackbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var bindingDialog: DialogLoginNameBinding
 
     private lateinit var fadeInAnimation: Animation
     private lateinit var fadeOutAnimation: Animation
     private lateinit var fadeOutAnimationLottie: Animation
+    private lateinit var dialog: Dialog
+
     private val viewModel: ViewModelLogin by viewModels()
     private var register = false
     private var endload = false
@@ -46,7 +58,11 @@ class LoginActivity : AppCompatActivity() {
                     if (account != null) {
                         starLoadAnimation()
                         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                        viewModel.signInGoogle(credential, account.email,account.displayName ?: "Username")
+                        viewModel.signInGoogle(
+                            credential,
+                            account.email,
+                            account.displayName ?: "Username"
+                        )
                     }
                 } catch (e: ApiException) {
                     showAlert("Error", "No se ha podido iniciar sesión con google")
@@ -64,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
             t.isErrorEnabled = false
         }
     }
+
     private fun getDrawableUri(drawableId: Int): Uri? {
         return try {
             val resourceId = resources.getResourceEntryName(drawableId)
@@ -79,9 +96,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
+        bindingDialog = DialogLoginNameBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setup()
         session()
+
+        dialog = Dialog(this)
+        dialog.setContentView(bindingDialog.root)
+        dialog.setCancelable(true)
+
         binding.viewmodel = this.viewModel
         binding.lifecycleOwner = this
 
@@ -129,19 +152,25 @@ class LoginActivity : AppCompatActivity() {
         viewModel.getState().observe(this) { state ->
             when (state) {
                 is LoginState.nameEmtyError -> {
-                    with(binding.tilLoginName){
+                    with(binding.tilLoginName) {
                         error = "Introduce un nombre de usuario"
                         requestFocus()
                     }
                 }
+
                 is LoginState.nameEqualsError -> {
-                    with(binding.tilLoginName){
+                    with(binding.tilLoginName) {
                         error = "El nombre introducido ya existe"
                         requestFocus()
                     }
                 }
+
                 is LoginState.GoogleSuccess -> {
                     showHome(state.email)
+                }
+                is LoginState.GoogleNameExists -> {
+                    endload = true
+                    dialog.show()
                 }
                 is LoginState.EmailNotVerifiedError -> {
                     showAlert(
@@ -149,11 +178,24 @@ class LoginActivity : AppCompatActivity() {
                         "Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado."
                     )
                 }
-                is LoginState.GoogleSignInError ->{
+
+                is LoginState.GoogleSignInError -> {
                     showAlert(
                         "Atención",
                         "Ya dispone de una cuenta de google asociada a este correo, seleccione continuar con google"
                     )
+                }
+                is LoginState.GoogleNameEmpty->{
+                    with(bindingDialog.tilDialogLogin) {
+                        error = "Introduce un nombre"
+                        requestFocus()
+                    }
+                }
+                is LoginState.GoogleNameEquals -> {
+                    with(bindingDialog.tilDialogLogin) {
+                        error = "El nombre introducido ya existe"
+                        requestFocus()
+                    }
                 }
 
                 is LoginState.passwordEmtyError -> {
@@ -273,10 +315,17 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setup() {
+        bindingDialog.viewmodel = this.viewModel
+        bindingDialog.lifecycleOwner = this
         window.statusBarColor = resources.getColor(R.color.BlueRange1);
         binding.tieLoginMail.addTextChangedListener(
             TextWatcher(
                 binding.tilLoginMail
+            )
+        )
+        bindingDialog.tieDialogLogin.addTextChangedListener(
+            TextWatcher(
+                bindingDialog.tilDialogLogin
             )
         )
         binding.tieLoginName.addTextChangedListener(
@@ -302,6 +351,9 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.validateSignIn()
             }
 
+        }
+        bindingDialog.btnloginOk.setOnClickListener {
+            viewModel.validateDialogName()
         }
 
         binding.btnChanged.setOnClickListener {

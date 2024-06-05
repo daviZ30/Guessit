@@ -50,4 +50,5 @@
     <string name="test_title">Test</string>
     <string name="menu_friend">Amigos</string>
     <string name="login_name">Nombre de Usuario</string>
+    <string name="login_lblname">Introduzca un Nombre de Usuario</string>
 </resources>
