@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.work.Constraints
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -35,27 +36,12 @@ class DailyMenuFragment : Fragment() {
     private val viewModel: ViewModelMenu by viewModels()
     private lateinit var manager: CloudStorageManager
 
-    override fun onStart() {6
+    override fun onStart() {
+        6
         super.onStart()
         Locator.managerFragment = requireActivity().supportFragmentManager
         viewModel.getAllUserAccounts()
-        val preferences = requireActivity().getSharedPreferences(
-            getString(R.string.prefs_file),
-            Context.MODE_PRIVATE
-        )
-        val country = preferences.getBoolean("country", true)
-        val serie = preferences.getBoolean("serie", true)
-        val football = preferences.getBoolean("football", true)
-
-        if (!country) {
-            binding.btnDailyCountry.isEnabled = country
-        }
-        if (!serie) {
-            binding.btnDailyGame.isEnabled = serie
-        }
-        if (!football) {
-            binding.btnDailyFootball.isEnabled = football
-        }
+        viewModel.loadUser()
     }
 
     override fun onCreateView(
@@ -83,16 +69,27 @@ class DailyMenuFragment : Fragment() {
         Locator.managerFragment = null
     }
 
+    fun resetbtn() {
+        binding.btnDailyCountry.isEnabled = true
+        binding.btnDailyGame.isEnabled = true
+        binding.btnDailyFootball.isEnabled = true
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
         binding.btnDailyCountry.setOnClickListener {
             val bundle = Bundle().apply {
                 putSerializable("serie", viewModel.getCountry())
                 putBoolean("local", false)
             }
             binding.btnDailyCountry.isEnabled = false
-            editPreferences.putBoolean("country", false)
-            editPreferences.apply()
+            viewModel.user!!.countryEnable = false
+            viewModel.saveUser()
+
 
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
@@ -100,6 +97,7 @@ class DailyMenuFragment : Fragment() {
                         "btnType" to "country"
                     )
                 )
+                .setConstraints(constraints)
                 //.setInitialDelay(calculateDelayToMidnight(), TimeUnit.MILLISECONDS)
                 .setInitialDelay(10, TimeUnit.SECONDS)
                 .build()
@@ -116,14 +114,15 @@ class DailyMenuFragment : Fragment() {
                 putBoolean("local", false)
             }
             binding.btnDailyGame.isEnabled = false
-            editPreferences.putBoolean("serie", false)
-            editPreferences.apply()
+            viewModel.user!!.serieEnable = false
+            viewModel.saveUser()
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
                     workDataOf(
                         "btnType" to "serie"
                     )
                 )
+                .setConstraints(constraints)
                 .setInitialDelay(10, TimeUnit.SECONDS)
                 .build()
 
@@ -138,14 +137,15 @@ class DailyMenuFragment : Fragment() {
                 putBoolean("local", false)
             }
             binding.btnDailyFootball.isEnabled = false
-            editPreferences.putBoolean("football", false)
-            editPreferences.apply()
+            viewModel.user!!.footballEnable = false
+            viewModel.saveUser()
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
                     workDataOf(
                         "btnType" to "football"
                     )
                 )
+                .setConstraints(constraints)
                 .setInitialDelay(10, TimeUnit.SECONDS)
                 .build()
 
@@ -168,7 +168,11 @@ class DailyMenuFragment : Fragment() {
                         .into(state.view)
                 }
 
-                else -> {}
+                is ExtraState.UserSuccess -> {
+                    binding.btnDailyCountry.isEnabled = viewModel.user!!.countryEnable
+                    binding.btnDailyGame.isEnabled = viewModel.user!!.serieEnable
+                    binding.btnDailyFootball.isEnabled = viewModel.user!!.footballEnable
+                }
             }
         }
     }

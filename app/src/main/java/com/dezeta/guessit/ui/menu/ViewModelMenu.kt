@@ -7,10 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dezeta.guessit.domain.Repository.Repository
+import com.dezeta.guessit.domain.Repository.UserManager
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
+import com.dezeta.guessit.ui.main.MainState
 import com.dezeta.guessit.utils.CloudStorageManager
+import com.dezeta.guessit.utils.Locator
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -24,6 +27,7 @@ class ViewModelMenu : ViewModel() {
     var guessCountry = MutableLiveData<String>("0")
     var dataBase = FirebaseFirestore.getInstance()
     var userList = mutableListOf<User>()
+    var user: User? = null
     private var state = MutableLiveData<ExtraState>()
 
     var previousNum: Int? = null
@@ -91,7 +95,7 @@ class ViewModelMenu : ViewModel() {
                             userData["countryEnable"] as Boolean,
                             userData["serieEnable"] as Boolean,
                             userData["footballEnable"] as Boolean,
-                            )
+                        )
                         userList.add(
                             user
                         )
@@ -102,5 +106,30 @@ class ViewModelMenu : ViewModel() {
                 }
             }
         }
+    }
+
+    fun loadUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataBase.collection("users").document(Locator.email).get().addOnSuccessListener {
+                user = User(
+                    it.get("email") as String,
+                    it.get("name") as String,
+                    it.get("friends") as List<String>,
+                    (it.get("point") as Number).toInt(),
+                    ProviderType.valueOf(it.get("provider") as String),
+                    (it.get("level") as Number).toInt(),
+                    "",
+                    (it.get("completeLevel") as Number).toInt(),
+                    (it.get("countryEnable") as Boolean),
+                    (it.get("serieEnable") as Boolean),
+                    (it.get("footballEnable") as Boolean),
+                )
+                state.value = ExtraState.UserSuccess
+            }
+        }
+    }
+
+    fun saveUser() {
+        UserManager.saveUser(user!!)
     }
 }

@@ -6,7 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.dezeta.guessit.R
+import com.dezeta.guessit.domain.Repository.UserManager
+import com.dezeta.guessit.domain.entity.ProviderType
+import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.ui.menu.DailyMenuFragment
+import com.dezeta.guessit.ui.menu.ExtraState
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -17,32 +22,46 @@ class MyWorker(
     override suspend fun doWork(): Result {
         val btnType = params.inputData.getString("btnType")
         return withContext(Dispatchers.IO) {
-            //24 * 60 * 60 * 1000
-            val editPreferences = context.getSharedPreferences(
-                context.getString(R.string.prefs_file),
-                Context.MODE_PRIVATE
-            ).edit()
-            when (btnType) {
-                "country" -> {
-                    //btnCountry.isEnabled = true
-
-                    editPreferences.putBoolean("country", true)
-                    editPreferences.apply()
-                }
-
-                "serie" -> {
-                    // btnSerie.isEnabled = true
-                    editPreferences.putBoolean("serie", true)
-                    editPreferences.apply()
-                }
-
-                "football" -> {
-                    // btnFootball.isEnabled = true
-                    editPreferences.putBoolean("football", true)
-                    editPreferences.apply()
-                }
-            }
             val fragment = DailyMenuFragment()
+            FirebaseFirestore.getInstance().collection("users").document(Locator.email).get()
+                .addOnSuccessListener {
+                    val user = User(
+                        it.get("email") as String,
+                        it.get("name") as String,
+                        it.get("friends") as List<String>,
+                        (it.get("point") as Number).toInt(),
+                        ProviderType.valueOf(it.get("provider") as String),
+                        (it.get("level") as Number).toInt(),
+                        "",
+                        (it.get("completeLevel") as Number).toInt(),
+                        (it.get("countryEnable") as Boolean),
+                        (it.get("serieEnable") as Boolean),
+                        (it.get("footballEnable") as Boolean),
+                    )
+                    when (btnType) {
+                        "country" -> {
+                            //btnCountry.isEnabled = true
+                            user.countryEnable = true
+                            UserManager.saveUser(user)
+                        }
+                        "serie" -> {
+                            // btnSerie.isEnabled = true
+                            user.serieEnable = true
+                            UserManager.saveUser(user)
+                        }
+
+                        "football" -> {
+                            // btnFootball.isEnabled = true
+                            user.footballEnable = true
+                            UserManager.saveUser(user)
+                        }
+                    }
+                }.addOnFailureListener {
+                    fragment.resetbtn()
+                }
+            //24 * 60 * 60 * 1000
+
+
 
             if (Locator.managerFragment != null) {
                 Locator.managerFragment!!.beginTransaction()
