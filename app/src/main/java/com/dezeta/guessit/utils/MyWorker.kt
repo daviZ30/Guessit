@@ -1,23 +1,19 @@
 package com.dezeta.guessit.utils
 
 import android.content.Context
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
 import com.dezeta.guessit.R
+import com.dezeta.guessit.ui.menu.DailyMenuFragment
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class MyWorker(
     private val context: Context,
     private val params: WorkerParameters,
-) :
-    CoroutineWorker(context, params) {
+) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         val btnType = params.inputData.getString("btnType")
         return withContext(Dispatchers.IO) {
@@ -29,6 +25,7 @@ class MyWorker(
             when (btnType) {
                 "country" -> {
                     //btnCountry.isEnabled = true
+
                     editPreferences.putBoolean("country", true)
                     editPreferences.apply()
                 }
@@ -45,6 +42,14 @@ class MyWorker(
                     editPreferences.apply()
                 }
             }
+            val fragment = DailyMenuFragment()
+
+            if (Locator.managerFragment != null) {
+                Locator.managerFragment!!.beginTransaction()
+                    .replace(R.id.layoutDailyMenu, fragment)
+                    .commit()
+            }
+
             Result.success()
         }
 

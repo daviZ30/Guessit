@@ -7,11 +7,7 @@ import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.AnswerTest
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.Img
-import com.dezeta.guessit.domain.entity.ProviderType
-import com.dezeta.guessit.domain.entity.User
-import com.dezeta.guessit.utils.Locator
-import com.dezeta.guessit.utils.UserManager
-import com.google.firebase.firestore.FirebaseFirestore
+import com.dezeta.guessit.domain.Repository.UserManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

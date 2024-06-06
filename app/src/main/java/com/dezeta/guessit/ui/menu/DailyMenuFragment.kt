@@ -3,14 +3,15 @@ package com.dezeta.guessit.ui.menu
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.work.Constraints
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.bumptech.glide.Glide
@@ -19,8 +20,9 @@ import com.dezeta.guessit.databinding.FragmentDailyMenuBinding
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
 import com.dezeta.guessit.utils.MyWorker
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 
@@ -33,17 +35,26 @@ class DailyMenuFragment : Fragment() {
     private val viewModel: ViewModelMenu by viewModels()
     private lateinit var manager: CloudStorageManager
 
-    override fun onStart() {
+    override fun onStart() {6
         super.onStart()
+        Locator.managerFragment = requireActivity().supportFragmentManager
         viewModel.getAllUserAccounts()
         val preferences = requireActivity().getSharedPreferences(
             getString(R.string.prefs_file),
             Context.MODE_PRIVATE
         )
         val country = preferences.getBoolean("country", true)
+        val serie = preferences.getBoolean("serie", true)
+        val football = preferences.getBoolean("football", true)
 
         if (!country) {
-            binding.btnDailyCountry.isEnabled = false
+            binding.btnDailyCountry.isEnabled = country
+        }
+        if (!serie) {
+            binding.btnDailyGame.isEnabled = serie
+        }
+        if (!football) {
+            binding.btnDailyFootball.isEnabled = football
         }
     }
 
@@ -51,7 +62,6 @@ class DailyMenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Inflate the layout for this fragment
         _binding = FragmentDailyMenuBinding.inflate(inflater, container, false)
         workManager = WorkManager.getInstance(requireActivity().applicationContext)
@@ -65,6 +75,12 @@ class DailyMenuFragment : Fragment() {
             ).edit()
 
         return binding.root
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        Locator.managerFragment = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,10 +100,12 @@ class DailyMenuFragment : Fragment() {
                         "btnType" to "country"
                     )
                 )
-                .setInitialDelay(10,TimeUnit.SECONDS)
+                //.setInitialDelay(calculateDelayToMidnight(), TimeUnit.MILLISECONDS)
+                .setInitialDelay(10, TimeUnit.SECONDS)
                 .build()
 
             workManager.enqueue(request)
+
 
             findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
 
@@ -97,13 +115,41 @@ class DailyMenuFragment : Fragment() {
                 putSerializable("serie", viewModel.getSerie())
                 putBoolean("local", false)
             }
+            binding.btnDailyGame.isEnabled = false
+            editPreferences.putBoolean("serie", false)
+            editPreferences.apply()
+            val request = OneTimeWorkRequestBuilder<MyWorker>()
+                .setInputData(
+                    workDataOf(
+                        "btnType" to "serie"
+                    )
+                )
+                .setInitialDelay(10, TimeUnit.SECONDS)
+                .build()
+
+            workManager.enqueue(request)
+
             findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
+
         }
         binding.btnDailyFootball.setOnClickListener {
             val bundle = Bundle().apply {
                 putSerializable("serie", viewModel.getPlayer())
                 putBoolean("local", false)
             }
+            binding.btnDailyFootball.isEnabled = false
+            editPreferences.putBoolean("football", false)
+            editPreferences.apply()
+            val request = OneTimeWorkRequestBuilder<MyWorker>()
+                .setInputData(
+                    workDataOf(
+                        "btnType" to "football"
+                    )
+                )
+                .setInitialDelay(10, TimeUnit.SECONDS)
+                .build()
+
+            workManager.enqueue(request)
             findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
         }
         viewModel.getState().observe(viewLifecycleOwner) { state ->

@@ -1,9 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Guessit" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/BlueRange1</item>
+        <item name="colorPrimaryVariant">@color/BlueRange1_1</item>
+        <item name="colorOnPrimary">@color/BlueRange2</item>
 
+        <item name="colorSecondary">@color/BlueRange4</item>
+        <item name="colorSecondaryVariant">@color/BlueRange5</item>
+        <item name="colorOnSecondary">@color/BlueRange3</item>
         <item name="android:windowBackground">@color/black</item>
     </style>
 </resources>

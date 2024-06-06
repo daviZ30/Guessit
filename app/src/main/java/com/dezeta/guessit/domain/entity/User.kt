@@ -10,6 +10,9 @@ data class User(
     val provider: ProviderType,
     var level: Int,
     var img_url: String,
-    var completeLevel: Int
+    var completeLevel: Int,
+    var countryEnable: Boolean,
+    var serieEnable: Boolean,
+    var footballEnable: Boolean,
 ) :
     Serializable

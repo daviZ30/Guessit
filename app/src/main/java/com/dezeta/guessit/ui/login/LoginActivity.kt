@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -20,6 +22,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.dezeta.guessit.ui.main.MainActivity
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityLoginBinding
@@ -28,13 +33,18 @@ import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.showSnackbar
+import com.dezeta.guessit.utils.MyWorker
+import com.dezeta.guessit.utils.MyWorkerFirebase
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.Exception
+import java.util.concurrent.TimeUnit
+import kotlin.properties.Delegates
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -44,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var fadeOutAnimation: Animation
     private lateinit var fadeOutAnimationLottie: Animation
     private lateinit var dialog: Dialog
+    private var isDarkThemeOn by Delegates.notNull<Boolean>()
 
     private val viewModel: ViewModelLogin by viewModels()
     private var register = false
@@ -94,12 +105,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        isDarkThemeOn =
+            (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         binding = ActivityLoginBinding.inflate(layoutInflater)
         bindingDialog = DialogLoginNameBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setup()
         session()
+        setTheme()
 
         dialog = Dialog(this)
         dialog.setContentView(bindingDialog.root)
@@ -131,9 +144,22 @@ class LoginActivity : AppCompatActivity() {
                 is Resource.Success<*> -> {
                     endload = true
                     if (register) {
+                        val workManager = WorkManager.getInstance(applicationContext)
+
+                        val request = OneTimeWorkRequestBuilder<MyWorkerFirebase>()
+                            .setInputData(
+                                workDataOf(
+                                    "email" to viewModel.user!!.email
+                                )
+                            )
+                            .setInitialDelay(1, TimeUnit.DAYS)
+                            .build()
+
+                        workManager.enqueue(request)
+
                         showAlert(
                             "Atención",
-                            "Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado."
+                            "Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado. Dispones de 24 Horas"
                         )
                         with(binding) {
                             tieLoginMail.setText("")
@@ -247,8 +273,12 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
-
+    private fun setTheme() {
+        if(isDarkThemeOn){
+            binding.btnLoginGoogle.setTextColor(Color.WHITE)
+        }
     }
 
     private fun starLoadAnimation() {
@@ -364,7 +394,6 @@ class LoginActivity : AppCompatActivity() {
                     tilConfirmPassword.startAnimation(fadeInAnimation)
                     tilLoginName.visibility = View.VISIBLE
                     tilLoginName.startAnimation(fadeInAnimation)
-
                     btnChanged.text = "Login"
                 }
 

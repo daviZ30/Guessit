@@ -14,11 +14,14 @@
     <color name="BlueRange5">#E42D40</color>
     <color name="BlueRange6">#142B3B</color>
     <color name="gris_claro">#BDBDBD</color>
+    <color name="white_transparente">#F2FFFFFF</color>
     <color name="gris_transparente">#598E8E8E</color>
+    <color name="gris_oscuro">#323131</color>
     <color name="blue_transparent">#5980C9C6</color>
     <color name="blue_transparent_2">#A680C9C6</color>
     <color name="RedCategory">#FF0000</color>
     <color name="GreenCategory">#39A121</color>
+    <color name="dark_green">#4E4E4E</color>
 
 
 </resources>

@@ -7,7 +7,7 @@ import com.dezeta.guessit.domain.Repository.Repository
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Info
 import com.dezeta.guessit.domain.entity.Guess
-import com.dezeta.guessit.utils.UserManager
+import com.dezeta.guessit.domain.Repository.UserManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.random.Random

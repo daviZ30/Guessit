@@ -38,6 +38,9 @@ class ViewModelMain : ViewModel() {
                     (it.get("level") as Number).toInt(),
                     "",
                     (it.get("completeLevel") as Number).toInt(),
+                    (it.get("countryEnable") as Boolean),
+                    (it.get("serieEnable") as Boolean),
+                    (it.get("footballEnable") as Boolean),
                 )
                 state.value = MainState.UserSuccess(
                     user.value!!

@@ -40,6 +40,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:paddingStart="2dp"
+                android:textColor="@color/gris_oscuro"
                 android:text="ejemploDeCorreo786@gmail.com" />
 
             <TextView

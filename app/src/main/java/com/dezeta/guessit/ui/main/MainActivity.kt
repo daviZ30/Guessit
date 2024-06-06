@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -36,21 +37,22 @@ import com.dezeta.guessit.utils.MyWorker
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlin.properties.Delegates
 
 
 class MainActivity : AppCompatActivity() {
-private lateinit var lottieAnimationView: LottieAnimationView
+    private lateinit var lottieAnimationView: LottieAnimationView
 
     private lateinit var manager: CloudStorageManager
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
     private lateinit var navView: NavigationView
+    private var isDarkThemeOn by Delegates.notNull<Boolean>()
+
 
     private lateinit var preferences: SharedPreferences.Editor
     private val viewModel: ViewModelMain by viewModels()
-    //var file = createImageFile(this)
-    var editProfile = false
 
     override fun onBackPressed() {
         val currentFragment = navController.currentDestination?.id
@@ -63,13 +65,9 @@ private lateinit var lottieAnimationView: LottieAnimationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isDarkThemeOn =
+        isDarkThemeOn =
             (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-
-        if (isDarkThemeOn)
-            window.statusBarColor = Color.BLACK
-        else
-            window.statusBarColor = Color.WHITE
+        setTemes()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -89,7 +87,15 @@ private lateinit var lottieAnimationView: LottieAnimationView
         navView.setupWithNavController(navController)
         setup()
     }
-    fun updateHeader(){
+
+    private fun setTemes() {
+        if (isDarkThemeOn) {
+            window.statusBarColor = Color.BLACK
+        } else
+            window.statusBarColor = Color.WHITE
+    }
+
+    fun updateHeader() {
         viewModel.loadUser(Locator.email)
     }
 
@@ -97,12 +103,19 @@ private lateinit var lottieAnimationView: LottieAnimationView
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val headerView: View = navigationView.getHeaderView(0)
 
-        lottieAnimationView = headerView.findViewById<LottieAnimationView>(R.id.navLottieLoadAnimation)
+        lottieAnimationView =
+            headerView.findViewById<LottieAnimationView>(R.id.navLottieLoadAnimation)
         val btnEditProfile = headerView.findViewById<Button>(R.id.navBtnDeleteProfile)
         val imgEditProfile = headerView.findViewById<ImageView>(R.id.navImgEditProfile)
         val tvDrawerName = headerView.findViewById<TextView>(R.id.navTvName)
         val tvEmail = headerView.findViewById<TextView>(R.id.navTvEmail)
         val tvDrawerPoint = headerView.findViewById<TextView>(R.id.navTvPoint)
+        val tvPrePoint = headerView.findViewById<TextView>(R.id.navTvPrePoint)
+        val tvPostPoint = headerView.findViewById<TextView>(R.id.navTvPostPoint)
+        if (isDarkThemeOn) {
+            tvPrePoint.setTextColor(Color.WHITE)
+            tvPostPoint.setTextColor(Color.WHITE)
+        }
 
         viewModel.getUserProfileImageByEmail(manager)
         tvEmail.text = viewModel.user.value!!.email
@@ -140,7 +153,8 @@ private lateinit var lottieAnimationView: LottieAnimationView
                 is MainState.UserSuccess -> {
                     setupHeader()
                 }
-                MainState.SignOut ->  {
+
+                MainState.SignOut -> {
                     preferences.clear()
                     preferences.apply()
                     lottieAnimationView.cancelAnimation()
@@ -152,6 +166,7 @@ private lateinit var lottieAnimationView: LottieAnimationView
                 is MainState.RefreshUser -> {
                     refreshHeader()
                 }
+
                 is MainState.RefreshUrl -> {
                     refreshUri(it.url)
                 }
@@ -185,6 +200,9 @@ private lateinit var lottieAnimationView: LottieAnimationView
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        if(isDarkThemeOn){
+            tintMenuItemIcon(menu, R.id.action_signOut,Color.WHITE)
+        }
         return true
     }
 
@@ -202,6 +220,11 @@ private lateinit var lottieAnimationView: LottieAnimationView
             else -> super.onOptionsItemSelected(item)
         }
     }
+    private fun tintMenuItemIcon(menu: Menu, idItem: Int, color: Int) {
+        var drawable = menu.findItem(idItem).icon
+        drawable = DrawableCompat.wrap(drawable!!)
+        DrawableCompat.setTint(drawable, color)
+    }
 
 
     override fun onSupportNavigateUp(): Boolean {
@@ -216,10 +239,11 @@ private lateinit var lottieAnimationView: LottieAnimationView
         if (it.resultCode == Activity.RESULT_OK) {
             val data = it.data?.data
             val imageName = viewModel.user.value!!.email + "_img1"
-            viewModel.saveImageProfile(manager,data!!)
+            viewModel.saveImageProfile(manager, data!!)
 
         }
     }
+
     private fun pickPhotoFromGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"

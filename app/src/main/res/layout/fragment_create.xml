@@ -41,9 +41,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
             android:hint="@string/CreateName"
-            app:layout_constraintBottom_toTopOf="@+id/spDifficulty"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilId">
@@ -71,9 +69,9 @@
             android:id="@+id/spDifficulty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tilLoginName" />
+            app:layout_constraintTop_toBottomOf="@+id/tilName" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -87,9 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
             android:gravity="center"
             app:fb_backgroundColor="@color/BlueRange6"
             app:fb_cornerRadius="12dp"
@@ -165,7 +161,7 @@
             android:padding="7dp"
             app:cardBackgroundColor="@color/gris_claro"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDifficulty">
+            app:layout_constraintTop_toBottomOf="@+id/spDifficulty">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -183,6 +179,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:textColor="@color/gris_oscuro"
                     android:text="@string/tvImg1" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -214,6 +211,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:textColor="@color/gris_oscuro"
                     android:text="Imagen 2" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -245,6 +243,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:textColor="@color/gris_oscuro"
                     android:text="Imagen 3" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

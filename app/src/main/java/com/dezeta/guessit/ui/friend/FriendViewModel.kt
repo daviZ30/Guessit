@@ -8,7 +8,7 @@ import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
-import com.dezeta.guessit.utils.UserManager
+import com.dezeta.guessit.domain.Repository.UserManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,7 +35,10 @@ class FriendViewModel : ViewModel() {
                         (it.get("level") as Number).toInt(),
                         manager.getUserImages(it.get("email") as String),
                         (it.get("completeLevel") as Number).toInt(),
-                    )
+                        (it.get("countryEnable") as Boolean),
+                        (it.get("serieEnable") as Boolean),
+                        (it.get("footballEnable") as Boolean),
+                        )
                     userList.add(user)
                     state.value = FriendState.AddFriend
                 }

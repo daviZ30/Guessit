@@ -9,7 +9,7 @@ import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.Locator
-import com.dezeta.guessit.utils.UserManager
+import com.dezeta.guessit.domain.Repository.UserManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +35,9 @@ class ViewModelLevel : ViewModel() {
                     (it.get("level") as Number).toInt(),
                     "",
                     (it.get("completeLevel") as Number).toInt(),
+                    (it.get("countryEnable") as Boolean),
+                    (it.get("serieEnable") as Boolean),
+                    (it.get("footballEnable") as Boolean),
                 )
                 state.value = LevelState.Success(user)
             }

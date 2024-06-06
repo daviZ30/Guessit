@@ -87,8 +87,11 @@ class ViewModelMenu : ViewModel() {
                             ProviderType.valueOf(userData["provider"] as String),
                             (userData["level"] as Number).toInt(),
                             "",
-                            (userData["completeLevel"] as Number).toInt()
-                        )
+                            (userData["completeLevel"] as Number).toInt(),
+                            userData["countryEnable"] as Boolean,
+                            userData["serieEnable"] as Boolean,
+                            userData["footballEnable"] as Boolean,
+                            )
                         userList.add(
                             user
                         )
@@ -100,5 +103,4 @@ class ViewModelMenu : ViewModel() {
             }
         }
     }
-
 }

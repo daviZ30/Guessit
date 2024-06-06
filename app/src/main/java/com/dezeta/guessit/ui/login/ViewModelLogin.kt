@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
-import com.dezeta.guessit.utils.UserManager
+import com.dezeta.guessit.domain.Repository.UserManager
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -90,7 +90,10 @@ class ViewModelLogin : ViewModel() {
                     ProviderType.BASIC,
                     0,
                     "",
-                    0
+                    0,
+                    true,
+                    true,
+                    true,
                 )
                 saveUser(user!!)
                 result.value = Resource.Success(
@@ -147,7 +150,10 @@ class ViewModelLogin : ViewModel() {
                             ProviderType.valueOf(userData["provider"] as String),
                             (userData["level"] as Number).toInt(),
                             "",
-                            (userData["completeLevel"] as Number).toInt()
+                            (userData["completeLevel"] as Number).toInt(),
+                            userData["countryEnable"] as Boolean,
+                            userData["serieEnable"] as Boolean,
+                            userData["footballEnable"] as Boolean,
                         )
                         userList.add(
                             user
@@ -219,7 +225,11 @@ class ViewModelLogin : ViewModel() {
                                     ProviderType.valueOf(userData["provider"] as String),
                                     (userData["level"] as Number).toInt(),
                                     "",
-                                    (userData["completeLevel"] as Number).toInt()
+                                    (userData["completeLevel"] as Number).toInt(),
+                                    userData["countryEnable"] as Boolean,
+                                    userData["serieEnable"] as Boolean,
+                                    userData["footballEnable"] as Boolean,
+
                                 )
                                 userList.add(
                                     user
@@ -245,7 +255,10 @@ class ViewModelLogin : ViewModel() {
                                         ProviderType.GOOGLE,
                                         0,
                                         "",
-                                        0
+                                        0,
+                                        true,
+                                        true,
+                                        true,
                                     )
                                     saveUser(user!!)
                                     state.value = LoginState.GoogleSuccess(e)
@@ -260,7 +273,10 @@ class ViewModelLogin : ViewModel() {
                                         ProviderType.GOOGLE,
                                         0,
                                         "",
-                                        0
+                                        0,
+                                        true,
+                                        true,
+                                        true,
                                     )
                                     saveUser(user!!)
                                     state.value = LoginState.GoogleNameExists
@@ -301,15 +317,22 @@ class ViewModelLogin : ViewModel() {
                             ProviderType.valueOf(userData["provider"] as String),
                             (userData["level"] as Number).toInt(),
                             "",
-                            (userData["completeLevel"] as Number).toInt()
+                            (userData["completeLevel"] as Number).toInt(),
+                            userData["countryEnable"] as Boolean,
+                            userData["serieEnable"] as Boolean,
+                            userData["footballEnable"] as Boolean,
                         )
                         userList.add(
                             user
                         )
                     }
                     when {
-                        TextUtils.isEmpty(dialogName.value) -> state.value = LoginState.GoogleNameEmpty
-                        !validarName(dialogName.value, userList) -> state.value = LoginState.GoogleNameEquals
+                        TextUtils.isEmpty(dialogName.value) -> state.value =
+                            LoginState.GoogleNameEmpty
+
+                        !validarName(dialogName.value, userList) -> state.value =
+                            LoginState.GoogleNameEquals
+
                         else -> {
                             user!!.name = dialogName.value.toString()
                             saveUser(user!!)
@@ -323,6 +346,4 @@ class ViewModelLogin : ViewModel() {
         }
 
     }
-
-
 }

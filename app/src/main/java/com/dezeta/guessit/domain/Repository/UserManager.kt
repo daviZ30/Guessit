@@ -1,9 +1,12 @@
-package com.dezeta.guessit.utils
+package com.dezeta.guessit.domain.Repository
 
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
+import com.dezeta.guessit.ui.friend.FriendState
+import com.dezeta.guessit.utils.Locator
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.coroutineScope
 
 class UserManager {
     companion object {
@@ -17,7 +20,10 @@ class UserManager {
                     "name" to user.name,
                     "point" to user.point,
                     "level" to user.level,
-                    "completeLevel" to user.completeLevel
+                    "completeLevel" to user.completeLevel,
+                    "countryEnable" to user.countryEnable,
+                    "serieEnable" to user.serieEnable,
+                    "footballEnable" to user.footballEnable,
                 )
             )
         }
@@ -34,6 +40,9 @@ class UserManager {
                     (it.get("level") as Number).toInt(),
                     "",
                     (it.get("completeLevel") as Number).toInt(),
+                    (it.get("countryEnable") as Boolean),
+                    (it.get("serieEnable") as Boolean),
+                    (it.get("footballEnable") as Boolean),
                 )
                 dataBase.collection("users").document(Locator.email).set(
                     hashMapOf(
@@ -43,12 +52,20 @@ class UserManager {
                         "name" to user.name,
                         "point" to user.point,
                         "level" to user.level,
-                        "completeLevel" to user.completeLevel
+                        "completeLevel" to user.completeLevel,
+                        "countryEnable" to user.countryEnable,
+                        "serieEnable" to user.serieEnable,
+                        "footballEnable" to user.footballEnable,
                     )
                 )
             }
+        }
 
-
+        fun deleteUser(email: String) {
+            val dataBase = FirebaseFirestore.getInstance()
+            dataBase.collection("users").document(email).delete().addOnSuccessListener {
+                FirebaseAuth.getInstance().currentUser!!.delete()
+            }
         }
 
         fun UpdateCompleteLevel(level: Int) {
@@ -64,6 +81,9 @@ class UserManager {
                     (it.get("level") as Number).toInt(),
                     "",
                     level,
+                    (it.get("countryEnable") as Boolean),
+                    (it.get("serieEnable") as Boolean),
+                    (it.get("footballEnable") as Boolean),
                 )
                 if (level >= (it.get("completeLevel") as Number).toInt()) {
                     dataBase.collection("users").document(user.email).set(
@@ -74,7 +94,10 @@ class UserManager {
                             "name" to user.name,
                             "point" to user.point,
                             "level" to user.level,
-                            "completeLevel" to user.completeLevel
+                            "completeLevel" to user.completeLevel,
+                            "countryEnable" to user.countryEnable,
+                            "serieEnable" to user.serieEnable,
+                            "footballEnable" to user.footballEnable,
                         )
                     )
                 }
@@ -95,7 +118,11 @@ class UserManager {
                     (it.get("level") as Number).toInt(),
                     "",
                     (it.get("completeLevel") as Number).toInt(),
-                )
+                    (it.get("countryEnable") as Boolean),
+                    (it.get("serieEnable") as Boolean),
+                    (it.get("footballEnable") as Boolean),
+
+                    )
                 dataBase.collection("users").document(user.email).set(
                     hashMapOf(
                         "friends" to user.friends,
@@ -104,7 +131,10 @@ class UserManager {
                         "name" to user.name,
                         "point" to user.point,
                         "level" to user.level,
-                        "completeLevel" to user.completeLevel
+                        "completeLevel" to user.completeLevel,
+                        "countryEnable" to user.countryEnable,
+                        "serieEnable" to user.serieEnable,
+                        "footballEnable" to user.footballEnable,
                     )
                 )
             }
@@ -120,7 +150,10 @@ class UserManager {
                     "name" to user.name,
                     "point" to user.point,
                     "level" to user.level,
-                    "completeLevel" to user.completeLevel
+                    "completeLevel" to user.completeLevel,
+                    "countryEnable" to user.countryEnable,
+                    "serieEnable" to user.serieEnable,
+                    "footballEnable" to user.footballEnable,
                 )
             )
         }

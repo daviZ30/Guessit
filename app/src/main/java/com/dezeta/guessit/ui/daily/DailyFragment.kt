@@ -3,6 +3,8 @@ package com.dezeta.guessit.ui.daily
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
@@ -36,17 +38,19 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
+import kotlin.properties.Delegates
 
 class DailyFragment : Fragment() {
-    //TODO Guardar variable help con preferencias
     //TODO Modificar la ayuda para que salga algo de la clase info o las tres ultimas letras si es online y la ultima letra si el local
     //TODO CAmbiar la forma de dectetar local
+
     var listRed = mutableListOf<String>()
     var listGreen = mutableListOf<String>()
     var level: Int? = null
     var NumImage = 1
     var LastImage = 1
     var img: Img? = null
+    private var isDarkThemeOn by Delegates.notNull<Boolean>()
 
     private var images: List<Img>? = null
 
@@ -86,6 +90,8 @@ class DailyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDailyBinding.inflate(inflater, container, false)
+        isDarkThemeOn =
+            (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         arguments.let {
             if (it != null) {
                 level = it.getInt("level")
@@ -259,6 +265,7 @@ class DailyFragment : Fragment() {
         val inputMethodManager =
             requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
+        setupTheme()
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DailyState.insertSuccess -> {
@@ -362,6 +369,17 @@ class DailyFragment : Fragment() {
                 NumImage--
                 nextImage()
             }
+        }
+    }
+
+    private fun setupTheme() {
+        if(isDarkThemeOn){
+            binding.imgError1.setColorFilter(Color.WHITE)
+            binding.imgError2.setColorFilter(Color.WHITE)
+            binding.imgError3.setColorFilter(Color.WHITE)
+            binding.imgError4.setColorFilter(Color.WHITE)
+            binding.imgError5.setColorFilter(Color.WHITE)
+
         }
     }
 
@@ -517,16 +535,27 @@ class DailyFragment : Fragment() {
         viewModel.error++
         viewModel.point -= 5
         when (viewModel.error) {
-            1 -> binding.imgError1.setImageResource(R.drawable.cancelar)
-            2 -> binding.imgError2.setImageResource(R.drawable.cancelar)
+            1 -> {
+                binding.imgError1.clearColorFilter()
+                binding.imgError1.setImageResource(R.drawable.cancelar)
+            }
+            2 -> {
+                binding.imgError2.clearColorFilter()
+                binding.imgError2.setImageResource(R.drawable.cancelar)
+            }
             3 -> {
+                binding.imgError3.clearColorFilter()
                 binding.imgError3.setImageResource(R.drawable.cancelar)
                 if (!viewModel.local)
                     binding.btnHelp.visibility = View.VISIBLE
             }
 
-            4 -> binding.imgError4.setImageResource(R.drawable.cancelar)
+            4 -> {
+                binding.imgError4.clearColorFilter()
+                binding.imgError4.setImageResource(R.drawable.cancelar)
+            }
             5 -> {
+                binding.imgError5.clearColorFilter()
                 binding.imgError5.setImageResource(R.drawable.cancelar)
                 showDegoratoryMessage()
                 findNavController().popBackStack()

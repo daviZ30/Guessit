@@ -12,11 +12,8 @@ import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
-import com.dezeta.guessit.ui.level.LevelState
-import com.dezeta.guessit.ui.main.MainState
 import com.dezeta.guessit.utils.Locator
-import com.dezeta.guessit.utils.UserManager
-import com.google.firebase.auth.FirebaseAuth
+import com.dezeta.guessit.domain.Repository.UserManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,6 +45,9 @@ class ViewModelDaily : ViewModel() {
                     (it.get("level") as Number).toInt(),
                     "",
                     (it.get("completeLevel") as Number).toInt(),
+                    (it.get("countryEnable") as Boolean),
+                    (it.get("serieEnable") as Boolean),
+                    (it.get("footballEnable") as Boolean),
                 )
             }
         }
@@ -162,6 +162,9 @@ class ViewModelDaily : ViewModel() {
                     (it.get("level") as Number).toInt(),
                     "",
                     level,
+                    (it.get("countryEnable") as Boolean),
+                    (it.get("serieEnable") as Boolean),
+                    (it.get("footballEnable") as Boolean),
                 )
                 if (level >= (it.get("completeLevel") as Number).toInt()) {
                     dataBase.collection("users").document(user.email).set(
@@ -172,7 +175,10 @@ class ViewModelDaily : ViewModel() {
                             "point" to user.point,
                             "provider" to user.provider,
                             "level" to user.level,
-                            "completeLevel" to user.completeLevel
+                            "completeLevel" to user.completeLevel,
+                            "countryEnable" to user.countryEnable,
+                            "serieEnable" to user.serieEnable,
+                            "footballEnable" to user.footballEnable,
                         )
                     )
                 }
