@@ -17,10 +17,10 @@ import com.dezeta.guessit.domain.Repository.UserManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class ViewModelDaily : ViewModel() {
-    var dataBase = FirebaseFirestore.getInstance()
     var serie: Guess? = null
     var local = false
     var help = true
@@ -33,23 +33,10 @@ class ViewModelDaily : ViewModel() {
     }
 
     fun loadUser() {
-        val email = Locator.email
         viewModelScope.launch(Dispatchers.IO) {
-            dataBase.collection("users").document(email).get().addOnSuccessListener {
-                user = User(
-                    it.get("email") as String,
-                    it.get("name") as String,
-                    it.get("friends") as List<String>,
-                    (it.get("point") as Number).toInt(),
-                    ProviderType.valueOf(it.get("provider") as String),
-                    (it.get("level") as Number).toInt(),
-                    "",
-                    (it.get("completeLevel") as Number).toInt(),
-                    (it.get("countryEnable") as Boolean),
-                    (it.get("serieEnable") as Boolean),
-                    (it.get("footballEnable") as Boolean),
-                )
-            }
+            val result = Locator.userManager.loadUser()
+            if (result is Resource.Success<*>)
+                user = result.data as User
         }
     }
 
@@ -128,63 +115,30 @@ class ViewModelDaily : ViewModel() {
     }
 
     fun updatePoint() {
-        UserManager.UpdatePoint(point)
+        Locator.userManager.UpdatePoint(point)
     }
 
     fun update2500Point() {
+        loadUser()
         user!!.point += 2500
         user!!.completeLevel = 24
         viewModelScope.launch(Dispatchers.IO) {
-            dataBase.collection("users").document(user!!.email).set(
-                hashMapOf(
-                    "provider" to user!!.provider,
-                    "email" to user!!.email,
-                    "point" to user!!.point,
-                    "level" to user!!.level,
-                    "completeLevel" to user!!.completeLevel
-                )
-            ).addOnSuccessListener {
-                state.value = DailyState.insertSuccess
+            val result = Locator.userManager.UpdateUser(user!!)
+            if (result is Resource.Success<*>) {
+                withContext(Dispatchers.Main) {
+                    state.value = DailyState.Success
+                }
             }
         }
     }
 
     fun updateLevel(level: Int) {
-        val email = Locator.email
+        loadUser()
+        user!!.completeLevel = level
         viewModelScope.launch(Dispatchers.IO) {
-            dataBase.collection("users").document(email).get().addOnSuccessListener {
-                val user = User(
-                    it.get("email") as String,
-                    it.get("name") as String,
-                    it.get("friends") as List<String>,
-                    (it.get("point") as Number).toInt(),
-                    ProviderType.valueOf(it.get("provider") as String),
-                    (it.get("level") as Number).toInt(),
-                    "",
-                    level,
-                    (it.get("countryEnable") as Boolean),
-                    (it.get("serieEnable") as Boolean),
-                    (it.get("footballEnable") as Boolean),
-                )
-                if (level >= (it.get("completeLevel") as Number).toInt()) {
-                    dataBase.collection("users").document(user.email).set(
-                        hashMapOf(
-                            "email" to user.email,
-                            "name" to user.name,
-                            "friends" to user.friends,
-                            "point" to user.point,
-                            "provider" to user.provider,
-                            "level" to user.level,
-                            "completeLevel" to user.completeLevel,
-                            "countryEnable" to user.countryEnable,
-                            "serieEnable" to user.serieEnable,
-                            "footballEnable" to user.footballEnable,
-                        )
-                    )
-                }
-            }.addOnSuccessListener {
-                state.value = DailyState.insertSuccess
-            }
+            val result = Locator.userManager.UpdateUser(user!!)
+            if (result is Resource.Success<*>)
+                state.value = DailyState.Success
         }
     }
 

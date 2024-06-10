@@ -35,7 +35,6 @@ import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.loadImageBitmapFromInternalStorage
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.properties.Delegates
@@ -268,9 +267,10 @@ class DailyFragment : Fragment() {
         setupTheme()
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
-                is DailyState.insertSuccess -> {
+                is DailyState.Success -> {
                     findNavController().popBackStack()
                 }
+                else -> {}
             }
         }
         adapterList = SearchAdapter() {
@@ -432,7 +432,7 @@ class DailyFragment : Fragment() {
             showHelpGreenMessage()
         }
 
-        var categoryAdapter = CategoryAdapter(listRed, listGreen)
+        val categoryAdapter = CategoryAdapter(listRed, listGreen)
         categoryAdapter.update(viewModel.categoryList().toMutableList())
         rvCategoryList.adapter = categoryAdapter
 

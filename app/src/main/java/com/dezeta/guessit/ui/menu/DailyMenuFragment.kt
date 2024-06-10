@@ -87,9 +87,7 @@ class DailyMenuFragment : Fragment() {
                 putBoolean("local", false)
             }
             binding.btnDailyCountry.isEnabled = false
-            viewModel.user!!.countryEnable = false
-            viewModel.saveUser()
-
+            viewModel.loadUserAndSave("country")
 
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
@@ -114,8 +112,7 @@ class DailyMenuFragment : Fragment() {
                 putBoolean("local", false)
             }
             binding.btnDailyGame.isEnabled = false
-            viewModel.user!!.serieEnable = false
-            viewModel.saveUser()
+            viewModel.loadUserAndSave("serie")
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
                     workDataOf(
@@ -137,8 +134,7 @@ class DailyMenuFragment : Fragment() {
                 putBoolean("local", false)
             }
             binding.btnDailyFootball.isEnabled = false
-            viewModel.user!!.footballEnable = false
-            viewModel.saveUser()
+            viewModel.loadUserAndSave("football")
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
                     workDataOf(

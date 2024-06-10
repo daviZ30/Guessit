@@ -10,16 +10,19 @@ import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.domain.Repository.UserManager
+import com.dezeta.guessit.utils.Locator
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 class ViewModelLogin : ViewModel() {
-    var dataBase = FirebaseFirestore.getInstance()
     var mail = MutableLiveData<String>()
     var name = MutableLiveData<String>()
     var dialogName = MutableLiveData<String>()
@@ -48,67 +51,67 @@ class ViewModelLogin : ViewModel() {
         return p.any { it.isDigit() } && p.any { it.isLetter() } && p.length >= 8
     }
 
-    fun saveImageProfile(uri: Uri) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val storage = FirebaseStorage.getInstance()
-            val storageReference = storage.reference.child("images/${mail.value}_img1.jpg")
-
-            val uploadTask = storageReference.putFile(uri)
-
-            uploadTask.addOnSuccessListener { taskSnapshot ->
-                storageReference.downloadUrl.addOnSuccessListener { uri ->
-                    //getUserProfileImageByEmail()
-                }.addOnFailureListener { exception ->
-                    println("ERROR. $exception")
-                }
-            }.addOnFailureListener { exception ->
-                println("ERROR. $exception")
-            }
-        }
-    }
-
 
     fun saveUser(u: User) {
         viewModelScope.launch(Dispatchers.IO) {
-            UserManager.saveUser(u)
+            Locator.userManager.saveUser(u)
         }
     }
 
     fun signup(uri: Uri) {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-            mail.value!!,
-            password.value!!
-        ).addOnCompleteListener { r ->
-            if (r.isSuccessful) {
-                saveImageProfile(uri)
-                FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
-                user = User(
-                    r.result?.user?.email ?: "",
-                    name.value!!,
-                    listOf(r.result?.user?.email ?: ""),
-                    0,
-                    ProviderType.BASIC,
-                    0,
-                    "",
-                    0,
-                    true,
-                    true,
-                    true,
-                )
-                saveUser(user!!)
-                result.value = Resource.Success(
-                    user!!.email
-                )
-            } else {
-                result.value =
-                    Resource.Error(Exception("Su cuenta de correo ya esta registrada"))
+        viewModelScope.launch(Dispatchers.IO) {
+            val resu = Locator.userManager.SignUp(mail.value!!, password.value!!, name.value!!, uri)
+            when (resu) {
+                is Resource.Error -> {
+                    withContext(Dispatchers.Main) {
+                        result.value = Resource.Error(resu.exception)
+                    }
+                }
+
+                is Resource.Success<*> -> {
+                    withContext(Dispatchers.Main) {
+                        result.value = Resource.Success(resu.data as String)
+                    }
+                }
             }
         }
-
     }
 
     fun signin() {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(
+        viewModelScope.launch(Dispatchers.IO) {
+            val resu = Locator.userManager.SignIn(mail.value!!, password.value!!)
+            when (resu) {
+                is Resource.Error -> {
+                    val isGoogle = Locator.userManager.isGoogleAccount(mail.value!!)
+                    withContext(Dispatchers.Main) {
+                        when (isGoogle) {
+                            is Resource.Success<*> -> {
+                                state.value = LoginState.GoogleSignInError
+                            }
+
+                            is Resource.Error -> {
+                                result.value = isGoogle
+                            }
+                        }
+                    }
+
+                }
+
+                is Resource.Success<*> -> {
+                    val log = resu.data as AuthResult
+                    withContext(Dispatchers.Main) {
+                        if (!log.user!!.isEmailVerified)
+                            state.value = LoginState.EmailNotVerifiedError
+                        else {
+                            result.value = Resource.Success(
+                                log.user?.email ?: ""
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        /*FirebaseAuth.getInstance().signInWithEmailAndPassword(
             mail.value!!,
             password.value!!
         ).addOnCompleteListener { r ->
@@ -131,34 +134,38 @@ class ViewModelLogin : ViewModel() {
                         Resource.Error(Exception("Se ha producido un error autenticando al usuario, registrelo antes de iniciar sesión"))
                 }
             }
-        }
+        }*/
     }
 
     fun validateSignUp() {
-        val usersRef = dataBase.collection("users")
         viewModelScope.launch(Dispatchers.Default) {
-            usersRef.get().addOnCompleteListener { task ->
+            val result = Locator.userManager.getDocuments()
+            if (result is Resource.Success<*>) {
+                val task = result.data as QuerySnapshot
                 userList.clear()
-                if (task.isSuccessful) {
-                    for (document in task.result) {
-                        val userData = document.data
-                        val user = User(
-                            userData["email"] as String,
-                            userData["name"] as String,
-                            userData["friends"] as List<String>,
-                            (userData["point"] as Number).toInt(),
-                            ProviderType.valueOf(userData["provider"] as String),
-                            (userData["level"] as Number).toInt(),
-                            "",
-                            (userData["completeLevel"] as Number).toInt(),
-                            userData["countryEnable"] as Boolean,
-                            userData["serieEnable"] as Boolean,
-                            userData["footballEnable"] as Boolean,
-                        )
-                        userList.add(
-                            user
-                        )
-                    }
+                for (document in task) {
+                    val userData = document.data
+                    val user = User(
+                        userData[UserManager.EMAIL] as String,
+                        userData[UserManager.NAME] as String,
+                        userData[UserManager.FRIENDS] as List<String>,
+                        (userData[UserManager.POINT] as Number).toInt(),
+                        ProviderType.valueOf(userData[UserManager.PROVIDER] as String),
+                        (userData[UserManager.LEVEL] as Number).toInt(),
+                        "",
+                        (userData[UserManager.COMPLETE_LEVEL] as Number).toInt(),
+                        userData[UserManager.COUNTRY_ENABLE] as Boolean,
+                        userData[UserManager.SERIE_ENABLE] as Boolean,
+                        userData[UserManager.FOOTBALL_ENABLE] as Boolean,
+                        (userData[UserManager.STAT_COUNTRY] as Number).toInt(),
+                        (userData[UserManager.STAT_SERIE] as Number).toInt(),
+                        (userData[UserManager.STAT_FOOTBALL] as Number).toInt(),
+                    )
+                    userList.add(
+                        user
+                    )
+                }
+                withContext(Dispatchers.Main) {
                     when {
                         TextUtils.isEmpty(mail.value) -> state.value = LoginState.emailEmtyError
                         TextUtils.isEmpty(password.value) -> state.value =
@@ -180,12 +187,9 @@ class ViewModelLogin : ViewModel() {
 
                         }
                     }
-                } else {
-                    println("Error al obtener documentos: ${task.exception}")
                 }
             }
         }
-
 
     }
 
@@ -209,141 +213,139 @@ class ViewModelLogin : ViewModel() {
 
     fun signInGoogle(credential: AuthCredential, e: String?, n: String) {
         viewModelScope.launch(Dispatchers.Default) {
-            FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val usersRef = dataBase.collection("users")
-                    usersRef.get().addOnCompleteListener { task ->
-                        userList.clear()
-                        if (task.isSuccessful) {
-                            for (document in task.result) {
-                                val userData = document.data
-                                val user = User(
-                                    userData["email"] as String,
-                                    userData["name"] as String,
-                                    userData["friends"] as List<String>,
-                                    (userData["point"] as Number).toInt(),
-                                    ProviderType.valueOf(userData["provider"] as String),
-                                    (userData["level"] as Number).toInt(),
-                                    "",
-                                    (userData["completeLevel"] as Number).toInt(),
-                                    userData["countryEnable"] as Boolean,
-                                    userData["serieEnable"] as Boolean,
-                                    userData["footballEnable"] as Boolean,
-
-                                )
-                                userList.add(
-                                    user
-                                )
-                            }
-                            var exists = false
-                            var existsName = false
-                            userList.forEach {
-                                if (it.email == e) {
-                                    exists = true
-                                }
-                                if (it.name == n) {
-                                    existsName = true
-                                }
-                            }
-                            when {
-                                !exists && !existsName -> {
-                                    user = User(
-                                        e!!,
-                                        n,
-                                        listOf(e),
-                                        0,
-                                        ProviderType.GOOGLE,
-                                        0,
-                                        "",
-                                        0,
-                                        true,
-                                        true,
-                                        true,
-                                    )
-                                    saveUser(user!!)
-                                    state.value = LoginState.GoogleSuccess(e)
-                                }
-
-                                !exists && existsName -> {
-                                    user = User(
-                                        e!!,
-                                        n,
-                                        listOf(e),
-                                        0,
-                                        ProviderType.GOOGLE,
-                                        0,
-                                        "",
-                                        0,
-                                        true,
-                                        true,
-                                        true,
-                                    )
-                                    saveUser(user!!)
-                                    state.value = LoginState.GoogleNameExists
-                                }
-
-                                else -> {
-                                    state.value = LoginState.GoogleSuccess(e!!)
-                                }
-                            }
-                        } else {
-                            println("Error al obtener documentos: ${task.exception}")
+            userList.clear()
+            val resu = Locator.userManager.SignInGoogle(credential)
+            when (resu) {
+                is Resource.Error -> {
+                    withContext(Dispatchers.Main) {
+                        withContext(Dispatchers.Main) {
+                            result.value =
+                                Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
                         }
                     }
 
+                }
 
-                } else {
-                    result.value =
-                        Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
+                is Resource.Success<*> -> {
+                    userList = resu.data as MutableList<User>
+                    var exists = false
+                    var existsName = false
+                    userList.forEach {
+                        if (it.email == e) {
+                            exists = true
+                        }
+                        if (it.name == n) {
+                            existsName = true
+                        }
+                    }
+                    when {
+                        !exists && !existsName -> {
+                            user = User(
+                                e!!,
+                                n,
+                                listOf(e),
+                                0,
+                                ProviderType.GOOGLE,
+                                0,
+                                "",
+                                0,
+                                true,
+                                true,
+                                true,
+                                0,
+                                0,
+                                0
+                            )
+                            saveUser(user!!)
+                            withContext(Dispatchers.Main) {
+                                state.value = LoginState.GoogleSuccess(e)
+                            }
+                        }
+
+                        !exists && existsName -> {
+                            user = User(
+                                e!!,
+                                n,
+                                listOf(e),
+                                0,
+                                ProviderType.GOOGLE,
+                                0,
+                                "",
+                                0,
+                                true,
+                                true,
+                                true,
+                                0,
+                                0,
+                                0
+                            )
+                            saveUser(user!!)
+                            withContext(Dispatchers.Main) {
+                                state.value = LoginState.GoogleNameExists
+                            }
+                        }
+
+                        else -> {
+                            withContext(Dispatchers.Main) {
+                                state.value = LoginState.GoogleSuccess(e!!)
+                            }
+                        }
+                    }
+                }
+
+                else -> {
+                    withContext(Dispatchers.Main) {
+                        result.value =
+                            Resource.Error(Exception("Se ha producido un error NULL"))
+                    }
                 }
             }
         }
-
     }
 
     fun validateDialogName() {
-        val usersRef = dataBase.collection("users")
         viewModelScope.launch(Dispatchers.Default) {
-            usersRef.get().addOnCompleteListener { task ->
+            val res = Locator.userManager.getDocuments()
+            if (res is Resource.Success<*>) {
                 userList.clear()
-                if (task.isSuccessful) {
-                    for (document in task.result) {
-                        val userData = document.data
-                        val user = User(
-                            userData["email"] as String,
-                            userData["name"] as String,
-                            userData["friends"] as List<String>,
-                            (userData["point"] as Number).toInt(),
-                            ProviderType.valueOf(userData["provider"] as String),
-                            (userData["level"] as Number).toInt(),
-                            "",
-                            (userData["completeLevel"] as Number).toInt(),
-                            userData["countryEnable"] as Boolean,
-                            userData["serieEnable"] as Boolean,
-                            userData["footballEnable"] as Boolean,
-                        )
-                        userList.add(
-                            user
-                        )
-                    }
-                    when {
-                        TextUtils.isEmpty(dialogName.value) -> state.value =
-                            LoginState.GoogleNameEmpty
-
-                        !validarName(dialogName.value, userList) -> state.value =
-                            LoginState.GoogleNameEquals
-
-                        else -> {
-                            user!!.name = dialogName.value.toString()
-                            saveUser(user!!)
-                            state.value = LoginState.GoogleSuccess(user!!.email)
-                        }
-                    }
-                } else {
-                    println("Error al obtener documentos: ${task.exception}")
+                val task =  res.data as QuerySnapshot
+                for (document in task) {
+                    val userData = document.data
+                    val user = User(
+                        userData[UserManager.EMAIL] as String,
+                        userData[UserManager.NAME] as String,
+                        userData[UserManager.FRIENDS] as List<String>,
+                        (userData[UserManager.POINT] as Number).toInt(),
+                        ProviderType.valueOf(userData[UserManager.PROVIDER] as String),
+                        (userData[UserManager.LEVEL] as Number).toInt(),
+                        "",
+                        (userData[UserManager.COMPLETE_LEVEL] as Number).toInt(),
+                        userData[UserManager.COUNTRY_ENABLE] as Boolean,
+                        userData[UserManager.SERIE_ENABLE] as Boolean,
+                        userData[UserManager.FOOTBALL_ENABLE] as Boolean,
+                        (userData[UserManager.STAT_COUNTRY] as Number).toInt(),
+                        (userData[UserManager.STAT_SERIE] as Number).toInt(),
+                        (userData[UserManager.STAT_FOOTBALL] as Number).toInt(),
+                    )
+                    userList.add(
+                        user
+                    )
                 }
+                when {
+                    TextUtils.isEmpty(dialogName.value) -> state.value =
+                        LoginState.GoogleNameEmpty
+
+                    !validarName(dialogName.value, userList) -> state.value =
+                        LoginState.GoogleNameEquals
+
+                    else -> {
+                        user!!.name = dialogName.value.toString()
+                        saveUser(user!!)
+                        state.value = LoginState.GoogleSuccess(user!!.email)
+                    }
+                }
+
             }
         }
-
     }
 }

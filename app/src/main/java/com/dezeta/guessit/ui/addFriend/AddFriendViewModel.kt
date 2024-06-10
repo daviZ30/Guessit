@@ -1,17 +1,22 @@
 package com.dezeta.guessit.ui.addFriend
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dezeta.guessit.domain.Repository.Resource
+import com.dezeta.guessit.domain.Repository.UserManager
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.ui.friend.FriendState
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddFriendViewModel : ViewModel() {
     var dataBase = FirebaseFirestore.getInstance()
@@ -23,9 +28,7 @@ class AddFriendViewModel : ViewModel() {
         val usersRef = dataBase.collection("users")
         usersRef.document(Locator.email).get().addOnSuccessListener {
             friends = (it.get("friends") as List<String>)
-            /* println(friends)
-             for (f in friends) {
-             }*/
+
             getAllUserAccounts()
         }
 
@@ -35,40 +38,47 @@ class AddFriendViewModel : ViewModel() {
         return state
     }
 
+
     private fun getAllUserAccounts() {
-        val usersRef = dataBase.collection("users")
         viewModelScope.launch(Dispatchers.Default) {
-            usersRef.get().addOnCompleteListener { task ->
+            val result = Locator.userManager.getDocuments()
+            if (result is Resource.Success<*>) {
+                val task = result.data as QuerySnapshot
                 userList.clear()
-                if (task.isSuccessful) {
-                    viewModelScope.launch {
-                        for (document in task.result) {
-                            val userData = document.data
-                            val user = User(
-                                userData["email"] as String,
-                                userData["name"] as String,
-                                userData["friends"] as List<String>,
-                                (userData["point"] as Number).toInt(),
-                                ProviderType.valueOf(userData["provider"] as String),
-                                (userData["level"] as Number).toInt(),
-                                manager.getUserImages(userData["email"] as String),
-                                (userData["completeLevel"] as Number).toInt(),
-                                (userData["countryEnable"] as Boolean),
-                                (userData["serieEnable"] as Boolean),
-                                (userData["footballEnable"] as Boolean),
-                            )
-                            println("LISTAAAAAA ${friends}")
-                            if (!friends.contains(user.email)) {
-                                userList.add(
-                                    user
-                                )
-                            }
-                            state.value = FriendState.AddFriend
-                        }
-                    }
-                } else {
-                    println("Error al obtener documentos: ${task.exception}")
+                val allList = mutableListOf<User>()
+                for (document in task) {
+                    val userData = document.data
+                    val user = User(
+                        userData[UserManager.EMAIL] as String,
+                        userData[UserManager.NAME] as String,
+                        userData[UserManager.FRIENDS] as List<String>,
+                        (userData[UserManager.POINT] as Number).toInt(),
+                        ProviderType.valueOf(userData[UserManager.PROVIDER] as String),
+                        (userData[UserManager.LEVEL] as Number).toInt(),
+                        manager.getUserImages(userData[UserManager.EMAIL] as String),
+                        (userData[UserManager.COMPLETE_LEVEL] as Number).toInt(),
+                        (userData[UserManager.COUNTRY_ENABLE] as Boolean),
+                        (userData[UserManager.SERIE_ENABLE] as Boolean),
+                        (userData[UserManager.FOOTBALL_ENABLE] as Boolean),
+                        (userData[UserManager.STAT_COUNTRY] as Number).toInt(),
+                        (userData[UserManager.STAT_SERIE] as Number).toInt(),
+                        (userData[UserManager.STAT_FOOTBALL] as Number).toInt(),
+                    )
+                    allList.add(
+                        user
+                    )
                 }
+                for (u in allList) {
+                    if (!friends.contains(u.email)) {
+                        userList.add(
+                            u
+                        )
+                    }
+                    withContext(Dispatchers.Main) {
+                        state.value = FriendState.AddFriend
+                    }
+                }
+
             }
         }
     }
@@ -84,42 +94,12 @@ class AddFriendViewModel : ViewModel() {
     }
 
     fun addFriend(user: User) {
-        val usersRef = dataBase.collection("users")
         viewModelScope.launch(Dispatchers.IO) {
-            usersRef.document(Locator.email).get().addOnSuccessListener {
-                val friends: MutableList<String> =
-                    (it.get("friends") as List<String>).toMutableList()
-                friends.add(user.email)
-                val user = User(
-                    it.get("email") as String,
-                    it.get("name") as String,
-                    friends,
-                    (it.get("point") as Number).toInt(),
-                    ProviderType.valueOf(it.get("provider") as String),
-                    (it.get("level") as Number).toInt(),
-                    "",
-                    (it.get("completeLevel") as Number).toInt(),
-                    (it.get("countryEnable") as Boolean),
-                    (it.get("serieEnable") as Boolean),
-                    (it.get("footballEnable") as Boolean),
-                )
-                dataBase.collection("users").document(Locator.email).set(
-                    hashMapOf(
-                        "friends" to user.friends,
-                        "provider" to user.provider,
-                        "email" to user.email,
-                        "name" to user.name,
-                        "point" to user.point,
-                        "level" to user.level,
-                        "completeLevel" to user.completeLevel,
-                        "countryEnable" to user.countryEnable,
-                        "serieEnable" to user.serieEnable,
-                        "footballEnable" to user.footballEnable,
-                    )
-                ).addOnSuccessListener {
+            val result = Locator.userManager.addFriend(user.email)
+            if (result is Resource.Success<*>)
+                withContext(Dispatchers.Main) {
                     state.value = FriendState.InsertFriend
                 }
-            }
         }
     }
 }

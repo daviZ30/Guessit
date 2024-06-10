@@ -20,8 +20,7 @@ class MyWorkerFirebase(
             currentUser?.reload()?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     if (!currentUser.isEmailVerified) {
-                        UserManager.deleteUser(email!!)
-                        println("EMAIL BORRADO")
+                        Locator.userManager.deleteUser(email!!)
                     }
                 }
             }

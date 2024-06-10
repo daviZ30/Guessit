@@ -37,31 +37,30 @@ class MyWorker(
                         (it.get("countryEnable") as Boolean),
                         (it.get("serieEnable") as Boolean),
                         (it.get("footballEnable") as Boolean),
-                    )
+                        (it.get("statCountry") as Number).toInt(),
+                        (it.get("statSerie") as Number).toInt(),
+                        (it.get("statFootball") as Number).toInt(),
+                        )
                     when (btnType) {
                         "country" -> {
                             //btnCountry.isEnabled = true
                             user.countryEnable = true
-                            UserManager.saveUser(user)
+                            Locator.userManager.saveUser(user)
                         }
                         "serie" -> {
                             // btnSerie.isEnabled = true
                             user.serieEnable = true
-                            UserManager.saveUser(user)
+                            Locator.userManager.saveUser(user)
                         }
 
                         "football" -> {
                             // btnFootball.isEnabled = true
                             user.footballEnable = true
-                            UserManager.saveUser(user)
+                            Locator.userManager.saveUser(user)
                         }
                     }
-                }.addOnFailureListener {
-                    fragment.resetbtn()
                 }
             //24 * 60 * 60 * 1000
-
-
 
             if (Locator.managerFragment != null) {
                 Locator.managerFragment!!.beginTransaction()

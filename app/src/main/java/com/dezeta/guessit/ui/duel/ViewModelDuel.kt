@@ -8,6 +8,7 @@ import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Info
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.Repository.UserManager
+import com.dezeta.guessit.utils.Locator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -18,7 +19,7 @@ class ViewModelDuel : ViewModel() {
     var point = 0
     fun updateLevel(level: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            UserManager.UpdateCompleteLevel(level)
+            Locator.userManager.UpdateCompleteLevel(level)
         }
     }
 
@@ -34,7 +35,7 @@ class ViewModelDuel : ViewModel() {
 
     fun updatePoint() {
         viewModelScope.launch(Dispatchers.IO) {
-            UserManager.UpdatePoint(point)
+            Locator.userManager.UpdatePoint(point)
         }
 
     }

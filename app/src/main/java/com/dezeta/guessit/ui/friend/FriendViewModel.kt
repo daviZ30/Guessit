@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.CloudStorageManager
@@ -12,11 +13,10 @@ import com.dezeta.guessit.domain.Repository.UserManager
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FriendViewModel : ViewModel() {
     private var state = MutableLiveData<FriendState>()
-    private var manager = CloudStorageManager()
-    var dataBase = FirebaseFirestore.getInstance()
     var userList: MutableList<User> = mutableListOf()
     fun getState(): LiveData<FriendState> {
         return state
@@ -24,22 +24,11 @@ class FriendViewModel : ViewModel() {
 
     fun loadUser(email: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            dataBase.collection("users").document(email).get().addOnSuccessListener {
-                viewModelScope.launch {
-                    val user = User(
-                        it.get("email") as String,
-                        it.get("name") as String,
-                        it.get("friends") as List<String>,
-                        (it.get("point") as Number).toInt(),
-                        ProviderType.valueOf(it.get("provider") as String),
-                        (it.get("level") as Number).toInt(),
-                        manager.getUserImages(it.get("email") as String),
-                        (it.get("completeLevel") as Number).toInt(),
-                        (it.get("countryEnable") as Boolean),
-                        (it.get("serieEnable") as Boolean),
-                        (it.get("footballEnable") as Boolean),
-                        )
-                    userList.add(user)
+            val result = Locator.userManager.loadUser(email)
+            if (result is Resource.Success<*>) {
+                val user = result.data as User
+                userList.add(user)
+                withContext(Dispatchers.Main) {
                     state.value = FriendState.AddFriend
                 }
             }
@@ -47,11 +36,10 @@ class FriendViewModel : ViewModel() {
     }
 
     fun getAllFriend() {
-        val usersRef = dataBase.collection("users")
         viewModelScope.launch(Dispatchers.Default) {
-            usersRef.document(Locator.email).get().addOnSuccessListener {
-                val friends: List<String> = (it.get("friends") as List<String>)
-                println(friends)
+            val result = Locator.userManager.getFriend()
+            if (result is Resource.Success<*>) {
+                val friends = result.data as List<String>
                 for (f in friends) {
                     loadUser(f)
                 }
@@ -61,15 +49,8 @@ class FriendViewModel : ViewModel() {
 
     fun removeFriend(user: User) {
         userList.remove(user)
-        val usersRef = dataBase.collection("users")
         viewModelScope.launch(Dispatchers.IO) {
-            usersRef.document(Locator.email).get().addOnSuccessListener {
-                val friends: MutableList<String> =
-                    (it.get("friends") as List<String>).toMutableList()
-                friends.remove(user.email)
-                UserManager.UpdateFriends(friends)
-            }
+            Locator.userManager.removeFriend(user)
         }
-
     }
 }

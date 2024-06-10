@@ -14,5 +14,7 @@ data class User(
     var countryEnable: Boolean,
     var serieEnable: Boolean,
     var footballEnable: Boolean,
-) :
-    Serializable
+    var statCountry: Int,
+    var statSerie: Int,
+    var statFootball: Int,
+) : Serializable

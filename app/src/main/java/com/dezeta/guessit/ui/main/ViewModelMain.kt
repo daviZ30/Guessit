@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dezeta.guessit.domain.Repository.Repository
+import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
@@ -15,9 +16,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ViewModelMain : ViewModel() {
-    var dataBase = FirebaseFirestore.getInstance()
     private var state = MutableLiveData<MainState>()
     var user = MutableLiveData<User>()
 
@@ -28,37 +29,26 @@ class ViewModelMain : ViewModel() {
 
     fun loadUser(email: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            dataBase.collection("users").document(email).get().addOnSuccessListener {
-                user.value = User(
-                    it.get("email") as String,
-                    it.get("name") as String,
-                    it.get("friends") as List<String>,
-                    (it.get("point") as Number).toInt(),
-                    ProviderType.valueOf(it.get("provider") as String),
-                    (it.get("level") as Number).toInt(),
-                    "",
-                    (it.get("completeLevel") as Number).toInt(),
-                    (it.get("countryEnable") as Boolean),
-                    (it.get("serieEnable") as Boolean),
-                    (it.get("footballEnable") as Boolean),
-                )
-                state.value = MainState.UserSuccess(
-                    user.value!!
-                )
+            val result = Locator.userManager.loadUser(email)
+            if (result is Resource.Success<*>) {
+                withContext(Dispatchers.Main) {
+                    state.value = MainState.UserSuccess(
+                        result.data as User
+                    )
+                }
             }
         }
-
     }
 
     fun deleteUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            dataBase.collection("users").document(Locator.email).delete().addOnSuccessListener {
-                FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
+            val res = Locator.userManager.deleteUser()
+            if (res is Resource.Success<*>) {
+                withContext(Dispatchers.Main) {
                     state.value = MainState.SignOut
                 }
             }
         }
-
     }
 
     fun saveImageProfile(manager: CloudStorageManager, uri: Uri) {

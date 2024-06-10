@@ -7,17 +7,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dezeta.guessit.domain.Repository.Repository
+import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.Repository.UserManager
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
+import com.dezeta.guessit.ui.friend.FriendState
 import com.dezeta.guessit.ui.main.MainState
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 class ViewModelMenu : ViewModel() {
@@ -25,7 +29,7 @@ class ViewModelMenu : ViewModel() {
     var guessGame = MutableLiveData<String>("0")
     var guessPlayer = MutableLiveData<String>("0")
     var guessCountry = MutableLiveData<String>("0")
-    var dataBase = FirebaseFirestore.getInstance()
+    private var manager = CloudStorageManager()
     var userList = mutableListOf<User>()
     var user: User? = null
     private var state = MutableLiveData<ExtraState>()
@@ -76,60 +80,66 @@ class ViewModelMenu : ViewModel() {
     }
 
     fun getAllUserAccounts() {
-        val usersRef = dataBase.collection("users")
         viewModelScope.launch(Dispatchers.Default) {
-            usersRef.get().addOnCompleteListener { task ->
+            val result = Locator.userManager.getDocuments()
+            if (result is Resource.Success<*>) {
+                val task = result.data as QuerySnapshot
                 userList.clear()
-                if (task.isSuccessful) {
-                    for (document in task.result) {
-                        val userData = document.data
-                        val user = User(
-                            userData["email"] as String,
-                            userData["name"] as String,
-                            userData["friends"] as List<String>,
-                            (userData["point"] as Number).toInt(),
-                            ProviderType.valueOf(userData["provider"] as String),
-                            (userData["level"] as Number).toInt(),
-                            "",
-                            (userData["completeLevel"] as Number).toInt(),
-                            userData["countryEnable"] as Boolean,
-                            userData["serieEnable"] as Boolean,
-                            userData["footballEnable"] as Boolean,
-                        )
-                        userList.add(
-                            user
-                        )
-                    }
-                    state.value = ExtraState.refreshUserList
-                } else {
-                    println("Error al obtener documentos: ${task.exception}")
+                for (document in task) {
+                    val userData = document.data
+                    val user = User(
+                        userData[UserManager.EMAIL] as String,
+                        userData[UserManager.NAME] as String,
+                        userData[UserManager.FRIENDS] as List<String>,
+                        (userData[UserManager.POINT] as Number).toInt(),
+                        ProviderType.valueOf(userData[UserManager.PROVIDER] as String),
+                        (userData[UserManager.LEVEL] as Number).toInt(),
+                        manager.getUserImages(userData[UserManager.EMAIL] as String),
+                        (userData[UserManager.COMPLETE_LEVEL] as Number).toInt(),
+                        (userData[UserManager.COUNTRY_ENABLE] as Boolean),
+                        (userData[UserManager.SERIE_ENABLE] as Boolean),
+                        (userData[UserManager.FOOTBALL_ENABLE] as Boolean),
+                        (userData[UserManager.STAT_COUNTRY] as Number).toInt(),
+                        (userData[UserManager.STAT_SERIE] as Number).toInt(),
+                        (userData[UserManager.STAT_FOOTBALL] as Number).toInt(),
+                    )
+                    userList.add(
+                        user
+                    )
                 }
+                state.value = ExtraState.refreshUserList
+
             }
         }
     }
 
     fun loadUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            dataBase.collection("users").document(Locator.email).get().addOnSuccessListener {
-                user = User(
-                    it.get("email") as String,
-                    it.get("name") as String,
-                    it.get("friends") as List<String>,
-                    (it.get("point") as Number).toInt(),
-                    ProviderType.valueOf(it.get("provider") as String),
-                    (it.get("level") as Number).toInt(),
-                    "",
-                    (it.get("completeLevel") as Number).toInt(),
-                    (it.get("countryEnable") as Boolean),
-                    (it.get("serieEnable") as Boolean),
-                    (it.get("footballEnable") as Boolean),
-                )
+            val result = Locator.userManager.loadUser()
+            if (result is Resource.Success<*>) {
+                user = result.data as User
                 state.value = ExtraState.UserSuccess
             }
         }
     }
 
-    fun saveUser() {
-        UserManager.saveUser(user!!)
+    fun loadUserAndSave(s: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            loadUser()
+            when (s) {
+                "country" -> {
+                    user!!.countryEnable = false
+                }
+
+                "serie" -> {
+                    user!!.serieEnable = false
+                }
+
+                "football" -> {
+                    user!!.footballEnable = false
+                }
+            }
+            Locator.userManager.saveUser(user!!)
+        }
     }
 }

@@ -149,7 +149,7 @@ class LoginActivity : AppCompatActivity() {
                         val request = OneTimeWorkRequestBuilder<MyWorkerFirebase>()
                             .setInputData(
                                 workDataOf(
-                                    "email" to viewModel.user!!.email
+                                    "email" to it.data as String
                                 )
                             )
                             .setInitialDelay(1, TimeUnit.DAYS)
