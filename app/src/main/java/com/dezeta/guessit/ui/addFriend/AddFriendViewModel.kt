@@ -28,7 +28,6 @@ class AddFriendViewModel : ViewModel() {
         val usersRef = dataBase.collection("users")
         usersRef.document(Locator.email).get().addOnSuccessListener {
             friends = (it.get("friends") as List<String>)
-
             getAllUserAccounts()
         }
 
@@ -40,7 +39,7 @@ class AddFriendViewModel : ViewModel() {
 
 
     private fun getAllUserAccounts() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val result = Locator.userManager.getDocuments()
             if (result is Resource.Success<*>) {
                 val task = result.data as QuerySnapshot
@@ -64,21 +63,13 @@ class AddFriendViewModel : ViewModel() {
                         (userData[UserManager.STAT_SERIE] as Number).toInt(),
                         (userData[UserManager.STAT_FOOTBALL] as Number).toInt(),
                     )
-                    allList.add(
-                        user
-                    )
-                }
-                for (u in allList) {
-                    if (!friends.contains(u.email)) {
+                    if (!friends.contains(user.email)) {
                         userList.add(
-                            u
+                            user
                         )
                     }
-                    withContext(Dispatchers.Main) {
-                        state.value = FriendState.AddFriend
-                    }
+                    state.value = FriendState.AddFriend
                 }
-
             }
         }
     }

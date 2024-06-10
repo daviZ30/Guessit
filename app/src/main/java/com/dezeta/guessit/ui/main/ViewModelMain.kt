@@ -32,6 +32,7 @@ class ViewModelMain : ViewModel() {
             val result = Locator.userManager.loadUser(email)
             if (result is Resource.Success<*>) {
                 withContext(Dispatchers.Main) {
+                    user.value = result.data as User
                     state.value = MainState.UserSuccess(
                         result.data as User
                     )
@@ -63,7 +64,6 @@ class ViewModelMain : ViewModel() {
         viewModelScope.launch {
             state.value = MainState.RefreshUrl(manager.getUserImages(user.value!!.email))
         }
-
     }
 
     fun loadDatabase() {

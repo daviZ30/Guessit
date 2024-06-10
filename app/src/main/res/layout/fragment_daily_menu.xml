@@ -36,7 +36,7 @@
                 android:layout_margin="3dp"
                 android:gravity="center"
                 android:textColor="@color/dark_green"
-                android:text="Hola" />
+                android:text="User" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -60,7 +60,7 @@
                 android:layout_margin="3dp"
                 android:gravity="center"
                 android:textColor="@color/dark_green"
-                android:text="Hola" />
+                android:text="User" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
             android:paddingEnd="3dp"
-            android:text="69"
+            android:text="0"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/imgDolar1"
             app:layout_constraintEnd_toStartOf="@+id/imgDolar1"
@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
             android:paddingEnd="3dp"
-            android:text="69"
+            android:text="0"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/imgDolar2"
             app:layout_constraintEnd_toStartOf="@+id/imgDolar2"

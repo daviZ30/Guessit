@@ -151,6 +151,7 @@ class DailyMenuFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ExtraState.refreshUserList -> {
+                    println("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
                     refreshUserList()
                 }
 

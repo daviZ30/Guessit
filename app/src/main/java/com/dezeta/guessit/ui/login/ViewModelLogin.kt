@@ -138,7 +138,7 @@ class ViewModelLogin : ViewModel() {
     }
 
     fun validateSignUp() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val result = Locator.userManager.getDocuments()
             if (result is Resource.Success<*>) {
                 val task = result.data as QuerySnapshot
@@ -165,28 +165,28 @@ class ViewModelLogin : ViewModel() {
                         user
                     )
                 }
-                withContext(Dispatchers.Main) {
-                    when {
-                        TextUtils.isEmpty(mail.value) -> state.value = LoginState.emailEmtyError
-                        TextUtils.isEmpty(password.value) -> state.value =
-                            LoginState.passwordEmtyError
 
-                        TextUtils.isEmpty(name.value) -> state.value = LoginState.nameEmtyError
-                        !validarName(name.value, userList) -> state.value =
-                            LoginState.nameEqualsError
+                when {
+                    TextUtils.isEmpty(mail.value) -> state.value = LoginState.emailEmtyError
+                    TextUtils.isEmpty(password.value) -> state.value =
+                        LoginState.passwordEmtyError
 
-                        !validarEmail(mail.value!!) -> state.value = LoginState.emailFormatError
-                        !validarPassword(password.value!!) -> state.value =
-                            LoginState.passwordFormatError
+                    TextUtils.isEmpty(name.value) -> state.value = LoginState.nameEmtyError
+                    !validarName(name.value, userList) -> state.value =
+                        LoginState.nameEqualsError
 
-                        confPassword.value != password.value -> state.value =
-                            LoginState.NotEqualsPasswordError
+                    !validarEmail(mail.value!!) -> state.value = LoginState.emailFormatError
+                    !validarPassword(password.value!!) -> state.value =
+                        LoginState.passwordFormatError
 
-                        else -> {
-                            state.value = LoginState.Success
+                    confPassword.value != password.value -> state.value =
+                        LoginState.NotEqualsPasswordError
 
-                        }
+                    else -> {
+                        state.value = LoginState.Success
+
                     }
+
                 }
             }
         }
@@ -212,16 +212,15 @@ class ViewModelLogin : ViewModel() {
     }
 
     fun signInGoogle(credential: AuthCredential, e: String?, n: String) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             userList.clear()
             val resu = Locator.userManager.SignInGoogle(credential)
             when (resu) {
                 is Resource.Error -> {
                     withContext(Dispatchers.Main) {
-                        withContext(Dispatchers.Main) {
-                            result.value =
-                                Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
-                        }
+                        result.value =
+                            Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
+
                     }
 
                 }
@@ -304,11 +303,11 @@ class ViewModelLogin : ViewModel() {
     }
 
     fun validateDialogName() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val res = Locator.userManager.getDocuments()
             if (res is Resource.Success<*>) {
                 userList.clear()
-                val task =  res.data as QuerySnapshot
+                val task = res.data as QuerySnapshot
                 for (document in task) {
                     val userData = document.data
                     val user = User(
@@ -344,7 +343,6 @@ class ViewModelLogin : ViewModel() {
                         state.value = LoginState.GoogleSuccess(user!!.email)
                     }
                 }
-
             }
         }
     }

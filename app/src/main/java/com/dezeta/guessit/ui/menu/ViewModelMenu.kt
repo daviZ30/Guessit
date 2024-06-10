@@ -80,13 +80,11 @@ class ViewModelMenu : ViewModel() {
     }
 
     fun getAllUserAccounts() {
-        viewModelScope.launch(Dispatchers.Default) {
-            val result = Locator.userManager.getDocuments()
-            if (result is Resource.Success<*>) {
-                val task = result.data as QuerySnapshot
-                userList.clear()
-                for (document in task) {
-                    val userData = document.data
+        Locator.userManager.usersRef.get().addOnSuccessListener { task ->
+            userList.clear()
+            for (document in task) {
+                val userData = document.data
+                viewModelScope.launch {
                     val user = User(
                         userData[UserManager.EMAIL] as String,
                         userData[UserManager.NAME] as String,
@@ -106,10 +104,11 @@ class ViewModelMenu : ViewModel() {
                     userList.add(
                         user
                     )
+                    state.value = ExtraState.refreshUserList
                 }
-                state.value = ExtraState.refreshUserList
-
+                // println("LISTAAAAAAAAAAAAAAAAAAAAAAAA" + userList)
             }
+
         }
     }
 
@@ -118,7 +117,9 @@ class ViewModelMenu : ViewModel() {
             val result = Locator.userManager.loadUser()
             if (result is Resource.Success<*>) {
                 user = result.data as User
-                state.value = ExtraState.UserSuccess
+                withContext(Dispatchers.Main) {
+                    state.value = ExtraState.UserSuccess
+                }
             }
         }
     }

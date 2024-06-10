@@ -18,7 +18,7 @@ import kotlinx.coroutines.tasks.await
 
 class UserManager {
     private val dataBase = FirebaseFirestore.getInstance()
-    private val usersRef = dataBase.collection("users")
+    val usersRef = dataBase.collection("users")
     private var manager = CloudStorageManager()
 
     fun saveUser(user: User) {
@@ -39,6 +39,38 @@ class UserManager {
                 STAT_FOOTBALL to user.statFootball
             )
         )
+    }
+
+    suspend fun getUserList(): Resource {
+        return try {
+            val task = usersRef.get().await()
+            val userList = mutableListOf<User>()
+            for (document in task) {
+                val userData = document.data
+                val user = User(
+                    userData[EMAIL] as String,
+                    userData[NAME] as String,
+                    userData[FRIENDS] as List<String>,
+                    (userData[POINT] as Number).toInt(),
+                    ProviderType.valueOf(userData[UserManager.PROVIDER] as String),
+                    (userData[LEVEL] as Number).toInt(),
+                    manager.getUserImages(userData[UserManager.EMAIL] as String),
+                    (userData[COMPLETE_LEVEL] as Number).toInt(),
+                    (userData[COUNTRY_ENABLE] as Boolean),
+                    (userData[SERIE_ENABLE] as Boolean),
+                    (userData[FOOTBALL_ENABLE] as Boolean),
+                    (userData[STAT_COUNTRY] as Number).toInt(),
+                    (userData[STAT_SERIE] as Number).toInt(),
+                    (userData[STAT_FOOTBALL] as Number).toInt(),
+                )
+                userList.add(
+                    user
+                )
+            }
+            Resource.Success(userList)
+        } catch (e: Exception) {
+            Resource.Error(e)
+        }
     }
 
     suspend fun getDocuments(): Resource {
