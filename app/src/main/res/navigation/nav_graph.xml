@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_MenuFragment_to_friendFragment"
             app:destination="@id/friendFragment" />
+        <action
+            android:id="@+id/action_MenuFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/LevelFragment"
@@ -103,4 +106,8 @@
         android:name="com.dezeta.guessit.ui.addFriend.AddFriendFragment"
         android:label=""
         tools:layout="@layout/fragment_add_friend" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.signup.ui.preferences.SettingsFragment"
+        android:label="" />
 </navigation>

@@ -239,13 +239,14 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.github.nikartm.button.FitButton
+        android:id="@+id/btnSettings"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_margin="16dp"
-        app:fb_cornerRadius="15dp"
         android:gravity="center_vertical"
         android:paddingEnd="16dp"
         app:fb_backgroundColor="#989898"
+        app:fb_cornerRadius="15dp"
         app:fb_icon="@drawable/setting"
         app:fb_iconHeight="40dp"
         app:fb_iconMarginStart="14dp"
@@ -260,6 +261,17 @@
         app:fb_textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMenuMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FF9800"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnFriend"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvLocalGame" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

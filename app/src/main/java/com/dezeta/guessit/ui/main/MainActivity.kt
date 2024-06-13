@@ -36,6 +36,7 @@ import com.bumptech.glide.Glide
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityMainBinding
 import com.dezeta.guessit.ui.login.LoginActivity
+import com.dezeta.guessit.ui.menu.MenuFragment
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
 import com.google.android.material.navigation.NavigationView
@@ -53,7 +54,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private var isDarkThemeOn by Delegates.notNull<Boolean>()
     lateinit var fadeOutAnimation: Animation
-
     private lateinit var preferences: SharedPreferences.Editor
     private val viewModel: ViewModelMain by viewModels()
 
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setOflineHeader() {
+    fun setOfflineHeader() {
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val headerView: View = navigationView.getHeaderView(0)
         val btnDeleteProfile = headerView.findViewById<Button>(R.id.navBtnDeleteProfile)
@@ -189,40 +189,43 @@ class MainActivity : AppCompatActivity() {
     private fun setup() {
         val bundle = intent.extras
         val email = bundle?.getString("email") as String
-        Locator.email = email
-        viewModel.loadUser(email)
-        viewModel.loadDatabase()
-        manager = CloudStorageManager()
 
-        //Guardado de datos
-        preferences.putString("email", email)
-        preferences.apply()
+        if(email == Locator.OFFLINE_MODE){
+            setOfflineHeader()
+        }else{
+            Locator.email = email
+            viewModel.loadUser(email)
+            viewModel.loadDatabase()
+            manager = CloudStorageManager()
 
-        viewModel.getState().observe(this) {
-            when (it) {
-                is MainState.UserSuccess -> {
-                    setupHeader()
-                }
+            //Guardado de datos
+            preferences.putString("email", email)
+            preferences.apply()
 
-                MainState.SignOut -> {
-                    preferences.clear()
-                    preferences.apply()
-                    lottieAnimationView.cancelAnimation()
-                    lottieAnimationView.visibility = View.INVISIBLE
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                }
+            viewModel.getState().observe(this) {
+                when (it) {
+                    is MainState.UserSuccess -> {
+                        setupHeader()
+                    }
+                    MainState.SignOut -> {
+                        preferences.clear()
+                        preferences.apply()
+                        lottieAnimationView.cancelAnimation()
+                        lottieAnimationView.visibility = View.INVISIBLE
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
 
-                is MainState.RefreshUser -> {
-                    refreshHeader()
-                }
+                    is MainState.RefreshUser -> {
+                        refreshHeader()
+                    }
 
-                is MainState.RefreshUrl -> {
-                    refreshUri(it.url)
+                    is MainState.RefreshUrl -> {
+                        refreshUri(it.url)
+                    }
                 }
             }
         }
-
     }
 
     private fun refreshUri(url: String) {

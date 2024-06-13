@@ -18,6 +18,7 @@ import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentMenuBinding
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.ui.main.MainActivity
+import com.dezeta.guessit.utils.Locator
 import com.dezeta.guessit.utils.NetworkConnection
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -30,20 +31,28 @@ class MenuFragment : Fragment() {
     var testNum = 0
     lateinit var testlist: List<Guess>
     private val binding get() = _binding!!
-
+    var offlineMode = false
     private val viewModel: ViewModelMenu by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // findNavController().navigate(R.id.loginFragment)
-        testlist = viewModel.getTestList().shuffled()
+        val preferences = requireActivity().getSharedPreferences(
+            getString(R.string.prefs_file),
+            Context.MODE_PRIVATE
+        )
+        offlineMode = preferences.getBoolean(Locator.OFFLINE_MODE, false)
+
+        if (!offlineMode) {
+            testlist = viewModel.getTestList().shuffled()
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        (requireActivity() as MainActivity).updateHeader()
-        //resetOnline()
+        if (isOnline() && !offlineMode)
+            (requireActivity() as MainActivity).updateHeader()
     }
 
     private fun resetOnline(online: Boolean) {
@@ -68,6 +77,13 @@ class MenuFragment : Fragment() {
             }
             if (!online) {
                 with(binding) {
+                    tvMenuMessage.visibility = View.VISIBLE
+                    if (offlineMode)
+                        tvMenuMessage.text =
+                            ContextCompat.getString(requireContext(), R.string.tvMessageOfflineMode)
+                    else
+                        tvMenuMessage.text =
+                            ContextCompat.getString(requireContext(), R.string.tvMessageOfline)
                     cvDaily.isEnabled = false
                     cvTest.isEnabled = false
                     cvLevels.isEnabled = false
@@ -79,6 +95,7 @@ class MenuFragment : Fragment() {
                 }
             } else {
                 with(binding) {
+                    tvMenuMessage.visibility = View.INVISIBLE
                     cvDaily.isEnabled = true
                     cvTest.isEnabled = true
                     cvLevels.isEnabled = true
@@ -127,6 +144,25 @@ class MenuFragment : Fragment() {
     @OptIn(DelicateCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (offlineMode) {
+            resetOnline(false)
+        }
+
+        GlobalScope.launch {
+            NetworkConnection.isConnected.collect {
+                withContext(Dispatchers.Main) {
+                    //findNavController().navigate(R.id.MenuFragment)
+                  //  println("MODOOOOOOOOOOOOOOO -> $offlineMode")
+                    if (!offlineMode) {
+                        if (it)
+                            (requireActivity() as MainActivity).updateHeader()
+                        else
+                            (requireActivity() as MainActivity).setOfflineHeader()
+                        resetOnline(it)
+                    }
+                }
+            }
+        }
         binding.cvLevels.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
@@ -156,22 +192,14 @@ class MenuFragment : Fragment() {
             findNavController().navigate(R.id.action_FirstFragment_to_localGameFragment)
         }
         binding.btnFriend.setOnClickListener {
-            if (isOnline())
+            if (isOnline() && !offlineMode)
                 findNavController().navigate(R.id.action_MenuFragment_to_friendFragment)
         }
-
-        GlobalScope.launch {
-            NetworkConnection.isConnected.collect {
-                withContext(Dispatchers.Main) {
-                    //findNavController().navigate(R.id.MenuFragment)
-                    if (it)
-                        (requireActivity() as MainActivity).updateHeader()
-                    else
-                        (requireActivity() as MainActivity).setOflineHeader()
-                    resetOnline(it)
-                }
-            }
+        binding.btnSettings.setOnClickListener{
+            findNavController().navigate(R.id.action_MenuFragment_to_settingsFragment)
         }
+
+
     }
 
     override fun onDestroyView() {

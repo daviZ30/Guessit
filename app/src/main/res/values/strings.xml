@@ -55,4 +55,22 @@
     <string name="nav_delete_user">Eliminar Cuenta</string>
     <string name="nav_email">Correo</string>
     <string name="nav_name_user">Nombre de Usuario</string>
+    <string name="tvMessageOfline">No hay conexión</string>
+    <string name="tvMessageOfflineMode">Estas en Modo sin conexión. Para salir cierre sesión</string>
+    <string name="theme">Tema oscuro</string>
+    <string name="Theme_title">Tema</string>
+    <string name="pref_aboutUs">about_us</string>
+    <string name="pref_lab_aboutUs">Sobre mi</string>
+    <string name="pref_owner">owner</string>
+    <string name="pref_lab_owner">David Zambrana Romero</string>
+    <string name="owner_summary">Creador de la app</string>
+    <string name="pref_gitHub">GitHub</string>
+    <string name="pref_lab_github">GitHub</string>
+    <string name="pref_summary_github">https://github.com/daviZ30</string>
+    <string name="pref_LinkedIn">LinkedIn</string>
+    <string name="pref_lab_LinkedIn">LinkedIn</string>
+    <string name="pref_summary_linkedIn">https://www.linkedin.com/in/david-zambrana-8042912a9/</string>
+    <string name="pref_email">Contacto</string>
+    <string name="pref_lab_email">Contacto</string>
+    <string name="email_summary">davidzambrana86@gmail.com</string>
 </resources>

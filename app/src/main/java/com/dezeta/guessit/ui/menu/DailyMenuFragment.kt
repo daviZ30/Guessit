@@ -33,7 +33,6 @@ class DailyMenuFragment : Fragment() {
     private lateinit var workManager: WorkManager
     private var _binding: FragmentDailyMenuBinding? = null
     private lateinit var editPreferences: SharedPreferences.Editor
-    private var isDarkThemeOn by Delegates.notNull<Boolean>()
     private val binding get() = _binding!!
 
     private val viewModel: ViewModelMenu by viewModels()
@@ -42,8 +41,11 @@ class DailyMenuFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Locator.managerFragment = requireActivity().supportFragmentManager
+
         viewModel.getAllUserAccounts()
         viewModel.loadUser()
+
+
     }
 
     override fun onCreateView(

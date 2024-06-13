@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/Theme_title">
+
+        <SwitchPreference
+            android:key="@string/theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:title="Tema oscuro" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="@string/pref_aboutUs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/pref_lab_aboutUs">
+        <Preference
+            android:key="@string/pref_owner"
+            android:title="@string/pref_lab_owner"
+            android:summary="@string/owner_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Preference
+            android:key="@string/pref_email"
+            android:title="@string/pref_lab_email"
+            android:summary="@string/email_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Preference
+            android:key="@string/pref_gitHub"
+            android:title="@string/pref_lab_github"
+            android:summary="@string/pref_summary_github"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Preference
+            android:key="@string/pref_LinkedIn"
+            android:title="@string/pref_lab_LinkedIn"
+            android:summary="@string/pref_summary_linkedIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

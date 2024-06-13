@@ -94,6 +94,10 @@ dependencies {
     //Estadisticas
     implementation("ir.mahozad.android:pie-chart:0.7.0")
 
+    //Preferencias
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.preference:preference:1.2.1")
+
 
 
 }

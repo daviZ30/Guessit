@@ -592,14 +592,11 @@ class DailyFragment : Fragment() {
                         adapterList.update(viewModel.getFilterList(this))
                 }
             }
-
-
         }
 
         override fun afterTextChanged(s: Editable) {
 
         }
     }
-
 
 }

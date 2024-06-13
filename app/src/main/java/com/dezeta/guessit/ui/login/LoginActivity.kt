@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
@@ -33,6 +34,7 @@ import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.showSnackbar
+import com.dezeta.guessit.utils.Locator
 import com.dezeta.guessit.utils.MyWorker
 import com.dezeta.guessit.utils.MyWorkerFirebase
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -55,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var fadeOutAnimationLottie: Animation
     private lateinit var dialog: Dialog
     private var isDarkThemeOn by Delegates.notNull<Boolean>()
+    private lateinit var preferences: SharedPreferences.Editor
 
     private val viewModel: ViewModelLogin by viewModels()
     private var register = false
@@ -113,7 +116,8 @@ class LoginActivity : AppCompatActivity() {
         setup()
         session()
         setTheme()
-
+        preferences =
+            getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
         dialog = Dialog(this)
         dialog.setContentView(bindingDialog.root)
         dialog.setCancelable(true)
@@ -194,10 +198,12 @@ class LoginActivity : AppCompatActivity() {
                 is LoginState.GoogleSuccess -> {
                     showHome(state.email)
                 }
+
                 is LoginState.GoogleNameExists -> {
                     endload = true
                     dialog.show()
                 }
+
                 is LoginState.EmailNotVerifiedError -> {
                     showAlert(
                         "Error",
@@ -211,12 +217,14 @@ class LoginActivity : AppCompatActivity() {
                         "Ya dispone de una cuenta de google asociada a este correo, seleccione continuar con google"
                     )
                 }
-                is LoginState.GoogleNameEmpty->{
+
+                is LoginState.GoogleNameEmpty -> {
                     with(bindingDialog.tilDialogLogin) {
                         error = "Introduce un nombre"
                         requestFocus()
                     }
                 }
+
                 is LoginState.GoogleNameEquals -> {
                     with(bindingDialog.tilDialogLogin) {
                         error = "El nombre introducido ya existe"
@@ -276,7 +284,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setTheme() {
-        if(isDarkThemeOn){
+        if (isDarkThemeOn) {
             binding.btnLoginGoogle.setTextColor(Color.WHITE)
         }
     }
@@ -310,12 +318,17 @@ class LoginActivity : AppCompatActivity() {
     private fun session() {
         val preferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = preferences.getString("email", null)
+        val offlineMode = preferences.getBoolean(Locator.OFFLINE_MODE, false)
 
-        if (email != null) {
+        if (email != null && !offlineMode) {
             binding.LayoutLogin.visibility = View.INVISIBLE
             starLoadAnimation()
             showHome(email)
         }
+        if (offlineMode) {
+            showHome(Locator.OFFLINE_MODE)
+        }
+
     }
 
     override fun onStart() {
@@ -340,8 +353,6 @@ class LoginActivity : AppCompatActivity() {
             putExtra("email", email)
         }
         startActivity(MenuIntent)
-
-
     }
 
     private fun setup() {
@@ -384,6 +395,11 @@ class LoginActivity : AppCompatActivity() {
         }
         bindingDialog.btnloginOk.setOnClickListener {
             viewModel.validateDialogName()
+        }
+        binding.btnOfflineMode.setOnClickListener {
+            preferences.putBoolean(Locator.OFFLINE_MODE, true)
+            preferences.apply()
+            showHome(Locator.OFFLINE_MODE)
         }
 
         binding.btnChanged.setOnClickListener {
