@@ -212,21 +212,23 @@ class TestFragment : Fragment() {
         if (i == 2) {
             Glide.with(requireContext())
                 .load(img)
+                .timeout(30000)
+                .override(720, 480)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,
                         model: Any?,
-                        target: Target<Drawable>?,
+                        target: Target<Drawable>,
                         isFirstResource: Boolean
                     ): Boolean {
                         return true
                     }
 
                     override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
+                        resource: Drawable,
+                        model: Any,
                         target: Target<Drawable>?,
-                        dataSource: DataSource?,
+                        dataSource: DataSource,
                         isFirstResource: Boolean
                     ): Boolean {
                         binding.lottieLoadAnimation.cancelAnimation()
@@ -240,6 +242,8 @@ class TestFragment : Fragment() {
         } else {
             Glide.with(requireContext())
                 .load(img)
+                .timeout(30000)
+                .override(720, 480)
                 .into(view!!)
         }
     }

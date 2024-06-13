@@ -54,6 +54,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="16dp"
+        android:visibility="invisible"
         app:cardBackgroundColor="@color/BlueRange1_2"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,8 +80,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/dark_green"
                 android:text="@string/Daily_Title"
+                android:textColor="@color/dark_green"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -94,6 +95,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
+        android:visibility="invisible"
         app:cardBackgroundColor="@color/BlueRange1_4"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,8 +122,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
 
-                android:textColor="@color/dark_green"
                 android:text="@string/test_title"
+                android:textColor="@color/dark_green"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -135,6 +137,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
+        android:visibility="invisible"
         app:cardBackgroundColor="@color/BlueRange3"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -160,8 +163,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/dark_green"
                 android:text="@string/niveles"
+                android:textColor="@color/dark_green"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -175,6 +178,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
+        android:visibility="invisible"
         app:cardBackgroundColor="@color/BlueRange4"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -200,8 +204,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/dark_green"
                 android:text="@string/duelo"
+                android:textColor="@color/dark_green"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -209,7 +213,7 @@
     </androidx.cardview.widget.CardView>
 
     <com.github.nikartm.button.FitButton
-        android:id="@+id/btnAbout_us"
+        android:id="@+id/btnFriend"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_margin="16dp"

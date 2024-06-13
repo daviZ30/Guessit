@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:text="Nombre"
+            android:text="@string/nav_name_user"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/navImgProfile"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Correo"
+            android:text="@string/nav_email"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/navTvName"
@@ -83,7 +83,7 @@
 
 
         <LinearLayout
-            android:id="@+id/linearLayout4"
+            android:id="@+id/navLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -134,13 +134,13 @@
             android:paddingVertical="6dp"
             android:backgroundTint="@color/BlueRange4"
             android:paddingHorizontal="10dp"
-            android:text="Eliminar Cuenta"
+            android:text="@string/nav_delete_user"
             android:textColor="@color/white"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+            app:layout_constraintTop_toBottomOf="@+id/navLinearLayout" />
 
         <ImageView
             android:id="@+id/navImgEditProfile"

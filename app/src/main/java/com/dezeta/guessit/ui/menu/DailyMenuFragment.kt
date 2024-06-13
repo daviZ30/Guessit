@@ -2,42 +2,44 @@ package com.dezeta.guessit.ui.menu
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.airbnb.lottie.LottieDrawable
 import com.bumptech.glide.Glide
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentDailyMenuBinding
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
 import com.dezeta.guessit.utils.MyWorker
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import ir.mahozad.android.PieChart
 import java.util.concurrent.TimeUnit
+import kotlin.properties.Delegates
 
 
 class DailyMenuFragment : Fragment() {
     private lateinit var workManager: WorkManager
     private var _binding: FragmentDailyMenuBinding? = null
     private lateinit var editPreferences: SharedPreferences.Editor
+    private var isDarkThemeOn by Delegates.notNull<Boolean>()
     private val binding get() = _binding!!
 
     private val viewModel: ViewModelMenu by viewModels()
     private lateinit var manager: CloudStorageManager
 
     override fun onStart() {
-        6
         super.onStart()
         Locator.managerFragment = requireActivity().supportFragmentManager
         viewModel.getAllUserAccounts()
@@ -67,13 +69,7 @@ class DailyMenuFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Locator.managerFragment = null
-    }
-
-    fun resetbtn() {
-        binding.btnDailyCountry.isEnabled = true
-        binding.btnDailyGame.isEnabled = true
-        binding.btnDailyFootball.isEnabled = true
-
+        binding.lottieLoadAnimationMenu.cancelAnimation()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -151,7 +147,7 @@ class DailyMenuFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is ExtraState.refreshUserList -> {
-                    println("YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
                     refreshUserList()
                 }
 
@@ -166,6 +162,8 @@ class DailyMenuFragment : Fragment() {
                 }
 
                 is ExtraState.UserSuccess -> {
+                    binding.pieChart.visibility = View.VISIBLE
+                    setup()
                     binding.btnDailyCountry.isEnabled = viewModel.user!!.countryEnable
                     binding.btnDailyGame.isEnabled = viewModel.user!!.serieEnable
                     binding.btnDailyFootball.isEnabled = viewModel.user!!.footballEnable
@@ -174,13 +172,55 @@ class DailyMenuFragment : Fragment() {
         }
     }
 
+    private fun setup() {
+        val total =
+            viewModel.user!!.statCountry + viewModel.user!!.statFootball + viewModel.user!!.statSerie
+        val countryFloat: Float = viewModel.user!!.statCountry.toFloat() / total
+        val footballFloat: Float = viewModel.user!!.statFootball.toFloat() / total
+        val serieFloat: Float = viewModel.user!!.statSerie.toFloat() / total
+
+        if (countryFloat.isNaN() && footballFloat.isNaN() && serieFloat.isNaN()) {
+            binding.pieChart.visibility = View.INVISIBLE
+            binding.layoutLegen.visibility = View.INVISIBLE
+            with(binding.lottieLoadAnimationMenu) {
+                visibility = View.VISIBLE
+                setAnimation(R.raw.no_data)
+                repeatCount = LottieDrawable.INFINITE
+                playAnimation()
+            }
+        } else {
+            binding.lottieLoadAnimationMenu.visibility = View.INVISIBLE
+            binding.pieChart.visibility = View.VISIBLE
+            binding.layoutLegen.visibility = View.VISIBLE
+            val slices = listOf(
+                PieChart.Slice(
+                    countryFloat,
+                    ContextCompat.getColor(requireContext(), R.color.BlueRange3),
+                    label = viewModel.user!!.statCountry.toString()
+                ), // Pais
+                PieChart.Slice(
+                    footballFloat,
+                    ContextCompat.getColor(requireContext(), R.color.BlueRange4),
+                    label = viewModel.user!!.statFootball.toString()
+                ), // Jugador
+                PieChart.Slice(
+                    serieFloat,
+                    ContextCompat.getColor(requireContext(), R.color.BlueRange1),
+                    label = viewModel.user!!.statSerie.toString()
+                ) // Serie
+            )
+
+            binding.pieChart.slices = slices.filter { it.fraction != 0f }
+
+        }
+    }
 
     private fun refreshUserList() {
         viewModel.userList.sortByDescending { it.point }
 
         when (viewModel.userList.size) {
             1 -> {
-                var user = viewModel.userList[0]
+                val user = viewModel.userList[0]
 
                 with(binding) {
                     viewModel.getUserProfileImageByEmail(manager, user.email, imgProfile1)

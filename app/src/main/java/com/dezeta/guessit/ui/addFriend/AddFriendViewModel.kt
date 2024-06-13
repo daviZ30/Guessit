@@ -44,7 +44,6 @@ class AddFriendViewModel : ViewModel() {
             if (result is Resource.Success<*>) {
                 val task = result.data as QuerySnapshot
                 userList.clear()
-                val allList = mutableListOf<User>()
                 for (document in task) {
                     val userData = document.data
                     val user = User(

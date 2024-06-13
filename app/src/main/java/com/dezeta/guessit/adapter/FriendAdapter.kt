@@ -16,7 +16,6 @@ class FriendAdapter(var onClick: (user: User) -> Unit, var onLongClick: (user: U
         fun bind(user: User) {
             binding.tvRowFriendEmail.text = user.name
             binding.tvRowFriendPoint.text = user.point.toString()
-
             Glide.with(binding.root)
                 .load(user.img_url)
                 .into(binding.imgRowFriendProfile)

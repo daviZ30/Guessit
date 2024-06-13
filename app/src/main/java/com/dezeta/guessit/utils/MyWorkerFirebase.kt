@@ -15,7 +15,6 @@ class MyWorkerFirebase(
     override suspend fun doWork(): Result {
         val email = params.inputData.getString("email")
         return withContext(Dispatchers.IO) {
-
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.reload()?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {

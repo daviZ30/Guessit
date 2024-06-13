@@ -51,4 +51,8 @@
     <string name="menu_friend">Amigos</string>
     <string name="login_name">Nombre de Usuario</string>
     <string name="login_lblname">Introduzca un Nombre de Usuario</string>
+    <string name="login_notConexion">Modo sin conexión</string>
+    <string name="nav_delete_user">Eliminar Cuenta</string>
+    <string name="nav_email">Correo</string>
+    <string name="nav_name_user">Nombre de Usuario</string>
 </resources>

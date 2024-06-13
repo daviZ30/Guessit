@@ -3,6 +3,7 @@ package com.dezeta.guessit.utils
 import android.app.Application
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
+import androidx.room.util.appendPlaceholders
 import com.dezeta.guessit.domain.Repository.UserManager
 import com.github.nikartm.button.FitButton
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +19,7 @@ object Locator {
 
     fun initWith(application: Application) {
         this.application = application
+        NetworkConnection.initialize(application)
     }
     val userManager by lazy {
         UserManager()

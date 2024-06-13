@@ -34,9 +34,6 @@ class DuelFragment : Fragment() {
     private var level: Int? = null
 
     private val viewModel: ViewModelDuel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     lateinit var fadeOutAnimation: Animation
     lateinit var slideUpAnimation: Animation
@@ -94,34 +91,34 @@ class DuelFragment : Fragment() {
             setAnimation(R.raw.load_image)
             playAnimation()
         }
-        lifecycleScope.launch {
-            Glide.with(requireContext())
-                .load(imageUrl)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        return true
-                    }
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .timeout(30000)
+            .override(720, 480)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return true
+                }
 
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        imageView.setImageDrawable(resource)
-                        animation.visibility = View.GONE
-                        animation.cancelAnimation()
-                        return true
-                    }
-                })
-                .into(imageView)
-        }
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    imageView.setImageDrawable(resource)
+                    animation.visibility = View.GONE
+                    animation.cancelAnimation()
+                    return true
+                }
+            })
+            .into(imageView)
 
     }
 
@@ -170,7 +167,6 @@ class DuelFragment : Fragment() {
     }
 
     private fun starAnimationLottie(json: Int, win: Boolean) {
-
         binding.lottieFullAnimation.visibility = View.VISIBLE
         with(binding.lottieFullAnimation) {
             setAnimation(json)
@@ -181,6 +177,7 @@ class DuelFragment : Fragment() {
                     this.startAnimation(fadeOutAnimation)
                     fadeOutAnimation.setAnimationListener(object : Animation.AnimationListener {
                         override fun onAnimationStart(animation: Animation?) {}
+
                         override fun onAnimationRepeat(animation: Animation?) {}
 
                         override fun onAnimationEnd(animation: Animation?) {
@@ -196,10 +193,10 @@ class DuelFragment : Fragment() {
                                         viewModel.updateLevel(level!!)
                                         showLevelMessage()
                                         findNavController().popBackStack()
-                                    } else {
+                                    }else{
                                         next()
                                     }
-                                } else {
+                                }else{
                                     next()
                                 }
                             } else {

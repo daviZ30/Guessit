@@ -25,10 +25,6 @@ import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 class ViewModelMenu : ViewModel() {
-    var guessSerie = MutableLiveData<String>("0")
-    var guessGame = MutableLiveData<String>("0")
-    var guessPlayer = MutableLiveData<String>("0")
-    var guessCountry = MutableLiveData<String>("0")
     private var manager = CloudStorageManager()
     var userList = mutableListOf<User>()
     var user: User? = null
@@ -126,21 +122,24 @@ class ViewModelMenu : ViewModel() {
 
     fun loadUserAndSave(s: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            loadUser()
-            when (s) {
-                "country" -> {
-                    user!!.countryEnable = false
-                }
+            val result = Locator.userManager.loadUser()
+            if (result is Resource.Success<*>) {
+                user = result.data as User
+                when (s) {
+                    "country" -> {
+                        user!!.countryEnable = false
+                    }
 
-                "serie" -> {
-                    user!!.serieEnable = false
-                }
+                    "serie" -> {
+                        user!!.serieEnable = false
+                    }
 
-                "football" -> {
-                    user!!.footballEnable = false
+                    "football" -> {
+                        user!!.footballEnable = false
+                    }
                 }
+                Locator.userManager.saveUser(user!!)
             }
-            Locator.userManager.saveUser(user!!)
         }
     }
 }

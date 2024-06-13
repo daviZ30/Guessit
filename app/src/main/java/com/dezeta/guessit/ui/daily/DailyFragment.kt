@@ -3,6 +3,8 @@ package com.dezeta.guessit.ui.daily
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -12,6 +14,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
@@ -34,15 +37,19 @@ import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.loadImageBitmapFromInternalStorage
+import com.dezeta.guessit.ui.main.MainActivity
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.properties.Delegates
 
 class DailyFragment : Fragment() {
     //TODO Modificar la ayuda para que salga algo de la clase info o las tres ultimas letras si es online y la ultima letra si el local
-    //TODO CAmbiar la forma de dectetar local
 
+    private lateinit var preferences: SharedPreferences.Editor
     var listRed = mutableListOf<String>()
     var listGreen = mutableListOf<String>()
     var level: Int? = null
@@ -89,17 +96,20 @@ class DailyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDailyBinding.inflate(inflater, container, false)
+        preferences =
+            requireActivity().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+
         isDarkThemeOn =
             (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         arguments.let {
             if (it != null) {
                 level = it.getInt("level")
-                viewModel.serie = it.getSerializable("serie") as Guess
-                if (viewModel.serie!!.guessType == GuessType.COUNTRY || viewModel.serie!!.guessType == GuessType.FOOTBALL) {
+                viewModel.guess = it.getSerializable("serie") as Guess
+                if (viewModel.guess!!.guessType == GuessType.COUNTRY || viewModel.guess!!.guessType == GuessType.FOOTBALL) {
                     binding.btnCategoty.visibility = View.GONE
                 }
                 with(viewModel) {
-                    images = getImages(viewModel.serie!!)
+                    images = getImages(viewModel.guess!!)
                     local = it.getBoolean("local")
                     if (local) {
                         help = false
@@ -138,7 +148,6 @@ class DailyFragment : Fragment() {
                             loadImage(i)
                         }
                     }
-
                 }
             }
         }
@@ -173,66 +182,67 @@ class DailyFragment : Fragment() {
             playAnimation()
         }
         if (i == 3) {
-            lifecycleScope.launch {
-                Glide.with(requireContext())
-                    .load(img)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return true
-                        }
+            Glide.with(requireContext())
+                .load(img)
+                .timeout(30000)
+                .override(720, 480)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                      // loadImage(3)
+                        binding.lottieLoadAnimation.visibility = View.INVISIBLE
+                        binding.lottieLoadAnimation.cancelAnimation()
+                        return false
+                    }
 
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            view!!.setImageDrawable(resource)
-                            binding.lottieLoadAnimation.visibility = View.INVISIBLE
-                            binding.lottieLoadAnimation.cancelAnimation()
-                            return true
-                        }
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        view!!.setImageDrawable(resource)
+                        binding.lottieLoadAnimation.visibility = View.INVISIBLE
+                        binding.lottieLoadAnimation.cancelAnimation()
+                        return true
+                    }
 
-                    })
-                    .into(view!!)
-            }
+                })
+                .into(view!!)
 
         } else {
-            lifecycleScope.launch {
-                Glide.with(requireContext())
-                    .load(img)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return true
-                        }
+            Glide.with(requireContext())
+                .load(img)
+                .timeout(30000)
+                .override(720, 480)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                       // loadImage(i)
+                        return false
+                    }
 
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            view!!.setImageDrawable(resource)
-                            return true
-                        }
-
-                    })
-                    .into(view!!)
-            }
-
-
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        view!!.setImageDrawable(resource)
+                        return true
+                    }
+                })
+                .into(view!!)
         }
 
     }
@@ -270,6 +280,7 @@ class DailyFragment : Fragment() {
                 is DailyState.Success -> {
                     findNavController().popBackStack()
                 }
+
                 else -> {}
             }
         }
@@ -301,7 +312,7 @@ class DailyFragment : Fragment() {
         }
         binding.btnGuessDaily.setOnClickListener {
             if (binding.tieSearch.text.toString().trim().uppercase(Locale.ROOT)
-                == viewModel.serie!!.name.uppercase(Locale.ROOT)
+                == viewModel.guess!!.name.uppercase(Locale.ROOT)
             ) {
                 if (!viewModel.local && level == 0) {
                     viewModel.updatePoint()
@@ -331,7 +342,7 @@ class DailyFragment : Fragment() {
                     viewModel.getSerieFromName(binding.tieSearch.text.toString().trim())
                 when {
                     newSerie == null -> {}
-                    newSerie.category == viewModel.serie!!.category -> {
+                    newSerie.category == viewModel.guess!!.category -> {
                         listGreen.add(newSerie.category.toString())
                     }
 
@@ -373,7 +384,7 @@ class DailyFragment : Fragment() {
     }
 
     private fun setupTheme() {
-        if(isDarkThemeOn){
+        if (isDarkThemeOn) {
             binding.imgError1.setColorFilter(Color.WHITE)
             binding.imgError2.setColorFilter(Color.WHITE)
             binding.imgError3.setColorFilter(Color.WHITE)
@@ -384,11 +395,11 @@ class DailyFragment : Fragment() {
     }
 
     private fun showConfirmationDialog() {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("¿Desea sacrificar una vida para mostrar la lista completa?")
         builder.setPositiveButton("Si") { _, _ ->
             showError()
-            when (viewModel.serie?.guessType) {
+            when (viewModel.guess?.guessType) {
                 GuessType.COUNTRY -> {
                     adapterList.update(viewModel.getCountryNameList())
                 }
@@ -443,12 +454,10 @@ class DailyFragment : Fragment() {
     }
 
     private fun showCongratulatoryMessage() {
-        var mesage = ""
-        if (viewModel.local)
-            mesage = "Has superado el nivel: ${viewModel.serie!!.name}."
+        val mesage: String = if (viewModel.local)
+            "Has superado el nivel: ${viewModel.guess!!.name}."
         else
-            mesage =
-                "Has superado el nivel: ${viewModel.serie!!.name}. Has obtenido ${viewModel.point} puntos"
+            "Has superado el nivel: ${viewModel.guess!!.name}. Has obtenido ${viewModel.point} puntos"
         val builder = AlertDialog.Builder(context)
         builder.setTitle("¡Felicidades!")
         builder.setMessage(mesage)
@@ -497,8 +506,8 @@ class DailyFragment : Fragment() {
 
     private fun showHelpMessage() {
         val builder = AlertDialog.Builder(context)
-        var guessName = ""
-        when (viewModel.serie?.guessType) {
+        var guessName: String
+        when (viewModel.guess?.guessType) {
             GuessType.COUNTRY -> guessName = "El pais"
             GuessType.SERIE -> guessName = "La serie"
             GuessType.FOOTBALL -> guessName = "El jugador"
@@ -507,9 +516,9 @@ class DailyFragment : Fragment() {
         }
         builder.setMessage(
             "$guessName termina por: ${
-                viewModel.serie!!.name.substring(
-                    viewModel.serie!!.name.length - 2,
-                    viewModel.serie!!.name.length
+                viewModel.guess!!.name.substring(
+                    viewModel.guess!!.name.length - 2,
+                    viewModel.guess!!.name.length
                 )
             }"
         )
@@ -539,10 +548,12 @@ class DailyFragment : Fragment() {
                 binding.imgError1.clearColorFilter()
                 binding.imgError1.setImageResource(R.drawable.cancelar)
             }
+
             2 -> {
                 binding.imgError2.clearColorFilter()
                 binding.imgError2.setImageResource(R.drawable.cancelar)
             }
+
             3 -> {
                 binding.imgError3.clearColorFilter()
                 binding.imgError3.setImageResource(R.drawable.cancelar)
@@ -554,6 +565,7 @@ class DailyFragment : Fragment() {
                 binding.imgError4.clearColorFilter()
                 binding.imgError4.setImageResource(R.drawable.cancelar)
             }
+
             5 -> {
                 binding.imgError5.clearColorFilter()
                 binding.imgError5.setImageResource(R.drawable.cancelar)

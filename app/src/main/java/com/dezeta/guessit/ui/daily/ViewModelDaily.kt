@@ -10,18 +10,15 @@ import com.dezeta.guessit.domain.entity.Category
 import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
-import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
 import com.dezeta.guessit.utils.Locator
-import com.dezeta.guessit.domain.Repository.UserManager
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class ViewModelDaily : ViewModel() {
-    var serie: Guess? = null
+    var guess: Guess? = null
     var local = false
     var help = true
     var error = 0
@@ -59,7 +56,7 @@ class ViewModelDaily : ViewModel() {
 
     fun getFilterList(str: String): MutableList<String> {
         val lista = mutableListOf<String>()
-        when (serie?.guessType) {
+        when (guess?.guessType) {
             GuessType.COUNTRY -> {
                 getCountryNameList().forEach {
                     if (it.uppercase().contains(str.uppercase())) {
@@ -115,7 +112,35 @@ class ViewModelDaily : ViewModel() {
     }
 
     fun updatePoint() {
-        Locator.userManager.UpdatePoint(point)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = Locator.userManager.loadUser()
+            if (result is Resource.Success<*>) {
+                user = result.data as User
+                user!!.point += point
+                when (guess!!.guessType) {
+                    GuessType.FOOTBALL -> {
+                        user!!.statFootball += 1
+                    }
+
+                    GuessType.COUNTRY -> {
+                        user!!.statCountry += 1
+                    }
+
+                    GuessType.SERIE -> {
+                        user!!.statSerie += 1
+                    }
+
+                    else -> {}
+                }
+                val r = Locator.userManager.UpdateUser(user!!)
+                if (r is Resource.Success<*>)
+                    withContext(Dispatchers.Main){
+                        state.value = DailyState.Success
+                    }
+            }
+
+        }
+
     }
 
     fun update2500Point() {
@@ -138,8 +163,9 @@ class ViewModelDaily : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = Locator.userManager.UpdateUser(user!!)
             if (result is Resource.Success<*>)
-                state.value = DailyState.Success
+                withContext(Dispatchers.Main){
+                    state.value = DailyState.Success
+                }
         }
     }
-
 }
