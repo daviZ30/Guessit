@@ -45,7 +45,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="3dp"
                 android:gravity="center"
-                android:text="User"
+                android:text="@string/user"
                 android:textColor="@color/dark_green" />
         </androidx.cardview.widget.CardView>
 
@@ -69,7 +69,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="3dp"
                 android:gravity="center"
-                android:text="User"
+                android:text="@string/user"
                 android:textColor="@color/dark_green" />
         </androidx.cardview.widget.CardView>
 
@@ -92,7 +92,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="3dp"
                 android:gravity="center"
-                android:text="User"
+                android:text="@string/user"
                 android:textColor="@color/dark_green" />
         </androidx.cardview.widget.CardView>
 
@@ -202,7 +202,7 @@
             app:fb_iconMarginEnd="40dp"
             app:fb_iconPosition="left"
             app:fb_shape="rectangle"
-            app:fb_text="Jugador Diario"
+            app:fb_text="@string/Daily_Player"
             app:fb_textColor="#FFF"
             app:fb_textSize="23sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -224,15 +224,12 @@
             app:fb_iconMarginEnd="40dp"
             app:fb_iconPosition="left"
             app:fb_shape="rectangle"
-            app:fb_text="Serie Diaria"
+            app:fb_text="@string/daily_Serie"
             app:fb_textColor="#FFF"
             app:fb_textSize="23sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnDailyFootball" />
-
-
-
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProfile1"
@@ -302,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Paises"
+                    android:text="@string/Countries"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -325,7 +322,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="Jugadores"
+                    android:text="@string/players"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -347,7 +344,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Series"
+                    android:text="@string/series"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>

@@ -127,7 +127,5 @@ class ViewModelCreate : ViewModel() {
         } else {
             state.value = CreateState.imageEmtyError
         }
-
-
     }
 }

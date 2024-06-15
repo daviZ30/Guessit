@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    android:id="@+id/layoutPreference"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:layout_width="wrap_content"
@@ -11,7 +13,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:defaultValue="false"
-            android:title="Tema oscuro" />
+            android:title="@string/themeTitle" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/idioma">
+        <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/entriesLanguege"
+            android:entryValues="@array/entriesValuesLanguege"
+            android:key="@string/pref_language"
+            android:title="@string/LanguageTitle" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="@string/pref_aboutUs"

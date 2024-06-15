@@ -13,6 +13,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentMenuBinding
@@ -147,12 +148,16 @@ class MenuFragment : Fragment() {
         if (offlineMode) {
             resetOnline(false)
         }
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(android.R.anim.fade_in)
+            .setExitAnim(android.R.anim.fade_out)
+            .setPopEnterAnim(android.R.anim.slide_in_left)
+            .setPopExitAnim(android.R.anim.slide_out_right)
+            .build()
 
         GlobalScope.launch {
             NetworkConnection.isConnected.collect {
                 withContext(Dispatchers.Main) {
-                    //findNavController().navigate(R.id.MenuFragment)
-                  //  println("MODOOOOOOOOOOOOOOO -> $offlineMode")
                     if (!offlineMode) {
                         if (it)
                             (requireActivity() as MainActivity).updateHeader()
@@ -164,7 +169,9 @@ class MenuFragment : Fragment() {
             }
         }
         binding.cvLevels.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            findNavController().navigate(
+                R.id.action_FirstFragment_to_SecondFragment
+            )
         }
         binding.cvTest.setOnClickListener {
             val bundle = Bundle().apply {
@@ -179,24 +186,37 @@ class MenuFragment : Fragment() {
 
                 putBoolean("local", false)
             }
-            findNavController().navigate(R.id.action_MenuFragment_to_testFragment, bundle)
+
+            findNavController().navigate(
+                R.id.action_MenuFragment_to_testFragment,
+                bundle, navOptions
+            )
         }
         binding.cvDaily.setOnClickListener {
-
-            findNavController().navigate(R.id.action_MenuFragment_to_categoryFragment)
+            findNavController().navigate(
+                R.id.action_MenuFragment_to_categoryFragment
+            )
         }
         binding.cvDuel.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_duelFragment)
+            findNavController().navigate(R.id.action_FirstFragment_to_duelFragment,
+                null,
+                navOptions)
         }
         binding.cvLocalGame.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_localGameFragment)
+            findNavController().navigate(R.id.action_FirstFragment_to_localGameFragment,
+                null,
+                navOptions)
         }
         binding.btnFriend.setOnClickListener {
             if (isOnline() && !offlineMode)
-                findNavController().navigate(R.id.action_MenuFragment_to_friendFragment)
+                findNavController().navigate(R.id.action_MenuFragment_to_friendFragment,
+                    null,
+                    navOptions)
         }
-        binding.btnSettings.setOnClickListener{
-            findNavController().navigate(R.id.action_MenuFragment_to_settingsFragment)
+        binding.btnSettings.setOnClickListener {
+            findNavController().navigate(R.id.action_MenuFragment_to_settingsFragment,
+                null,
+                navOptions)
         }
 
 

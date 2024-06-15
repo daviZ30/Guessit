@@ -41,7 +41,7 @@
                 android:layout_weight="1"
                 android:paddingStart="2dp"
                 android:textColor="@color/gris_oscuro"
-                android:text="ejemploDeCorreo786@gmail.com" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/tvRowFriendPoint"
@@ -51,7 +51,7 @@
                 android:layout_weight="1"
                 android:gravity="end"
                 android:paddingEnd="2dp"
-                android:text="1985888"
+                android:text=""
                 android:textColor="#FF9800"
                 android:textStyle="bold" />
 

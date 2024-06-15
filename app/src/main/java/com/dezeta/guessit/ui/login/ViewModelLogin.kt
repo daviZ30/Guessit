@@ -1,11 +1,14 @@
 package com.dezeta.guessit.ui.login
 
+import android.content.Context
 import android.net.Uri
 import android.text.TextUtils
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dezeta.guessit.R
 import com.dezeta.guessit.domain.Repository.Resource
 import com.dezeta.guessit.domain.entity.ProviderType
 import com.dezeta.guessit.domain.entity.User
@@ -20,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.intellij.lang.annotations.Language
 import java.lang.Exception
 
 class ViewModelLogin : ViewModel() {
@@ -211,7 +215,7 @@ class ViewModelLogin : ViewModel() {
         }
     }
 
-    fun signInGoogle(credential: AuthCredential, e: String?, n: String) {
+    fun signInGoogle(context: Context, credential: AuthCredential, e: String?, n: String) {
         viewModelScope.launch {
             userList.clear()
             val resu = Locator.userManager.SignInGoogle(credential)
@@ -219,10 +223,15 @@ class ViewModelLogin : ViewModel() {
                 is Resource.Error -> {
                     withContext(Dispatchers.Main) {
                         result.value =
-                            Resource.Error(Exception("Se ha producido un error autenticando al usuario"))
-
+                            Resource.Error(
+                                Exception(
+                                    ContextCompat.getString(
+                                        context,
+                                        R.string.SignError
+                                    )
+                                )
+                            )
                     }
-
                 }
 
                 is Resource.Success<*> -> {
@@ -295,7 +304,14 @@ class ViewModelLogin : ViewModel() {
                 else -> {
                     withContext(Dispatchers.Main) {
                         result.value =
-                            Resource.Error(Exception("Se ha producido un error NULL"))
+                            Resource.Error(
+                                Exception(
+                                    ContextCompat.getString(
+                                        context,
+                                        R.string.NullError
+                                    )
+                                )
+                            )
                     }
                 }
             }
@@ -345,5 +361,15 @@ class ViewModelLogin : ViewModel() {
                 }
             }
         }
+    }
+
+    fun getDarkTheme(): String {
+        return Locator.PreferencesRepository.getTheme()
+    }
+    fun getLanguege():String {
+        return Locator.PreferencesRepository.getLanguage()
+    }
+    fun saveLanguage(language: String){
+        Locator.PreferencesRepository.saveLanguage(language)
     }
 }

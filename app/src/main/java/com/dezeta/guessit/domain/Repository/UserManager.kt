@@ -83,12 +83,12 @@ class UserManager {
     }
 
     suspend fun getFriend(): Resource {
-        try {
+        return try {
             val document = usersRef.document(Locator.email).get().await()
             val friends: List<String> = (document.get("friends") as List<String>)
-            return Resource.Success(friends)
+            Resource.Success(friends)
         } catch (e: Exception) {
-            return Resource.Error(e)
+            Resource.Error(e)
         }
 
     }
@@ -319,8 +319,6 @@ class UserManager {
         } catch (e: Exception) {
             return Resource.Error(e)
         }
-
-
     }
 
     suspend fun loadUser(email: String): Resource {

@@ -1,10 +1,12 @@
 package com.dezeta.guessit.ui.main
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.ConnectivityManager
@@ -40,6 +42,7 @@ import com.dezeta.guessit.ui.menu.MenuFragment
 import com.dezeta.guessit.utils.CloudStorageManager
 import com.dezeta.guessit.utils.Locator
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlin.properties.Delegates
@@ -72,6 +75,22 @@ class MainActivity : AppCompatActivity() {
             (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
         setTemes()
+        val requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                if (!it) {
+                    Snackbar.make(
+                        findViewById<View>(android.R.id.content).rootView,
+                        ContextCompat.getString(this,R.string.notification),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
         fadeOutAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -124,8 +143,6 @@ class MainActivity : AppCompatActivity() {
         imgEditProfile.visibility = View.INVISIBLE
         navImgDolar.visibility = View.INVISIBLE
         navLinerLayout.visibility = View.INVISIBLE
-
-
     }
 
     private fun setupHeader() {
@@ -142,7 +159,6 @@ class MainActivity : AppCompatActivity() {
         val tvPostPoint = headerView.findViewById<TextView>(R.id.navTvPostPoint)
         val navLinerLayout = headerView.findViewById<LinearLayout>(R.id.navLinearLayout)
         val navImgDolar = headerView.findViewById<ImageView>(R.id.navImgDolar)
-
 
         if (isDarkThemeOn) {
             tvPrePoint.setTextColor(Color.WHITE)
@@ -169,8 +185,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun showConfirmationDialog() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("¿Desea eliminar la cuenta?")
-        builder.setPositiveButton("Si") { _, _ ->
+        builder.setTitle(ContextCompat.getString(this, R.string.DeleteAccount))
+        builder.setPositiveButton(
+            ContextCompat.getString(
+                this,
+                R.string.setPositiveButton
+            )
+        ) { _, _ ->
             with(lottieAnimationView) {
                 visibility = View.VISIBLE
                 setAnimation(R.raw.load_image)
@@ -179,7 +200,12 @@ class MainActivity : AppCompatActivity() {
             viewModel.deleteUser()
         }
 
-        builder.setNegativeButton("No") { _, _ ->
+        builder.setNegativeButton(
+            ContextCompat.getString(
+                this,
+                R.string.setNegativeButton
+            )
+        ) { _, _ ->
         }
         builder.show()
 
@@ -190,9 +216,9 @@ class MainActivity : AppCompatActivity() {
         val bundle = intent.extras
         val email = bundle?.getString("email") as String
 
-        if(email == Locator.OFFLINE_MODE){
+        if (email == Locator.OFFLINE_MODE) {
             setOfflineHeader()
-        }else{
+        } else {
             Locator.email = email
             viewModel.loadUser(email)
             viewModel.loadDatabase()
@@ -207,6 +233,7 @@ class MainActivity : AppCompatActivity() {
                     is MainState.UserSuccess -> {
                         setupHeader()
                     }
+
                     MainState.SignOut -> {
                         preferences.clear()
                         preferences.apply()

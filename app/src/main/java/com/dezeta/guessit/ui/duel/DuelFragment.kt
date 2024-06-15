@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -149,6 +150,8 @@ class DuelFragment : Fragment() {
     private fun starAnimationButton(json: Int, win: Boolean) {
         binding.btnDualMore.startAnimation(fadeOutAnimation)
         binding.btnDualLess.startAnimation(fadeOutAnimation)
+        binding.btnDualLess.isEnabled = false
+        binding.btnDualMore.isEnabled = false
         fadeOutAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -159,6 +162,8 @@ class DuelFragment : Fragment() {
                 if (binding.cvDuelImdb.visibility == View.GONE) {
                     binding.cvDuelImdb.visibility = View.VISIBLE
                     binding.cvDuelImdb.startAnimation(slideUpAnimation)
+                    binding.btnDualLess.isEnabled = true
+                    binding.btnDualMore.isEnabled = true
                 }
 
                 starAnimationLottie(json, win)
@@ -193,10 +198,10 @@ class DuelFragment : Fragment() {
                                         viewModel.updateLevel(level!!)
                                         showLevelMessage()
                                         findNavController().popBackStack()
-                                    }else{
+                                    } else {
                                         next()
                                     }
-                                }else{
+                                } else {
                                     next()
                                 }
                             } else {
@@ -218,13 +223,27 @@ class DuelFragment : Fragment() {
 
     private fun showCongratulatoryMessage() {
         val mesage =
-            "Has logrado una racha de : ${viewModel.score.value}, consiguiendo ${viewModel.point} puntos."
+            "${
+                ContextCompat.getString(
+                    requireContext(),
+                    R.string.CongratulatoryDuel
+                )
+            } ${viewModel.score.value}, ${
+                ContextCompat.getString(
+                    requireContext(),
+                    R.string.getting
+                )
+            } ${viewModel.point} ${
+                ContextCompat.getString(
+                    requireContext(),
+                    R.string.postDailyPoint
+                )
+            }."
 
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("¡Felicidades!")
+        builder.setTitle(ContextCompat.getString(requireContext(), R.string.Congratulation))
         builder.setMessage(mesage)
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
-
+        builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()
@@ -232,12 +251,12 @@ class DuelFragment : Fragment() {
     }
 
     private fun showLevelMessage() {
-        val mesage = "Has superado el nivel ${level}."
+        val mesage =
+            "${ContextCompat.getString(requireContext(), R.string.CompleteLevel)} ${level}."
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("¡Felicidades!")
+        builder.setTitle(ContextCompat.getString(requireContext(), R.string.Congratulation))
         builder.setMessage(mesage)
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
-
+        builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()

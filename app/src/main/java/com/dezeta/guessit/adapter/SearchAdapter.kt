@@ -18,7 +18,7 @@ class SearchAdapter(var onClick: (str:String) -> Unit) :  RecyclerView.Adapter<S
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): host {
-        var layoutInflater = LayoutInflater.from(parent.context)
+        val layoutInflater = LayoutInflater.from(parent.context)
         return host(SearchRowBinding.inflate(layoutInflater, parent, false))
     }
 
@@ -32,7 +32,7 @@ class SearchAdapter(var onClick: (str:String) -> Unit) :  RecyclerView.Adapter<S
     }
 
     override fun onBindViewHolder(holder: host, position: Int) {
-        var nombre = dataset[position]
+        val nombre = dataset[position]
         holder.bind(nombre)
     }
 }

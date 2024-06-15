@@ -1,6 +1,5 @@
 package com.dezeta.guessit.ui.create
 
-
 import android.R
 import android.app.Activity
 import android.content.Intent
@@ -16,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezeta.guessit.databinding.FragmentCreateBinding
@@ -26,7 +26,6 @@ import com.dezeta.guessit.showSnackbar
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
 
-
 class CreateFragment : Fragment() {
 
     private lateinit var img: ImgSelected
@@ -34,7 +33,6 @@ class CreateFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ViewModelCreate by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +44,9 @@ class CreateFragment : Fragment() {
         return binding.root
     }
 
-
-
     inner class TextWatcher(private var t: TextInputLayout) : android.text.TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-        }
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
         override fun afterTextChanged(s: Editable) {
             t.isErrorEnabled = false
@@ -75,49 +69,68 @@ class CreateFragment : Fragment() {
             when (it) {
                 CreateState.idEmpyError -> {
                     with(binding.tilId) {
-                        error = "Introduce un identificador"
+                        error = ContextCompat.getString(
+                            requireContext(),
+                            com.dezeta.guessit.R.string.idEmptyError
+                        )
                         requestFocus()
                     }
                 }
 
                 CreateState.idDuplicateError -> {
                     with(binding.tilId) {
-                        error = "Introduce un identificador nuevo"
+                        error = ContextCompat.getString(
+                            requireContext(),
+                            com.dezeta.guessit.R.string.idDuplicateError
+                        )
                         requestFocus()
                     }
                 }
 
                 CreateState.nameEmtyError -> {
-                    binding.tilName.error = "Introduce una entidad o concepto a adivinar"
+                    binding.tilName.error = ContextCompat.getString(
+                        requireContext(),
+                        com.dezeta.guessit.R.string.nameEmtyError
+                    )
                     binding.tilName.requestFocus()
                 }
 
                 CreateState.nameDuplicateError -> {
                     binding.tilName.error =
-                        "Introduce una entidad o concepto a adivinar no existente"
+                        ContextCompat.getString(
+                            requireContext(),
+                            com.dezeta.guessit.R.string.nameDuplicateError
+                        )
                     binding.tilName.requestFocus()
                 }
 
                 CreateState.difficultyEmtyError -> showSnackbar(
                     requireView(),
-                    "Introduce una dificultad"
+                    ContextCompat.getString(
+                        requireContext(),
+                        com.dezeta.guessit.R.string.difficultEmtyError
+                    )
                 )
 
                 CreateState.imageEmtyError -> showSnackbar(
                     requireView(),
-                    "Se deben introducir las tres imágenes"
+                    ContextCompat.getString(
+                        requireContext(),
+                        com.dezeta.guessit.R.string.imageEmtyError
+                    )
                 )
 
                 CreateState.imageEqualsError -> showSnackbar(
                     requireView(),
-                    "Las imagenes no puedes ser iguales"
+                    ContextCompat.getString(
+                        requireContext(),
+                        com.dezeta.guessit.R.string.imageEqualsError
+                    )
                 )
-                //CreateState.ErrorInsertSerie -> requireContext().showToast("Error en la base de datos (No Puede haber tres imagenes iguales)")
 
                 CreateState.Success -> onSuccess()
             }
         }
-
         binding.spDifficulty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -133,7 +146,6 @@ class CreateFragment : Fragment() {
                 viewModel.difficulty.value = null
             }
         }
-
         binding.btnAdd.setOnClickListener {
             viewModel.validate()
         }
@@ -143,7 +155,10 @@ class CreateFragment : Fragment() {
     }
 
     private fun onSuccess() {
-        showSnackbar(requireView(), "Creado con exito")
+        showSnackbar(
+            requireView(),
+            ContextCompat.getString(requireContext(), com.dezeta.guessit.R.string.CreateSuccess)
+        )
         findNavController().popBackStack()
     }
 
@@ -156,11 +171,8 @@ class CreateFragment : Fragment() {
                 R.layout.simple_spinner_item,
                 viewModel.difficultList(systemLanguage)
             )
-
         adaptersp.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-
         binding.spDifficulty.adapter = adaptersp
-
     }
 
     private fun uriToBitmap(uri: Uri): Bitmap? {
@@ -172,8 +184,6 @@ class CreateFragment : Fragment() {
             null
         }
     }
-
-
 
     private val startGallery = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -209,7 +219,6 @@ class CreateFragment : Fragment() {
         }
     }
 
-
     private fun pickPhotoFromGallery(imgS: ImgSelected) {
         if (viewModel.validateName()) {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -217,8 +226,5 @@ class CreateFragment : Fragment() {
             img = imgS
             startGallery.launch(intent)
         }
-
     }
-
-
 }

@@ -473,8 +473,8 @@
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -485,7 +485,7 @@
             android:id="@+id/lblPreLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Si superas los 24 niveles obtendras"
+            android:text="@string/levelHelp"
             android:textSize="15sp" />
 
         <TextView
@@ -503,7 +503,7 @@
             android:id="@+id/lblPostLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="puntos"
+            android:text="@string/points"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -513,7 +513,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
-        android:text="Pulsa el siguiente nivel para desbloquear"
+        android:text="@string/levelHelp2"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/table"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout5"

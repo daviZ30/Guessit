@@ -37,6 +37,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tieLoginName"
+                android:maxLength="30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/login_name"
@@ -77,26 +78,27 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tieConfirmPassword"
+                android:maxLength="50"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/ConfPasswordLogin"
                 android:inputType="textPassword"
                 android:text="@={viewmodel.confPassword}"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="visible" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnContinue"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginTop="15dp"
             android:layout_marginEnd="50dp"
             android:backgroundTint="@color/BlueRange1"
-            android:text="Continuar"
+            android:text="@string/login_Continue"
             android:textColor="@color/white"
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilConfirmPassword" />
+            app:layout_constraintTop_toTopOf="@+id/btnChanged" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -140,6 +142,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tieLoginMail"
+                android:maxLength="50"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/mailLogin"
@@ -169,6 +172,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tieLoginPassword"
+                android:maxLength="50"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/Password"
@@ -181,14 +185,13 @@
             android:id="@+id/btnChanged"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="44dp"
             android:backgroundTint="@color/BlueRange4"
-            android:text="Registrar"
+            android:text="@string/Login_SignUp_layout"
             android:textColor="@color/white"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilConfirmPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/cbShowPassword" />
 
         <com.github.nikartm.button.FitButton
             android:id="@+id/btnLoginGoogle"
@@ -216,13 +219,21 @@
             android:id="@+id/btnOfflineMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/BlueRange3"
             android:text="@string/login_notConexion"
             android:textColor="@color/gris_oscuro"
-            android:backgroundTint="@color/BlueRange3"
             app:layout_constraintEnd_toEndOf="@+id/btnContinue"
             app:layout_constraintStart_toStartOf="@+id/btnChanged"
             app:layout_constraintTop_toBottomOf="@+id/btnChanged" />
+
+        <CheckBox
+            android:id="@+id/cbShowPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/showPasword"
+            app:layout_constraintBottom_toTopOf="@+id/btnChanged"
+            app:layout_constraintStart_toStartOf="@+id/tilLoginPassword"
+            app:layout_constraintTop_toBottomOf="@+id/tilConfirmPassword" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

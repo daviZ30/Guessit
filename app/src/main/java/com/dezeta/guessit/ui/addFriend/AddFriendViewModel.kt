@@ -76,7 +76,7 @@ class AddFriendViewModel : ViewModel() {
     fun getFilterList(s: String): MutableList<User> {
         val lista = mutableListOf<User>()
         userList.forEach {
-            if (it.email.uppercase().contains(s.uppercase())) {
+            if (it.name.contains(s)) {
                 lista.add(it)
             }
         }

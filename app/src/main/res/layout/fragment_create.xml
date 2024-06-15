@@ -28,6 +28,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tieId"
+                android:maxLength="30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
@@ -48,6 +49,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tieName"
+                android:maxLength="30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
@@ -90,7 +92,7 @@
             app:fb_backgroundColor="@color/BlueRange6"
             app:fb_cornerRadius="12dp"
             app:fb_shape="rectangle"
-            app:fb_text="Crear nivel"
+            app:fb_text="@string/create_Level"
             app:fb_textColor="#FFF"
             app:fb_textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -212,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:textColor="@color/gris_oscuro"
-                    android:text="Imagen 2" />
+                    android:text="@string/createImg2" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -244,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:textColor="@color/gris_oscuro"
-                    android:text="Imagen 3" />
+                    android:text="@string/createImg3" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

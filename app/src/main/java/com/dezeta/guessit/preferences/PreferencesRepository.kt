@@ -7,34 +7,42 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import org.intellij.lang.annotations.Language
 
 class PreferencesRepository(private val dataStore: DataStore<Preferences>) {
-    fun saveTheme(theme: String) {
+    fun saveTheme(theme: Boolean) {
         runBlocking {
             dataStore.edit { preferences ->
-                preferences[THEME] = theme ?: "none"
+                preferences[THEME] = theme.toString()
             }
         }
     }
 
-    fun saveUsername(username: String) {
+    fun saveLanguage(languege: String) {
         runBlocking {
             dataStore.edit { preferences ->
-                preferences[THEME] = username ?: "none"
+                preferences[LANGUAGE] = languege ?: "none"
             }
+        }
+    }
+    fun getLanguage(): String {
+        return runBlocking {
+            dataStore.data.map { preferences ->
+                preferences[LANGUAGE] ?: "none"
+            }.first()
         }
     }
 
     fun getTheme(): String {
         return runBlocking {
             dataStore.data.map { preferences ->
-                preferences[USERNAME] ?: "none"
+                preferences[THEME] ?: "none"
             }.first()
         }
     }
 
     companion object {
         private val THEME = stringPreferencesKey("theme")
-        private val USERNAME = stringPreferencesKey("username")
+        private val LANGUAGE = stringPreferencesKey("languege")
     }
 }

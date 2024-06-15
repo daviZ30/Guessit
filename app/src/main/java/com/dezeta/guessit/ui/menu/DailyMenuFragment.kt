@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.work.Constraints
 import androidx.work.NetworkType
@@ -74,10 +76,31 @@ class DailyMenuFragment : Fragment() {
         binding.lottieLoadAnimationMenu.cancelAnimation()
     }
 
+    fun calculateDelayToMidnight(): Long {
+        val currentTime = Calendar.getInstance()
+        val targetTime = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            if (before(currentTime)) {
+                add(Calendar.DAY_OF_MONTH, 1)
+            }
+        }
+
+        return targetTime.timeInMillis - currentTime.timeInMillis
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(android.R.anim.fade_in)
+            .setExitAnim(android.R.anim.fade_out)
+            .setPopEnterAnim(android.R.anim.slide_in_left)
+            .setPopExitAnim(android.R.anim.slide_out_right)
             .build()
         binding.btnDailyCountry.setOnClickListener {
             val bundle = Bundle().apply {
@@ -90,18 +113,22 @@ class DailyMenuFragment : Fragment() {
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
                     workDataOf(
-                        "btnType" to "country"
+                        "btnType" to "country",
+                        "email" to Locator.email
                     )
                 )
                 .setConstraints(constraints)
-                //.setInitialDelay(calculateDelayToMidnight(), TimeUnit.MILLISECONDS)
-                .setInitialDelay(10, TimeUnit.SECONDS)
+                .setInitialDelay(calculateDelayToMidnight(), TimeUnit.MILLISECONDS)
                 .build()
 
             workManager.enqueue(request)
 
 
-            findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
+            findNavController().navigate(
+                R.id.action_categoryFragment_to_dailyFragment,
+                bundle,
+                navOptions
+            )
 
         }
         binding.btnDailyGame.setOnClickListener {
@@ -114,16 +141,21 @@ class DailyMenuFragment : Fragment() {
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
                     workDataOf(
-                        "btnType" to "serie"
+                        "btnType" to "serie",
+                        "email" to Locator.email
                     )
                 )
                 .setConstraints(constraints)
-                .setInitialDelay(10, TimeUnit.SECONDS)
+                .setInitialDelay(calculateDelayToMidnight(), TimeUnit.MILLISECONDS)
                 .build()
 
             workManager.enqueue(request)
 
-            findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
+            findNavController().navigate(
+                R.id.action_categoryFragment_to_dailyFragment,
+                bundle,
+                navOptions
+            )
 
         }
         binding.btnDailyFootball.setOnClickListener {
@@ -136,15 +168,20 @@ class DailyMenuFragment : Fragment() {
             val request = OneTimeWorkRequestBuilder<MyWorker>()
                 .setInputData(
                     workDataOf(
-                        "btnType" to "football"
+                        "btnType" to "football",
+                        "email" to Locator.email
                     )
                 )
                 .setConstraints(constraints)
-                .setInitialDelay(10, TimeUnit.SECONDS)
+                .setInitialDelay(calculateDelayToMidnight(), TimeUnit.MILLISECONDS)
                 .build()
 
             workManager.enqueue(request)
-            findNavController().navigate(R.id.action_categoryFragment_to_dailyFragment, bundle)
+            findNavController().navigate(
+                R.id.action_categoryFragment_to_dailyFragment,
+                bundle,
+                navOptions
+            )
         }
         viewModel.getState().observe(viewLifecycleOwner) { state ->
             when (state) {

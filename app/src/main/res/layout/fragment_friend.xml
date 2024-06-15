@@ -51,7 +51,7 @@
         app:fb_iconMarginEnd="50dp"
         app:fb_iconPosition="left"
         app:fb_shape="rectangle"
-        app:fb_text="Añadir amigo"
+        app:fb_text="@string/addFriend"
         app:fb_textColor="#FFF"
         app:fb_textSize="23sp"
         app:layout_constraintBottom_toBottomOf="parent"

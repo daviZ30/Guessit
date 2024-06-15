@@ -1,5 +1,6 @@
 package com.dezeta.guessit.ui.daily
 
+import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,11 @@ class ViewModelDaily : ViewModel() {
     var point = 60
     var user: User? = null
     private var state = MutableLiveData<DailyState>()
+    var translateToEnglish =
+        getCountrySpain().map { it.uppercase(Locale.ROOT) }.zip(getCountryEnglish()).toMap()
+    var translateToSpanish =
+        getCountryEnglish().map { it.uppercase(Locale.ROOT) }.zip(getCountrySpain()).toMap()
+
     fun getState(): LiveData<DailyState> {
         return state
     }
@@ -100,15 +106,60 @@ class ViewModelDaily : ViewModel() {
         }
     }
 
-    fun getCountryNameList(): MutableList<String> {
+    private fun getCountrySpain(): MutableList<String> {
         val list = mutableListOf<String>()
+
         val isoCountryCodes = Locale.getISOCountries()
+        // Set default locale to Spanish
+        val defaultLocale = Locale.getDefault()
+        Locale.setDefault(Locale("es", "ES"))
+
         for (countryCode in isoCountryCodes) {
-            val locale = Locale(Locale.getDefault().isO3Language, countryCode)
+            val locale = Locale("", countryCode)
             val countryName = locale.displayCountry
+            println(countryName)
             list.add(countryName)
         }
+
+        Locale.setDefault(defaultLocale)
+
         return list
+    }
+
+    private fun getCountryEnglish(): MutableList<String> {
+        val list = mutableListOf<String>()
+
+        val isoCountryCodes = Locale.getISOCountries()
+        val defaultLocale = Locale.getDefault()
+        Locale.setDefault(Locale.ENGLISH)
+
+        for (countryCode in isoCountryCodes) {
+            val locale = Locale("", countryCode)
+            val countryName = locale.displayCountry
+            println(countryName)
+            list.add(countryName)
+        }
+
+        Locale.setDefault(defaultLocale)
+
+        return list
+    }
+
+    fun getCountryNameList(): MutableList<String> {
+        val language = Locator.PreferencesRepository.getLanguage()
+        return if (language == "es") {
+
+            println("ESPAÑAAAAAAAAAAAAAAAAAAAAAaa")
+            getCountrySpain()
+        } else {
+            println("INGLESSSSSSSSSSSSSSSSSSSSSSSSSSS")
+            getCountryEnglish()
+        }
+
+    }
+
+    fun getLanguage(): String {
+        return Locator.PreferencesRepository.getLanguage()
     }
 
     fun updatePoint() {
@@ -134,7 +185,7 @@ class ViewModelDaily : ViewModel() {
                 }
                 val r = Locator.userManager.UpdateUser(user!!)
                 if (r is Resource.Success<*>)
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         state.value = DailyState.Success
                     }
             }
@@ -163,7 +214,7 @@ class ViewModelDaily : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = Locator.userManager.UpdateUser(user!!)
             if (result is Resource.Success<*>)
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     state.value = DailyState.Success
                 }
         }

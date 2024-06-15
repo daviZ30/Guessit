@@ -58,7 +58,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:text="TextView"
+                android:text=""
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
         </androidx.cardview.widget.CardView>
@@ -106,7 +106,7 @@
                     android:backgroundTint="@color/gris_transparente"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="TextView"
+                    android:text=""
                     android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -138,7 +138,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:padding="5dp"
-                        android:text="TextView"
+                        android:text=""
                         android:textColor="#FFFFFF"
                         android:textSize="20sp" />
                 </androidx.cardview.widget.CardView>
@@ -152,7 +152,7 @@
                     android:backgroundTint="@color/BlueRange1"
                     android:layout_weight="1"
                     android:textColor="@color/white"
-                    android:text="Más"
+                    android:text="@string/More"
                     android:visibility="visible" />
 
                 <Button
@@ -165,7 +165,7 @@
                     android:backgroundTint="@color/BlueRange1"
                     android:layout_weight="1"
                     android:paddingHorizontal="3dp"
-                    android:text="Menos"
+                    android:text="@string/Less"
                     android:visibility="visible" />
             </LinearLayout>
 
@@ -191,7 +191,7 @@
                 android:layout_marginVertical="5dp"
                 android:gravity="center"
                 android:textColor="@color/gris_oscuro"
-                android:text="¿Que serie tiene más puntuación\n en IMDB?"
+                android:text="@string/Duel_Title"
                 android:textSize="24sp" />
         </androidx.cardview.widget.CardView>
 
@@ -221,7 +221,7 @@
                     android:layout_marginVertical="5dp"
                     android:gravity="center"
                     android:paddingEnd="4dp"
-                    android:text="Racha: "
+                    android:text="@string/score"
                     android:textColor="@color/gris_oscuro"
                     android:textSize="20sp" />
 
@@ -270,7 +270,7 @@
                 android:elevation="2dp"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="TextView"
+                android:text=""
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
                 android:textStyle="bold" />

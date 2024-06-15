@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.FragmentLocalGameBinding
@@ -53,12 +55,12 @@ class LocalGameFragment : Fragment() {
         viewModel.getState().observe(viewLifecycleOwner) {
             when (it) {
                 is LocalGameState.DeleteError -> {
-                    showSnackbar(requireView(), "Error al borrar")
+                    showSnackbar(requireView(), ContextCompat.getString(requireContext(),R.string.deleteError))
                     println("Error: ${it.exception}")
                 }
 
                 is LocalGameState.Success -> {
-                    showSnackbar(requireView(), "Borrado con éxito")
+                    showSnackbar(requireView(), ContextCompat.getString(requireContext(),R.string.deleteSuccess))
                 }
 
             }
@@ -70,7 +72,12 @@ class LocalGameFragment : Fragment() {
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialog_localgame)
         dialog.setCancelable(true)
-
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(android.R.anim.fade_in)
+            .setExitAnim(android.R.anim.fade_out)
+            .setPopEnterAnim(android.R.anim.slide_in_left)
+            .setPopExitAnim(android.R.anim.slide_out_right)
+            .build()
         val spinner = dialog.findViewById(R.id.spinner) as Spinner
         val btnAccept = dialog.findViewById(R.id.btnDialog) as Button
 
@@ -97,29 +104,34 @@ class LocalGameFragment : Fragment() {
                             putSerializable("serie", guessDialog)
                             putBoolean("local", true)
                         }
-                        findNavController().navigate(R.id.action_localGameFragment_to_dailyFragment, bundle)
+                        findNavController().navigate(R.id.action_localGameFragment_to_dailyFragment, bundle,navOptions)
                     }
                     else -> {
-                        showSnackbar(requireView(),"Nivel no encontrado")
+                        showSnackbar(requireView(),ContextCompat.getString(requireContext(),R.string.levelNotFound))
                     }
                 }
                 dialog.hide()
             } else {
-                showSnackbar(requireView(), "Introduzca algun nivel para jugar")
+                showSnackbar(requireView(), ContextCompat.getString(requireContext(),R.string.introduceLevel))
             }
-
         }
         dialog.show()
     }
 
     private fun showConfirmationDialog() {
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(android.R.anim.fade_in)
+            .setExitAnim(android.R.anim.fade_out)
+            .setPopEnterAnim(android.R.anim.slide_in_left)
+            .setPopExitAnim(android.R.anim.slide_out_right)
+            .build()
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("¿Desea elegir el nivel?")
-        builder.setPositiveButton("Si") { _, _ ->
+        builder.setTitle(ContextCompat.getString(requireContext(),R.string.chooseLevel))
+        builder.setPositiveButton(ContextCompat.getString(requireContext(),R.string.setPositiveButton)) { _, _ ->
            showCustomDialog(viewModel.getLevelList(),false)
         }
 
-        builder.setNegativeButton("No") { _, _ ->
+        builder.setNegativeButton(ContextCompat.getString(requireContext(),R.string.setNegativeButton)) { _, _ ->
             val lista = viewModel.getLevelList()
             if (lista.isNotEmpty()) {
                 val serie = lista[random.nextInt(lista.size)]
@@ -128,9 +140,9 @@ class LocalGameFragment : Fragment() {
                     putBoolean("local", true)
                 }
 
-                findNavController().navigate(R.id.action_localGameFragment_to_dailyFragment, bundle)
+                findNavController().navigate(R.id.action_localGameFragment_to_dailyFragment, bundle, navOptions)
             } else {
-                showSnackbar(requireView(), "Introduzca algun nivel para jugar")
+                showSnackbar(requireView(), ContextCompat.getString(requireContext(),R.string.introduceLevel))
             }
         }
         builder.show()

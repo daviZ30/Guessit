@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dezeta.guessit.R
@@ -14,7 +15,6 @@ import com.dezeta.guessit.databinding.FragmentFriendBinding
 import com.dezeta.guessit.utils.Locator
 
 class FriendFragment : Fragment() {
-
     private var _binding: FragmentFriendBinding? = null
     private lateinit var adapterFriend: FriendAdapter
     private val binding get() = _binding!!
@@ -51,19 +51,27 @@ class FriendFragment : Fragment() {
                     adapterFriend.update(viewModel.userList)
                 }
 
-                else -> {
-
-                }
+                else -> {}
             }
         }
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(android.R.anim.fade_in)
+            .setExitAnim(android.R.anim.fade_out)
+            .setPopEnterAnim(android.R.anim.slide_in_left)
+            .setPopExitAnim(android.R.anim.slide_out_right)
+            .build()
         binding.btnAddFriend.setOnClickListener {
-            findNavController().navigate(R.id.action_friendFragment_to_addFriendFragment)
+            findNavController().navigate(
+                R.id.action_friendFragment_to_addFriendFragment,
+                null,
+                navOptions
+            )
         }
     }
 
     private fun setup() {
         adapterFriend = FriendAdapter({}) {
-            if(it.email != Locator.email){
+            if (it.email != Locator.email) {
                 viewModel.removeFriend(it)
                 adapterFriend.update(viewModel.userList)
             }

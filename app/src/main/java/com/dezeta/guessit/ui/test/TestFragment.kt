@@ -284,6 +284,10 @@ class TestFragment : Fragment() {
             }
 
         }
+        btn1!!.isEnabled = false
+        btn2!!.isEnabled = false
+        btn3!!.isEnabled = false
+
         var color = Color.GREEN
         if (!success)
             color = Color.RED
@@ -318,6 +322,7 @@ class TestFragment : Fragment() {
                     showErrorMessage()
                     findNavController().popBackStack()
                 }
+
                 stopAnimation(btnMain!!, btn1!!, btn2!!, btn3!!)
             }
 
@@ -337,6 +342,10 @@ class TestFragment : Fragment() {
         btn2: FitButton,
         btn3: FitButton
     ) {
+        btn1!!.isEnabled = true
+        btn2!!.isEnabled = true
+        btn3!!.isEnabled = true
+
         val colorPrimary = ContextCompat.getColor(requireContext(), R.color.BlueRange1_1)
         val colorAnimator = ObjectAnimator.ofArgb(btnMain, "backgroundColor", colorPrimary)
 
@@ -364,11 +373,11 @@ class TestFragment : Fragment() {
     private fun nextTest() {
         NumImage++
         if (NumImage >= 3) {
-            if(level == 0){
+            if (level == 0) {
                 showSuccessMessage()
                 viewModel.updatePoint()
                 findNavController().popBackStack()
-            }else{
+            } else {
                 showLevelMessage()
                 viewModel.updateLevel(level!!)
                 findNavController().popBackStack()
@@ -399,23 +408,39 @@ class TestFragment : Fragment() {
     }
 
     private fun showLevelMessage() {
-        val mesage = "Has superado el nivel ${level}."
+        val mesage =
+            "${ContextCompat.getString(requireContext(), R.string.CompleteLevel)} ${level}."
         val builder = android.app.AlertDialog.Builder(context)
-        builder.setTitle("¡Felicidades!")
+        builder.setTitle(ContextCompat.getString(requireContext(), R.string.Congratulation))
         builder.setMessage(mesage)
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
-
+        builder.setPositiveButton(
+            ContextCompat.getString(
+                requireContext(),
+                R.string.accept
+            )
+        ) { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()
         dialog.show()
     }
+
     private fun showSuccessMessage() {
-        val message = "Has superado el test obteniendo ${viewModel.point} puntos."
+        val message = "${
+            ContextCompat.getString(
+                requireContext(),
+                R.string.TestSuccess
+            )
+        } ${viewModel.point} ${ContextCompat.getString(requireContext(), R.string.postDailyPoint)}."
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("¡Felicidades!")
+        builder.setTitle(ContextCompat.getString(requireContext(), R.string.Congratulation))
         builder.setMessage(message)
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
+        builder.setPositiveButton(
+            ContextCompat.getString(
+                requireContext(),
+                R.string.accept
+            )
+        ) { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()
@@ -423,11 +448,11 @@ class TestFragment : Fragment() {
     }
 
     private fun showErrorMessage() {
-        val message = "No has superado el test"
+        val message = ContextCompat.getString(requireContext(),R.string.TestError)
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Has Fallado")
+        builder.setTitle(ContextCompat.getString(requireContext(),R.string.failed))
         builder.setMessage(message)
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
+        builder.setPositiveButton(ContextCompat.getString(requireContext(),R.string.accept)) { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()

@@ -53,7 +53,6 @@ class LevelFragment : Fragment() {
                                 R.color.white_transparente
                             )
                         )
-
                 }
             }
         }
@@ -92,7 +91,12 @@ class LevelFragment : Fragment() {
             when (botonId) {
                 R.id.btnLevel1 -> {
                     if (viewModel.user.level + 1 == 1) {
-                        showConfirmationDialog("Tendrás que adivinar una serie")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelSerie
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -105,7 +109,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel2 -> {
                     if (viewModel.user.level + 1 == 2) {
-                        showConfirmationDialog("Tendrás que adivinar una serie")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelSerie
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -118,7 +127,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel3 -> {
                     if (viewModel.user.level + 1 == 3) {
-                        showConfirmationDialog("Tendrás que adivinar tres cuestionarios")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.LevelTest
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -136,7 +150,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel4 -> {
                     if (viewModel.user.level + 1 == 4) {
-                        showConfirmationDialog("Tendrás que adivinar tres cuestionarios")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.LevelTest
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -154,7 +173,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel5 -> {
                     if (viewModel.user.level + 1 == 5) {
-                        showConfirmationDialog("Tendrás que adivinar un pais")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelCountry
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -167,7 +191,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel6 -> {
                     if (viewModel.user.level + 1 == 6) {
-                        showConfirmationDialog("Tendrás que adivinar un pais")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelCountry
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -180,7 +209,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel7 -> {
                     if (viewModel.user.level + 1 == 7) {
-                        showConfirmationDialog("Tendrás que adivinar un futbolista")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelPlayer
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -193,7 +227,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel8 -> {
                     if (viewModel.user.level + 1 == 8) {
-                        showConfirmationDialog("Tendrás que realizar una racha de 10 en Duelo")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.level10Duel
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -205,7 +244,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel9 -> {
                     if (viewModel.user.level + 1 == 9) {
-                        showConfirmationDialog("Tendrás que adivinar un futbolista")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelPlayer
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -218,7 +262,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel10 -> {
                     if (viewModel.user.level + 1 == 10) {
-                        showConfirmationDialog("Tendrás que adivinar una serie")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelSerie
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -231,7 +280,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel11 -> {
                     if (viewModel.user.level + 1 == 11) {
-                        showConfirmationDialog("Tendrás que adivinar una serie")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelSerie
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -244,7 +298,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel12 -> {
                     if (viewModel.user.level + 1 == 12) {
-                        showConfirmationDialog("Tendrás que adivinar un pais")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelCountry
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -257,7 +316,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel13 -> {
                     if (viewModel.user.level + 1 == 13) {
-                        showConfirmationDialog("Tendrás que hacer una racha de 10 en Duelo")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.level10Duel
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -269,7 +333,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel14 -> {
                     if (viewModel.user.level + 1 == 14) {
-                        showConfirmationDialog("Tendrás que adivinar tres test")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.LevelTest
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -287,7 +356,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel15 -> {
                     if (viewModel.user.level + 1 == 15) {
-                        showConfirmationDialog("Tendrás que adivinar un futbolista")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelPlayer
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -300,7 +374,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel16 -> {
                     if (viewModel.user.level + 1 == 16) {
-                        showConfirmationDialog("Tendrás que adivinar un pais")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelCountry
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -313,7 +392,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel17 -> {
                     if (viewModel.user.level + 1 == 17) {
-                        showConfirmationDialog("Tendrás que adivinar una serie")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelSerie
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -326,7 +410,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel18 -> {
                     if (viewModel.user.level + 1 == 18) {
-                        showConfirmationDialog("Tendrás que adivinar una serie")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelSerie
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -339,7 +428,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel19 -> {
                     if (viewModel.user.level + 1 == 19) {
-                        showConfirmationDialog("Tendrás que adivinar un futbolista")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelPlayer
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -352,7 +446,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel20 -> {
                     if (viewModel.user.level + 1 == 20) {
-                        showConfirmationDialog("Tendrás que hacer una racha de 20 en Duelo")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.level20Duel
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -364,7 +463,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel21 -> {
                     if (viewModel.user.level + 1 == 21) {
-                        showConfirmationDialog("Tendrás que adivinar un futbolista")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelPlayer
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -377,7 +481,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel22 -> {
                     if (viewModel.user.level + 1 == 22) {
-                        showConfirmationDialog("Tendrás que adivinar una serie")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelSerie
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -390,7 +499,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel23 -> {
                     if (viewModel.user.level + 1 == 23) {
-                        showConfirmationDialog("Tendrás que adivinar una serie")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelSerie
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -404,7 +518,12 @@ class LevelFragment : Fragment() {
 
                 R.id.btnLevel24 -> {
                     if (viewModel.user.level + 1 == 24) {
-                        showConfirmationDialog("Tendrás que adivinar un futbolista")
+                        showConfirmationDialog(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.levelPlayer
+                            )
+                        )
                         return
                     }
                     val bundle = Bundle().apply {
@@ -420,9 +539,14 @@ class LevelFragment : Fragment() {
 
     private fun showConfirmationDialog(message: String) {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("¿Desea gastar 25 puntos para desbloquear el nivel?")
+        builder.setTitle(ContextCompat.getString(requireContext(), R.string.payLevel))
         builder.setMessage(message)
-        builder.setPositiveButton("Aceptar") { _, _ ->
+        builder.setPositiveButton(
+            ContextCompat.getString(
+                requireContext(),
+                R.string.accept
+            )
+        ) { _, _ ->
             if (viewModel.user.point >= 25) {
                 viewModel.user.point -= 25
                 viewModel.updateLevel()
@@ -430,14 +554,17 @@ class LevelFragment : Fragment() {
             } else {
                 showSnackbar(
                     requireView(),
-                    "No dispones de 25 puntos o más para desbloquear el nivel"
+                    ContextCompat.getString(requireContext(), R.string.notPayLevel)
                 )
             }
         }
 
-        builder.setNegativeButton("Cancelar") { _, _ ->
-
-        }
+        builder.setNegativeButton(
+            ContextCompat.getString(
+                requireContext(),
+                R.string.cancel
+            )
+        ) { _, _ -> }
         builder.show()
     }
 
@@ -446,7 +573,6 @@ class LevelFragment : Fragment() {
         btn.isEnabled = true
         btn.setButtonColor(Color.parseColor("#FF39A121"))
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -8,21 +8,20 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -31,20 +30,15 @@ import com.dezeta.guessit.R
 import com.dezeta.guessit.databinding.ActivityLoginBinding
 import com.dezeta.guessit.databinding.DialogLoginNameBinding
 import com.dezeta.guessit.domain.Repository.Resource
-import com.dezeta.guessit.domain.entity.Guess
-import com.dezeta.guessit.domain.entity.User
-import com.dezeta.guessit.showSnackbar
 import com.dezeta.guessit.utils.Locator
-import com.dezeta.guessit.utils.MyWorker
 import com.dezeta.guessit.utils.MyWorkerFirebase
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.Exception
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -73,13 +67,14 @@ class LoginActivity : AppCompatActivity() {
                         starLoadAnimation()
                         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
                         viewModel.signInGoogle(
+                            this,
                             credential,
                             account.email,
                             account.displayName ?: "Username"
                         )
                     }
                 } catch (e: ApiException) {
-                    showAlert("Error", "No se ha podido iniciar sesión con google")
+                    showAlert("Error", ContextCompat.getString(this, R.string.SignErrorGoogle))
                 }
             }
         }
@@ -98,7 +93,6 @@ class LoginActivity : AppCompatActivity() {
     private fun getDrawableUri(drawableId: Int): Uri? {
         return try {
             val resourceId = resources.getResourceEntryName(drawableId)
-
             Uri.parse("android.resource://${packageName}/drawable/$resourceId")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -106,8 +100,45 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    fun getLanguegeSystem(): String {
+        val configuracion = resources.configuration
+        val idioma = configuracion.locales[0]
+        return idioma.language
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val theme = viewModel.getDarkTheme()
+        val language = viewModel.getLanguege()
+        if (language != "none") {
+
+            if (language == "es") {
+                val locale = Locale(language)
+                Locale.setDefault(locale)
+
+                val configuration = Configuration(resources.configuration)
+                configuration.setLocale(locale)
+
+                resources.updateConfiguration(configuration, resources.displayMetrics)
+            } else {
+                val locale = Locale(language)
+                Locale.setDefault(locale)
+
+                val configuration = Configuration(resources.configuration)
+                configuration.setLocale(locale)
+
+                resources.updateConfiguration(configuration, resources.displayMetrics)
+            }
+        } else {
+            Locator.PreferencesRepository.saveLanguage(getLanguegeSystem())
+        }
+        if (theme != "none") {
+            if (theme.toBoolean()) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
         isDarkThemeOn =
             (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -162,8 +193,8 @@ class LoginActivity : AppCompatActivity() {
                         workManager.enqueue(request)
 
                         showAlert(
-                            "Atención",
-                            "Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado. Dispones de 24 Horas"
+                            ContextCompat.getString(this, R.string.attention),
+                            ContextCompat.getString(this, R.string.reviseMail)
                         )
                         with(binding) {
                             tieLoginMail.setText("")
@@ -183,14 +214,14 @@ class LoginActivity : AppCompatActivity() {
             when (state) {
                 is LoginState.nameEmtyError -> {
                     with(binding.tilLoginName) {
-                        error = "Introduce un nombre de usuario"
+                        error = ContextCompat.getString(context, R.string.LoginName)
                         requestFocus()
                     }
                 }
 
                 is LoginState.nameEqualsError -> {
                     with(binding.tilLoginName) {
-                        error = "El nombre introducido ya existe"
+                        error = ContextCompat.getString(context, R.string.LoginExistName)
                         requestFocus()
                     }
                 }
@@ -206,49 +237,49 @@ class LoginActivity : AppCompatActivity() {
 
                 is LoginState.EmailNotVerifiedError -> {
                     showAlert(
-                        "Error",
-                        "Por favor, revisa tu correo electrónico y verifica tu dirección haciendo clic en el enlace que te hemos enviado."
+                        ContextCompat.getString(this,R.string.attention),
+                        ContextCompat.getString(this, R.string.EmailNotVerified)
                     )
                 }
 
                 is LoginState.GoogleSignInError -> {
                     showAlert(
-                        "Atención",
-                        "Ya dispone de una cuenta de google asociada a este correo, seleccione continuar con google"
+                        ContextCompat.getString(this, R.string.attention),
+                        ContextCompat.getString(this, R.string.googleAccountMessage)
                     )
                 }
 
                 is LoginState.GoogleNameEmpty -> {
                     with(bindingDialog.tilDialogLogin) {
-                        error = "Introduce un nombre"
+                        error = ContextCompat.getString(context, R.string.introduceName)
                         requestFocus()
                     }
                 }
 
                 is LoginState.GoogleNameEquals -> {
                     with(bindingDialog.tilDialogLogin) {
-                        error = "El nombre introducido ya existe"
+                        error = ContextCompat.getString(context, R.string.LoginExistName)
                         requestFocus()
                     }
                 }
 
                 is LoginState.passwordEmtyError -> {
                     with(binding.tilLoginPassword) {
-                        error = "Introduce la contraseña"
+                        error = ContextCompat.getString(context, R.string.introducePassword)
                         requestFocus()
                     }
                 }
 
                 is LoginState.emailEmtyError -> {
                     with(binding.tilLoginMail) {
-                        error = "Introduce el correo electrónico"
+                        error = ContextCompat.getString(context, R.string.introduceMail)
                         requestFocus()
                     }
                 }
 
                 is LoginState.emailFormatError -> {
                     with(binding.tilLoginMail) {
-                        error = "El formato del correo es invalido"
+                        error = ContextCompat.getString(context, R.string.MailFormatError)
                         requestFocus()
                     }
                 }
@@ -256,7 +287,7 @@ class LoginActivity : AppCompatActivity() {
                 is LoginState.passwordFormatError -> {
                     with(binding.tilLoginPassword) {
                         error =
-                            "La contraseña debe contener letras, número y 8 caracteres como mínimo"
+                            ContextCompat.getString(context, R.string.PasseordFormatError)
                         requestFocus()
                     }
                 }
@@ -264,15 +295,13 @@ class LoginActivity : AppCompatActivity() {
                 is LoginState.NotEqualsPasswordError -> {
                     with(binding.tilConfirmPassword) {
                         error =
-                            "Las contraseñas no son iguales"
+                            ContextCompat.getString(context, R.string.EqualsPassword)
                         requestFocus()
                     }
                 }
 
-
                 is LoginState.Success -> {
                     starLoadAnimation()
-
                     if (register) {
                         viewModel.signup(getDrawableUri(R.drawable.user_profile)!!)
                     } else {
@@ -341,7 +370,7 @@ class LoginActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this).apply {
             setTitle(title)
             setMessage(str)
-            setPositiveButton("Aceptar", null)
+            setPositiveButton(ContextCompat.getString(context, R.string.accept), null)
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
@@ -385,7 +414,6 @@ class LoginActivity : AppCompatActivity() {
             )
         )
         binding.btnContinue.setOnClickListener {
-            //startActivity(MenuIntent)
             if (register) {
                 viewModel.validateSignUp()
             } else {
@@ -410,7 +438,7 @@ class LoginActivity : AppCompatActivity() {
                     tilConfirmPassword.startAnimation(fadeInAnimation)
                     tilLoginName.visibility = View.VISIBLE
                     tilLoginName.startAnimation(fadeInAnimation)
-                    btnChanged.text = "Login"
+                    btnChanged.text = ContextCompat.getString(applicationContext, R.string.SignIn)
                 }
 
             } else {
@@ -418,7 +446,7 @@ class LoginActivity : AppCompatActivity() {
                 with(binding) {
                     tilConfirmPassword.startAnimation(fadeOutAnimation)
                     tilLoginName.startAnimation(fadeOutAnimation)
-                    btnChanged.text = "Registrar"
+                    btnChanged.text = ContextCompat.getString(applicationContext, R.string.SignUp)
                 }
 
             }
@@ -432,6 +460,17 @@ class LoginActivity : AppCompatActivity() {
             googleClient.signOut()
 
             startForResult.launch(googleClient.signInIntent)
+        }
+        binding.cbShowPassword.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Show password
+                binding.tieLoginPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                binding.tieConfirmPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                // Hide password
+                binding.tieLoginPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.tieConfirmPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
         }
     }
 

@@ -14,13 +14,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.toLowerCase
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,18 +38,11 @@ import com.dezeta.guessit.domain.entity.Img
 import com.dezeta.guessit.domain.entity.Guess
 import com.dezeta.guessit.domain.entity.GuessType
 import com.dezeta.guessit.loadImageBitmapFromInternalStorage
-import com.dezeta.guessit.ui.main.MainActivity
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.properties.Delegates
 
 class DailyFragment : Fragment() {
-    //TODO Modificar la ayuda para que salga algo de la clase info o las tres ultimas letras si es online y la ultima letra si el local
-
     private lateinit var preferences: SharedPreferences.Editor
     var listRed = mutableListOf<String>()
     var listGreen = mutableListOf<String>()
@@ -97,7 +91,10 @@ class DailyFragment : Fragment() {
     ): View {
         _binding = FragmentDailyBinding.inflate(inflater, container, false)
         preferences =
-            requireActivity().getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
+            requireActivity().getSharedPreferences(
+                getString(R.string.prefs_file),
+                Context.MODE_PRIVATE
+            ).edit()
 
         isDarkThemeOn =
             (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
@@ -114,7 +111,8 @@ class DailyFragment : Fragment() {
                     if (local) {
                         help = false
                         with(binding) {
-                            tvDailyHelp.text = "Puedes activar la ayuda en los ajustes"
+                            tvDailyHelp.text =
+                                ContextCompat.getString(requireContext(), R.string.helpLocal)
                             btnCategoty.visibility = View.GONE
                             cvShowList.visibility = View.GONE
                         }
@@ -142,7 +140,7 @@ class DailyFragment : Fragment() {
 
                     } else {
                         binding.tvDailyHelp.text =
-                            "Si saltas la imagen tendrás que sacrificar una vida"
+                            ContextCompat.getString(requireContext(), R.string.helpOnline)
                         help = true
                         for (i in 1..3) {
                             loadImage(i)
@@ -193,7 +191,7 @@ class DailyFragment : Fragment() {
                         target: Target<Drawable>,
                         isFirstResource: Boolean
                     ): Boolean {
-                      // loadImage(3)
+                        // loadImage(3)
                         binding.lottieLoadAnimation.visibility = View.INVISIBLE
                         binding.lottieLoadAnimation.cancelAnimation()
                         return false
@@ -227,7 +225,6 @@ class DailyFragment : Fragment() {
                         target: Target<Drawable>,
                         isFirstResource: Boolean
                     ): Boolean {
-                       // loadImage(i)
                         return false
                     }
 
@@ -244,8 +241,8 @@ class DailyFragment : Fragment() {
                 })
                 .into(view!!)
         }
-
     }
+
 
     private fun nextImage() {
         when (NumImage) {
@@ -287,7 +284,6 @@ class DailyFragment : Fragment() {
         adapterList = SearchAdapter() {
             binding.tieSearch.setText(it)
         }
-        //  adapterList.update(mutableListOf("Hola","Adios"))
 
         binding.btnCategoty.setOnClickListener {
             showCustomDialog()
@@ -311,7 +307,11 @@ class DailyFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
         binding.btnGuessDaily.setOnClickListener {
-            if (binding.tieSearch.text.toString().trim().uppercase(Locale.ROOT)
+            var guess = binding.tieSearch.text.toString().trim().uppercase(Locale.ROOT)
+            if (viewModel.guess!!.guessType == GuessType.COUNTRY && viewModel.getLanguage() == "en") {
+                guess = viewModel.translateToSpanish[guess].toString()
+            }
+            if (guess.uppercase(Locale.ROOT)
                 == viewModel.guess!!.name.uppercase(Locale.ROOT)
             ) {
                 if (!viewModel.local && level == 0) {
@@ -326,9 +326,19 @@ class DailyFragment : Fragment() {
                     } else {
                         viewModel.update2500Point()
                         val builder = AlertDialog.Builder(requireContext())
-                        builder.setTitle("!Felicidades¡")
-                        builder.setMessage("Has desbloqueado todos los niveles obteniendo 2500 puntos")
-                        builder.setPositiveButton("Aceptar") { _, _ -> }
+                        builder.setTitle(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.Congratulation
+                            )
+                        )
+                        builder.setMessage(
+                            ContextCompat.getString(
+                                requireContext(),
+                                R.string.point2500
+                            )
+                        )
+                        builder.setPositiveButton("Ok") { _, _ -> }
                         builder.show()
                     }
                 } else {
@@ -396,8 +406,18 @@ class DailyFragment : Fragment() {
 
     private fun showConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("¿Desea sacrificar una vida para mostrar la lista completa?")
-        builder.setPositiveButton("Si") { _, _ ->
+        builder.setTitle(
+            ContextCompat.getString(
+                requireContext(),
+                R.string.ConfirmationDailyDialog
+            )
+        )
+        builder.setPositiveButton(
+            ContextCompat.getString(
+                requireContext(),
+                R.string.setPositiveButton
+            )
+        ) { _, _ ->
             showError()
             when (viewModel.guess?.guessType) {
                 GuessType.COUNTRY -> {
@@ -419,12 +439,15 @@ class DailyFragment : Fragment() {
             binding.swShowList.isEnabled = false
         }
 
-        builder.setNegativeButton("No") { _, _ ->
+        builder.setNegativeButton(
+            ContextCompat.getString(
+                requireContext(),
+                R.string.setNegativeButton
+            )
+        ) { _, _ ->
             binding.swShowList.isChecked = false
         }
         builder.show()
-
-
     }
 
     private fun showCustomDialog() {
@@ -454,15 +477,36 @@ class DailyFragment : Fragment() {
     }
 
     private fun showCongratulatoryMessage() {
+        var name = viewModel.guess!!.name
+        if (viewModel.guess!!.guessType == GuessType.COUNTRY && viewModel.getLanguage() == "en") {
+            name = viewModel.translateToEnglish[name.uppercase(Locale.ROOT)].toString()
+        }
         val mesage: String = if (viewModel.local)
-            "Has superado el nivel: ${viewModel.guess!!.name}."
+            ContextCompat.getString(
+                requireContext(),
+                R.string.CompleteLevel
+            ) + " " + { name }
         else
-            "Has superado el nivel: ${viewModel.guess!!.name}. Has obtenido ${viewModel.point} puntos"
+            "${
+                ContextCompat.getString(
+                    requireContext(),
+                    R.string.CompleteLevel
+                )
+            } ${name}. ${
+                ContextCompat.getString(
+                    requireContext(),
+                    R.string.preDailyPoint
+                )
+            } ${viewModel.point} ${
+                ContextCompat.getString(
+                    requireContext(),
+                    R.string.postDailyPoint
+                )
+            }"
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("¡Felicidades!")
+        builder.setTitle(ContextCompat.getString(requireContext(), R.string.Congratulation))
         builder.setMessage(mesage)
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
-
+        builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()
@@ -470,12 +514,21 @@ class DailyFragment : Fragment() {
     }
 
     private fun showLevelMessage() {
-        val mesage = "Has superado el nivel ${level}."
+        val mesage = "${
+            ContextCompat.getString(
+                requireContext(),
+                R.string.CompleteLevel
+            )
+        } ${level}."
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("¡Felicidades!")
+        builder.setTitle(
+            ContextCompat.getString(
+                requireContext(),
+                R.string.Congratulation
+            )
+        )
         builder.setMessage(mesage)
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
-
+        builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()
@@ -484,9 +537,8 @@ class DailyFragment : Fragment() {
 
     private fun showHelpRedMessage() {
         val builder = AlertDialog.Builder(context)
-        builder.setMessage("Una categoría en rojo indica que has seleccionado una serie con una categoría, pero esta no coincide con la serie que debes encontrar.")
+        builder.setMessage(ContextCompat.getString(requireContext(), R.string.HelpRedMessage))
         builder.setPositiveButton("Ok") { dialog, _ ->
-
             dialog.dismiss()
         }
         val dialog = builder.create()
@@ -495,7 +547,7 @@ class DailyFragment : Fragment() {
 
     private fun showHelpGreenMessage() {
         val builder = AlertDialog.Builder(context)
-        builder.setMessage("Una categoría en verde significa que la categoría de la serie que has seleccionado es la misma que la de la serie a adivinar.")
+        builder.setMessage(ContextCompat.getString(requireContext(), R.string.HelpGreenMessage))
         builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
@@ -506,23 +558,29 @@ class DailyFragment : Fragment() {
 
     private fun showHelpMessage() {
         val builder = AlertDialog.Builder(context)
-        var guessName: String
-        when (viewModel.guess?.guessType) {
-            GuessType.COUNTRY -> guessName = "El pais"
-            GuessType.SERIE -> guessName = "La serie"
-            GuessType.FOOTBALL -> guessName = "El jugador"
-            else -> guessName = "La entidad o concepto"
+        val guessName: String = when (viewModel.guess?.guessType) {
+            GuessType.COUNTRY -> ContextCompat.getString(requireContext(), R.string.preHelpCountry)
+            GuessType.SERIE -> ContextCompat.getString(requireContext(), R.string.preHelpSerie)
+            GuessType.FOOTBALL -> ContextCompat.getString(
+                requireContext(),
+                R.string.preHelpFootball
+            )
 
+            else -> ContextCompat.getString(requireContext(), R.string.preHelpLocal)
+        }
+        var name = viewModel.guess!!.name.lowercase(Locale.ROOT)
+        if (viewModel.guess!!.guessType == GuessType.COUNTRY && viewModel.getLanguage() == "en") {
+            name = viewModel.translateToEnglish[name.uppercase(Locale.ROOT)].toString()
         }
         builder.setMessage(
-            "$guessName termina por: ${
-                viewModel.guess!!.name.substring(
-                    viewModel.guess!!.name.length - 2,
-                    viewModel.guess!!.name.length
+            "$guessName ${ContextCompat.getString(requireContext(), R.string.endWith)} ${
+                name.substring(
+                    name.length - 2,
+                    name.length
                 )
             }"
         )
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
+        builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()
@@ -531,9 +589,9 @@ class DailyFragment : Fragment() {
 
     fun showDegoratoryMessage() {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Has fallado")
-        builder.setMessage("Has superado el limite de intentos")
-        builder.setPositiveButton("Aceptar") { dialog, _ ->
+        builder.setTitle(ContextCompat.getString(requireContext(), R.string.failed))
+        builder.setMessage(ContextCompat.getString(requireContext(), R.string.failedMessage))
+        builder.setPositiveButton("Ok") { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = builder.create()
@@ -577,7 +635,6 @@ class DailyFragment : Fragment() {
                 showDegoratoryMessage()
                 findNavController().popBackStack()
             }
-
         }
     }
 
@@ -594,9 +651,6 @@ class DailyFragment : Fragment() {
             }
         }
 
-        override fun afterTextChanged(s: Editable) {
-
-        }
+        override fun afterTextChanged(s: Editable) {}
     }
-
 }

@@ -102,9 +102,7 @@ class ViewModelMenu : ViewModel() {
                     )
                     state.value = ExtraState.refreshUserList
                 }
-                // println("LISTAAAAAAAAAAAAAAAAAAAAAAAA" + userList)
             }
-
         }
     }
 
